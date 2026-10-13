@@ -11,11 +11,11 @@ is claimed.
 
 [Open the pilot and review notebook in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb).
 
-The notebook automatically reuses verified finished 200-step arms and retrains
-missing, partial or incompatible arms from scratch. Training writes locally, then
-saves full checkpoint archives to Drive and downloads an independent backup before
-diagnostics. The last cell exports a small review ZIP to hand back for analysis.
-Select `restart_all` to retrain both arms or `train_pilot` to choose a new run name.
+The notebook now runs a fresh K=8 pilot: standard and FLT-inspired memory
+recurrence, each with static and learned writes. Four conditions share the same
+initialization, 32 training questions and 200-update budgets. It screens gradients
+before training, downloads each completed checkpoint backup, and exports one
+small review ZIP. See the [experiment specification](docs/K8_FLT_PILOT.md).
 
 The original LOTUS documentation and attribution follow.
 

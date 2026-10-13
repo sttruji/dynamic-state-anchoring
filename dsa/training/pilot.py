@@ -44,6 +44,7 @@ class PilotConfig:
     revision: str = DEFAULT_REVISION
     device: str = "auto"
     write_mode: str = "learned"
+    recurrence_mode: str = "standard"
     loops: int = 16
     workspace: int = 4
     steps: int = 200
@@ -253,7 +254,7 @@ def _anchor_config(config, tokenizer):
         workspace_size=config.workspace, loop_budget=config.loops,
         gate_threshold=config.gate_threshold, write_mode=config.write_mode,
         periodic_interval=config.periodic_interval, pad_token_id=tokenizer.pad_token_id,
-        eos_token_id=tokenizer.eos_token_id, marker_token_id=marker[0])
+        eos_token_id=tokenizer.eos_token_id, marker_token_id=marker[0], recurrence_mode=config.recurrence_mode)
 
 
 def _initial_model(config, tokenizer, device):
@@ -549,6 +550,7 @@ def main(argv=None):
     parser.add_argument("--revision", default=DEFAULT_REVISION)
     parser.add_argument("--device", choices=("auto", "cpu", "cuda", "mps"), default="auto")
     parser.add_argument("--write-mode", choices=("static", "every_loop", "periodic", "learned"), default="learned")
+    parser.add_argument("--recurrence-mode", choices=("standard", "flt_memory"), default="standard")
     for name, default in (("loops", 16), ("workspace", 4), ("steps", 200), ("seed", 7),
                           ("save-every", 25), ("gradient-accumulation", 1),
                           ("periodic-interval", 4), ("keep-checkpoints", 2)):

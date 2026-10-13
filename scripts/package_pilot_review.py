@@ -18,6 +18,11 @@ def load(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def finite_median(values):
+    values = [x for x in values if x is not None and math.isfinite(x)]
+    return statistics.median(values) if values else None
+
+
 def jsonl(path, errors=None):
     if not path.is_file(): return []
     rows = []
@@ -44,6 +49,7 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
                 "run_name": run_name, "review_name": review_name, "arms": {}, "blocking": [], "questions_remaining": []}
     manifests, journals, artifact_errors = {}, {}, []
     required = []
+    diagnostics, validation_rows = {}, {}
     for arm in arms:
         if Path(arm).name != arm: raise ValueError("Invalid arm name")
         manifest = runs / arm / "run_manifest.json"
@@ -56,6 +62,9 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
         latest_path = runs / arm / "latest.json"
         arm_evidence = {"training_steps_logged": len(metrics),
                         "selected_checkpoint_step": load(latest_path)["step"] if latest_path.exists() else None}
+        if arm in manifests:
+            settings = manifests[arm]["contract"]["settings"]
+            arm_evidence.update(write_mode=settings["write_mode"], recurrence_mode=settings.get("recurrence_mode", "standard"))
         if metrics:
             n = manifests.get(arm, {}).get("contract", {}).get("record_count", 32)
             windows = {"first_complete_pass": metrics[:n], "last_complete_window": metrics[-n:]}
@@ -68,6 +77,7 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
             arm_evidence["peak_cuda_allocated_bytes"] = max(row.get("peak_cuda_allocated_bytes") or 0 for row in metrics)
         if diag.exists():
             report = load(diag)
+            diagnostics[arm] = report
             arm_evidence["training_generation"] = report["prediction_reports"]["normal_training_set"]
             arm_evidence["interventions"] = {k: v for k, v in report["prediction_reports"].items() if k != "normal_training_set"}
             arm_evidence["model_state_unchanged"] = report["model_state_unchanged"]
@@ -75,6 +85,17 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
                 for probe in report["gradient_reports"] for loss in probe["losses"].values())
             arm_evidence["nonfinite_parameter_gradient_observations"] = nonfinite
             if nonfinite: evidence["blocking"].append(f"{arm}: nonfinite gradient observations")
+            depths = sorted({g["loop_budget"] for g in report["gradient_reports"] if g["kind"] == "answer_only_depth_probe"})
+            arm_evidence["answer_gradient_norm_medians_by_depth"] = {str(k): finite_median(
+                g["losses"]["answer"]["parameter_gradients"]["global_norm_before_clipping"] for g in report["gradient_reports"]
+                if g["kind"] == "answer_only_depth_probe" and g["loop_budget"] == k) for k in depths}
+            residuals = [x for p in report.get("forward_reports", []) for x in p.get("raw_residuals", [])]
+            arm_evidence["nonfinite_raw_residual_observations"] = sum(not x["finite"] for x in residuals)
+            final = [x for x in residuals if x["location"] == "before_final_norm" and x["memory_rms"] is not None]
+            arm_evidence["raw_memory_residual_rms_before_final_norm_by_loop"] = {str(k): statistics.median(
+                x["memory_rms"] for x in final if x["loop"] == k) for k in sorted({x["loop"] for x in final})}
+            if arm_evidence["nonfinite_raw_residual_observations"]:
+                evidence["blocking"].append(f"{arm}: nonfinite raw residual observations")
             # This is an explicit engineering heuristic, not a statistical threshold.
             if arm_evidence["training_generation"]["accuracy"] < .8:
                 evidence["blocking"].append(f"{arm}: training accuracy below the declared 80% memorization diagnostic heuristic")
@@ -87,9 +108,19 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
             if len(valid_reports) != 1:
                 raise ValueError("Review contains multiple validation settings; use separate review names")
             r = load(valid_reports[-1])
+            validation_rows[arm] = jsonl(valid_reports[-1].parent / "predictions.jsonl", artifact_errors)
             arm_evidence["validation"] = {key: r[key] for key in ("total", "correct", "accuracy", "invalid_answer_rate", "average_latency_seconds")}
         evidence["arms"][arm] = arm_evidence
     required += [review / "original-explicit-control" / "report.json", review / "protocol.json", review / "session_status.json"]
+    protocol = load(review / "protocol.json") if (review / "protocol.json").is_file() else {}
+    if any(v.get("recurrence_mode") == "flt_memory" for v in protocol.get("CONDITIONS", {}).values()):
+        required.append(review / "initialization-screen" / "report.json")
+        screen_path = review / "initialization-screen" / "report.json"
+        if screen_path.is_file():
+            screen = load(screen_path)
+            evidence["initialization_screen"] = {k: screen[k] for k in ("finite", "model_state_unchanged", "median_answer_gradient_norms", "flt_to_standard_ratios")}
+            if not screen["finite"] or not screen["model_state_unchanged"]:
+                evidence["blocking"].append("initialization screen failed finite/model-preservation checks")
     missing = [str(p.relative_to(project_dir)) if p.is_relative_to(project_dir) else str(p)
                for p in required if not p.is_file()]
     evidence["missing_required_artifacts"] = missing
@@ -109,10 +140,28 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
                 and first["contract"]["prepared_manifest_sha256"] == other["contract"]["prepared_manifest_sha256"]
                 and first["contract"]["record_order_sha256"] == other["contract"]["record_order_sha256"]
                 and first["contract"]["runtime"] == other["contract"]["runtime"]
-                and set(differences) <= {"write_mode"})
+                and set(differences) <= {"write_mode", "recurrence_mode"})
             evidence["matched_controls"][arm] = {"matched": matched, "logged_example_sequences_equal": actual_order_equal,
                                                   "settings_differences": differences}
             if not matched: evidence["blocking"].append(f"{arm}: matched-control identity differs")
+    evidence["factorial_comparisons"] = {}
+    for left, right, axis in (("static", "learned", "write_mode"), ("flt_static", "flt_learned", "write_mode"),
+                              ("static", "flt_static", "recurrence_mode"), ("learned", "flt_learned", "recurrence_mode")):
+        if left not in arms or right not in arms: continue
+        a, b = validation_rows.get(left, []), validation_rows.get(right, [])
+        if not a or [r["sample_id"] for r in a] != [r["sample_id"] for r in b]: continue
+        left_settings, right_settings = [manifests[x]["contract"]["settings"] for x in (left, right)]
+        differences = {k for k in left_settings if left_settings[k] != right_settings[k]}
+        comparison = {"axis": axis, "settings_match_except_axis": differences == {axis}, "n": len(a),
+            "left_correct": sum(r["correct"] for r in a), "right_correct": sum(r["correct"] for r in b),
+            "both_correct": sum(x["correct"] and y["correct"] for x,y in zip(a,b)),
+            "left_only_correct": sum(x["correct"] and not y["correct"] for x,y in zip(a,b)),
+            "right_only_correct": sum(not x["correct"] and y["correct"] for x,y in zip(a,b))}
+        if not comparison["settings_match_except_axis"]:
+            evidence["blocking"].append(f"{left}/{right}: comparison changes undeclared settings")
+        ga, gb = [evidence["arms"][x].get("answer_gradient_norm_medians_by_depth", {}) for x in (left, right)]
+        comparison["right_to_left_gradient_norm_ratio_by_depth"] = {k: gb[k]/ga[k] if ga[k] and gb[k] is not None else None for k in ga if k in gb}
+        evidence["factorial_comparisons"][f"{left}_vs_{right}"] = comparison
     if all((review / arm).is_dir() for arm in ("static", "learned")):
         paired = {}
         for arm in ("static", "learned"):
@@ -162,7 +211,8 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
         if any(part == "test" or part.startswith("test-") for part in path.relative_to(review).parts): continue
         if path.suffix in {".json", ".jsonl", ".log"}:
             add(path, f"review/{path.relative_to(review)}")
-    for name in ("notebooks/DSA_Colab.ipynb", "scripts/ensure_pilot_arm.py", "scripts/diagnose_dsa_pilot.py", "scripts/pilot_explicit_controls.py", "scripts/package_pilot_review.py"):
+    for name in ("notebooks/DSA_Colab.ipynb", "scripts/ensure_pilot_arm.py", "scripts/screen_recurrence.py", "scripts/diagnose_dsa_pilot.py", "scripts/pilot_explicit_controls.py", "scripts/package_pilot_review.py",
+                 "dsa/models/flt_memory.py", "dsa/models/backbone.py", "dsa/models/anchored_loop.py", "dsa/training/objectives.py"):
         add(ROOT / name, f"source/{name}")
     inventory = {name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for name, path in entries.items()}
     if sum(v["bytes"] for v in inventory.values()) > 150_000_000: raise ValueError("Review bundle exceeds 150 MB")

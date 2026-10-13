@@ -69,7 +69,7 @@ class ColabNotebookContractTests(unittest.TestCase):
 
     def test_workflow_orders_setup_before_download_training_and_evaluation(self):
         tags = ("clone", "dependencies", "drive", "config", "preflight", "data",
-                "pretrained-smoke", "training", "evaluation", "final-evaluation", "summary")
+                "pretrained-smoke", "initialization-screen", "training", "evaluation", "final-evaluation", "summary")
         positions = []
         for tag in tags:
             self.stage_source(tag)

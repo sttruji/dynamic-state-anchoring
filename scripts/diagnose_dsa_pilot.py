@@ -76,15 +76,19 @@ def parameter_gradients(model):
 def capture_recurrence(model, budget, *, teacher_first=False):
     """Capture original graph tensors; remove instrumentation before backward."""
     original = model.backbone.forward_embeds
+    original_memory = model.backbone.forward_memory_embeds
     states, workspaces, calls = [], [], [0]
 
-    def forward(inputs_embeds, attention_mask, position_ids):
+    def capture(call, inputs_embeds, *args):
         calls[0] += 1
         first = 2 if teacher_first else 1
         if first <= calls[0] < first + budget:
             inputs_embeds.retain_grad()
             states.append(inputs_embeds)
-        return original(inputs_embeds, attention_mask, position_ids)
+        return call(inputs_embeds, *args)
+
+    def forward(*args): return capture(original, *args)
+    def forward_memory(*args): return capture(original_memory, *args)
 
     def workspace_hook(module, inputs, output):
         output.retain_grad()
@@ -92,13 +96,53 @@ def capture_recurrence(model, budget, *, teacher_first=False):
 
     handle = model.workspace_norm.register_forward_hook(workspace_hook)
     model.backbone.forward_embeds = forward
+    model.backbone.forward_memory_embeds = forward_memory
     try:
         yield states, workspaces
         if len(states) != budget or len(workspaces) != budget:
             raise RuntimeError("Diagnostic hooks did not capture exactly one state per latent loop")
     finally:
         model.backbone.forward_embeds = original
+        model.backbone.forward_memory_embeds = original_memory
         handle.remove()
+
+
+@contextmanager
+def capture_residuals(model, budget, question_width, *, teacher_first=False):
+    """GPT-2 residuals before normalization; separate from normalized memory."""
+    saved, active, calls, handles = [], [None], [0], []
+    originals = {name: getattr(model.backbone, name) for name in ("forward_embeds", "forward_memory_embeds")}
+    def wrap(call):
+        def forward(*args):
+            calls[0] += 1
+            first = 2 if teacher_first else 1
+            active[0] = calls[0] - first + 1 if first <= calls[0] < first + budget else None
+            try: return call(*args)
+            finally: active[0] = None
+        return forward
+    def hook(layer, location):
+        def collect(module, args):
+            value = args[0]
+            # Query normalization also sees the five previous memory vectors.
+            # Only measure the current full residual stream here.
+            if active[0] is None or value.shape[1] != question_width + 1 + model.config.workspace_size: return
+            memory = value.detach()[:, question_width:]
+            saved.append({"loop": active[0], "layer": layer, "location": location,
+                "memory_rms": finite_number(memory.double().square().mean().sqrt().item()),
+                "memory_max_abs": finite_number(memory.abs().max().item()),
+                "finite": bool(torch.isfinite(memory).all())})
+        return collect
+    if model.backbone.kind == "gpt2":
+        body = model.backbone.model.transformer
+        for index, block in enumerate(body.h, 1):
+            handles += [block.ln_1.register_forward_pre_hook(hook(index, "before_attention_norm")),
+                        block.ln_2.register_forward_pre_hook(hook(index, "before_mlp_norm"))]
+        handles.append(body.ln_f.register_forward_pre_hook(hook(len(body.h), "before_final_norm")))
+    for name, call in originals.items(): setattr(model.backbone, name, wrap(call))
+    try: yield saved
+    finally:
+        for name, call in originals.items(): setattr(model.backbone, name, call)
+        for handle in handles: handle.remove()
 
 
 def state_statistics(states, workspaces, question_width):
@@ -130,7 +174,7 @@ def gradient_probe(model, record, prefix, budget, weights, seed, *, full_objecti
     _seed(seed, device)
     model.train()  # Preserve training dropout and the straight-through gate.
     model.zero_grad(set_to_none=True)
-    with torch.enable_grad(), capture_recurrence(model, budget, teacher_first=full_objective) as captured:
+    with torch.enable_grad(), capture_residuals(model, budget, len(record["question_input_ids"]), teacher_first=full_objective) as raw_residuals, capture_recurrence(model, budget, teacher_first=full_objective) as captured:
         if full_objective:
             if budget != model.config.loop_budget:
                 raise ValueError("Full objective uses the original training budget and labels")
@@ -179,7 +223,7 @@ def gradient_probe(model, record, prefix, budget, weights, seed, *, full_objecti
                 "kind": "joint_loss_contributions" if full_objective else "answer_only_depth_probe",
                 "seed": seed, "training_mode": True, "gradient_clipping_applied": False,
                 "controller_supervised": record["controller_supervised"], "losses": profiles,
-                "head_gradient_cosines": directions}
+                "head_gradient_cosines": directions, "raw_residuals": raw_residuals}
     finally:
         model.zero_grad(set_to_none=True)
 
@@ -219,7 +263,7 @@ def forward_profile(model, record, prefix, weights):
     handle = model.workspace_norm.register_forward_hook(lambda module, inputs, output: workspace_states.append(output))
     model.backbone.forward_embeds = forward
     try:
-        with torch.no_grad():
+        with capture_residuals(model, model.config.loop_budget, len(record["question_input_ids"]), teacher_first=True) as raw_residuals, torch.no_grad():
             losses = joint_objective(model, record, prefix, weights)
             loop = losses["loop"]
             question_rms = torch.linalg.vector_norm(loop.question_embeds.double()).item() / math.sqrt(loop.question_embeds.numel())
@@ -254,7 +298,7 @@ def forward_profile(model, record, prefix, weights):
                     "answer_tokens_including_eos": len(record["answer_input_ids"]),
                     "controller_supervised": record["controller_supervised"], "controller_mask_reason": record["controller_mask_reason"],
                     "gate_targets": record["gate_targets"], "event_loops": record["event_loops"],
-                    "states": frames, "scheduled_teacher_alignments": alignments}
+                    "states": frames, "scheduled_teacher_alignments": alignments, "raw_residuals": raw_residuals}
     finally:
         handle.remove()
         model.backbone.forward_embeds = original

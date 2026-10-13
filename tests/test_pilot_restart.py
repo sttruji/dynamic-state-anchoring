@@ -14,6 +14,7 @@ from dsa.data.pilot_prepare import prepare_pilot
 from dsa.training.pilot import PilotConfig, train_pilot
 from scripts.ensure_pilot_arm import ensure_arm, restore_backup
 from scripts.package_pilot_review import package_review
+from scripts.screen_recurrence import screen
 
 ROOT = Path(__file__).resolve().parents[1]
 torch.set_num_threads(1)
@@ -105,6 +106,25 @@ class PilotRestartTests(unittest.TestCase):
     def test_force_restart_ignores_even_good_completed_checkpoints(self):
         self.assertEqual(self.ensure(force_restart=True)['action'], 'restarted')
 
+    def test_nonfinite_initialization_screen_retains_failure_report(self):
+        fake={'loop_budget':1,'raw_residuals':[{'finite':False}], 'losses':{'answer':{
+            'parameter_gradients':{'global_norm_before_clipping':None,'nonfinite_parameter_gradients':1}}}}
+        out=self.root/'screen'
+        with mock.patch('scripts.screen_recurrence.gradient_probe',return_value=fake), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(RuntimeError,'screen failed'):
+                screen(self.prepared,out,device='cpu',depths=[1],conditions={
+                    'static':{'write_mode':'static','recurrence_mode':'standard'}})
+        self.assertFalse(json.loads((out/'report.json').read_text())['finite'])
+
+    def test_completed_screen_reuses_results_without_reloading_model(self):
+        out=self.root/'screen'
+        with contextlib.redirect_stdout(io.StringIO()):
+            result=screen(self.prepared,out,device='cpu',depths=[1,2])
+            with mock.patch('scripts.screen_recurrence.pilot._initial_model',side_effect=AssertionError('cached screen')):
+                again=screen(self.prepared,out,device='cpu',depths=[1,2])
+        self.assertEqual(result,again)
+        self.assertEqual(result['optimizer_updates'],0)
+
     def test_export_reads_local_working_journal_with_drive_reports(self):
         self.ensure()
         project = self.root / 'drive'
@@ -125,12 +145,13 @@ class PilotRestartTests(unittest.TestCase):
         self.prepared = project / 'prepared/cache'
         notebook = json.loads((ROOT / 'notebooks/DSA_Colab.ipynb').read_text())
         sources = {c['id']: ''.join(c['source']) for c in notebook['cells']}
-        config = sources['config'].replace('gpt2-pilot-v1-ba4e69315086', 'example')
+        config = sources['config'].replace('EXISTING_RUN_NAME = f"gpt2-k8-flt-v1-{REPO_COMMIT[:12]}"', 'EXISTING_RUN_NAME = "example"')
         for old, new in [
-            ('7, 32, 16, 4, 200', '7, 1, 2, 4, 2'), ('DEVICE = "cuda"', 'DEVICE = "cpu"'),
+            ('7, 32, 8, 4, 200', '7, 1, 2, 4, 2'), ('DEVICE = "cuda"', 'DEVICE = "cpu"'),
             ('VALID_LIMIT = 128', 'VALID_LIMIT = 1'), ('MAX_NEW_TOKENS = 64', 'MAX_NEW_TOKENS = 2'),
             ('4, 8, 8', '1, 1, 1'), ('[1, 2, 4, 8, 16]', '[1, 2]'),
             ('COT_MAX_NEW_TOKENS = 192', 'COT_MAX_NEW_TOKENS = 2'),
+            ('SCREEN_LIMIT, SCREEN_DEPTHS = 1, [1, 8, 16]', 'SCREEN_LIMIT, SCREEN_DEPTHS = 1, [1, 2]'),
             ('Path("/content/dsa-pilot-working")', f'Path({str(self.root / "vm")!r})'),
             ('Path("/content/dsa-prepared")', f'Path({str(self.root / "inputs")!r})'),
         ]: config = config.replace(old, new)
@@ -146,21 +167,29 @@ class PilotRestartTests(unittest.TestCase):
         with mock.patch.dict(sys.modules, {'google.colab': colab}), contextlib.redirect_stdout(io.StringIO()):
             exec(compile(config, 'config', 'exec'), namespace)
             namespace['run_project'] = run_project
-            for name in ('data', 'training', 'evaluation', 'pilot-diagnostics', 'pilot-controls',
+            for name in ('data', 'initialization-screen', 'training', 'evaluation', 'pilot-diagnostics', 'pilot-controls',
                          'final-evaluation', 'summary', 'pilot-export'):
                 source = sources[name].replace('Path("/content")', f'Path({str(self.root)!r})')
                 exec(compile(source, name, 'exec'), namespace)
-        self.assertEqual(namespace['READY_ARMS'], ['static', 'learned'])
+        self.assertEqual(namespace['READY_ARMS'], ['static', 'learned', 'flt_static', 'flt_learned'])
         self.assertEqual(namespace['arm_checkpoints']['static']['action'], 'reused')
         self.assertEqual(namespace['arm_checkpoints']['learned']['action'], 'restarted')
-        self.assertEqual(len(downloads), 2)
-        with ZipFile(downloads[0]) as backup:
-            self.assertIn('learned-step00000002-full.zip', backup.namelist())
-        with ZipFile(downloads[1]) as review:
+        self.assertEqual(len(downloads), 5)
+        for path in downloads[:4]:
+            with ZipFile(path) as backup:
+                self.assertIn('checkpoint-00000002/training_state.pt', backup.namelist())
+        with ZipFile(downloads[-1]) as review:
             manifest = json.loads(review.read('bundle_manifest.json'))
             readiness = json.loads(review.read('review/scale_readiness.json'))
             self.assertTrue(manifest['evidence_complete'])
             self.assertTrue(readiness['matched_controls']['learned']['matched'])
+            self.assertTrue(readiness['matched_controls']['flt_learned']['matched'])
+            self.assertEqual(len(readiness['factorial_comparisons']), 4)
+            self.assertTrue(readiness['initialization_screen']['finite'])
+            profile=json.loads(review.read('review/flt_learned/diagnostics/forward-profiles/sample0000.json'))
+            self.assertEqual(len(profile['raw_residuals']), 10)
+            probe=json.loads(review.read('review/flt_learned/diagnostics/gradients/sample0000-k2-joint.json'))
+            self.assertTrue(all(x['connected_to_loss'] for x in probe['losses']['answer']['states']))
             self.assertFalse(readiness['missing_required_artifacts'])
 
 

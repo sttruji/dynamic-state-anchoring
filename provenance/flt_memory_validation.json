@@ -1,0 +1,75 @@
+{
+  "schema_version": "dsa_k8_flt_memory_validation_v1",
+  "tests": 228,
+  "passed": true,
+  "command": ".venv/bin/python -m unittest discover -s tests -q",
+  "runtime": {
+    "python": "3.12.14",
+    "device": "cpu",
+    "packages": {
+      "torch": "2.7.1",
+      "transformers": "4.46.2",
+      "tokenizers": "0.20.3",
+      "numpy": "2.2.6"
+    }
+  },
+  "conditions": {
+    "static": [
+      "standard",
+      "static"
+    ],
+    "learned": [
+      "standard",
+      "learned"
+    ],
+    "flt_static": [
+      "flt_memory",
+      "static"
+    ],
+    "flt_learned": [
+      "flt_memory",
+      "learned"
+    ]
+  },
+  "default_training": {
+    "loops": 8,
+    "train_records": 32,
+    "steps_per_condition": 200,
+    "seed": 7
+  },
+  "tested": [
+    "identical parameters and initialization hashes across recurrence variants",
+    "first loop matches standard model exactly",
+    "query-equal memory block matches original GPT-2 block",
+    "previous memory affects each block while question positions remain causally independent",
+    "left/right padding and batch independence",
+    "ordinary explicit teacher and answer readout computation",
+    "finite end-to-end gradients through earlier loops",
+    "checkpointed/noncheckpointed gradients agree with dropout",
+    "save/load preserves recurrence mode and outputs",
+    "nonfinite screening saves failure evidence and blocks training",
+    "completed screens reuse cases without reloading the model",
+    "four-condition notebook integration through screen, training, validation, diagnostics, controls and all five downloads",
+    "factorial comparison settings and raw residual evidence exported",
+    "existing restart/backup/partial export regressions"
+  ],
+  "new_pretrained_t4_execution": false,
+  "real_drive_and_browser_transfers_verified": false,
+  "paper": "https://arxiv.org/html/2605.18797v1",
+  "implementation_is_full_paper_reproduction": false,
+  "user_artifacts_published": false,
+  "source_sha256": {
+    "dsa/models/flt_memory.py": "330f2618596ab963698ea4f6a8fe3183e698fa286954825e754073c9210b629d",
+    "dsa/models/backbone.py": "9d064851ed12a414d1f523794e32548f1012371ca1e581c1fa44e0f1656f9233",
+    "dsa/models/anchored_loop.py": "89fe4192c8e61f564ec27dc314206539ce063246245b5a253e4bb44578121657",
+    "dsa/training/pilot.py": "58198d4fd1fce509dbcdf49a14ea2ff5d947eb0943ae2c544938da8a16437ff7",
+    "scripts/screen_recurrence.py": "73bf0d376df5325a7537cf4ec1fc0a95d0aaf8ff83d09d81bf4e0dc82d68ee86",
+    "scripts/diagnose_dsa_pilot.py": "8973ad4af9535a0ea1736518581ea4753faaad9d4dfee73a596da7e0e22e65d7",
+    "scripts/ensure_pilot_arm.py": "56b7a396fc001198c4964efa2d3d36b332f5833318bd06eb2f1d7ef140cc20c4",
+    "scripts/evaluate_dsa.py": "c2c3259b80bf8ffc33d9bfedc2056973efac3df79006dfc01b64d02cb02f5382",
+    "scripts/package_pilot_review.py": "6eaf3677cfcf1623aecb32929fb25ecbd9615548bd0b97696f0c4eafe60d4da8",
+    "notebooks/DSA_Colab.ipynb": "45adaebb4a1cf66ac0aa9d44849646ad4a9de9e4ccfba07cf59fa41d295972e5",
+    "tests/test_flt_memory.py": "de7c318d53b9bcf0cea24b0bfd99953cf7eb00f3a63ecfdbee294ebcce98e7a0",
+    "tests/test_pilot_restart.py": "9cae3546a12f1860ef132555ea2290d20196c64e111887c0eb17defaff35b01b"
+  }
+}

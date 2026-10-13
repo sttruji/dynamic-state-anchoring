@@ -84,7 +84,8 @@ def restore_backup(archive, destination):
 
 def ensure_arm(prepared_dir, working_dir, legacy_dir, backup_dir, report_path, *, arm="learned", steps=200,
                device="cuda", smoke_report=None, template_dir=None, force_restart=False, expected_initial_sha=None,
-               seed=None, workspace=None, learning_rate=None, gradient_accumulation=None):
+               seed=None, workspace=None, learning_rate=None, gradient_accumulation=None,
+               write_mode=None, recurrence_mode=None):
     prepared_dir, working_dir, legacy_dir, backup_dir = map(Path, (prepared_dir, working_dir, legacy_dir, backup_dir))
     if working_dir.resolve() == legacy_dir.resolve() or working_dir.resolve().is_relative_to(legacy_dir.resolve()):
         raise ValueError("Working checkpoints must be separate from historical Drive files")
@@ -97,9 +98,9 @@ def ensure_arm(prepared_dir, working_dir, legacy_dir, backup_dir, report_path, *
         except (OSError, ValueError, KeyError, TypeError):
             print("Old metadata is unreadable; using the declared pilot settings.", flush=True)
     for name, value in dict(seed=seed, workspace=workspace, learning_rate=learning_rate,
-                            gradient_accumulation=gradient_accumulation).items():
+                            gradient_accumulation=gradient_accumulation, recurrence_mode=recurrence_mode).items():
         if value is not None: settings[name] = value
-    settings.update(prepared_dir=prepared_dir, output_dir=working_dir, write_mode=arm, steps=steps,
+    settings.update(prepared_dir=prepared_dir, output_dir=working_dir, write_mode=write_mode or arm, steps=steps,
                     device=device, smoke_report=smoke_report, resume="none", save_every=25, keep_checkpoints=2,
                     tiny=manifest["tiny"], backbone=manifest["backbone"], revision=manifest["revision"], loops=manifest["loop_budget"])
     config = pilot.PilotConfig(**settings)
@@ -177,6 +178,7 @@ def ensure_arm(prepared_dir, working_dir, legacy_dir, backup_dir, report_path, *
               "working_dir": str(working_dir), "local_full_backup": str(local_archive),
               "drive_full_backup": str(stored_archive), "backup_status": backup_status, "backup_error": backup_error,
               "initial_state_sha256": run["initial_state_sha256"], "selection_notes": reasons,
+              "recurrence_mode": config.recurrence_mode, "write_mode": config.write_mode,
               "backup_files": inventory,
               "durability_note": "Mounted readback is checked; download the independent full backup before disconnecting."}
     atomic_json(report_path, report)
@@ -200,4 +202,6 @@ if __name__ == "__main__":
     parser.add_argument("--workspace", type=int)
     parser.add_argument("--learning-rate", type=float)
     parser.add_argument("--gradient-accumulation", type=int)
+    parser.add_argument("--write-mode", choices=("static", "learned", "every_loop", "periodic"))
+    parser.add_argument("--recurrence-mode", choices=("standard", "flt_memory"))
     ensure_arm(**vars(parser.parse_args()))

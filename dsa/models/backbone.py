@@ -34,6 +34,10 @@ class BackboneAdapter(nn.Module):
     def logits(self, hidden):
         return self.model.get_output_embeddings()(hidden)
 
+    def forward_memory_embeds(self, inputs_embeds, attention_mask, position_ids, base_inputs_embeds, question_width):
+        from .flt_memory import forward_memory
+        return forward_memory(self, inputs_embeds, attention_mask, position_ids, base_inputs_embeds, question_width)
+
     @classmethod
     def tiny(cls, vocab_size: int, hidden_size: int = 32, max_positions: int = 1024):
         from transformers import GPT2Config, GPT2LMHeadModel

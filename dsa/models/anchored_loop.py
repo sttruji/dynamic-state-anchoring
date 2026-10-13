@@ -21,6 +21,7 @@ class AnchorConfig:
     pad_token_id: int = 0
     eos_token_id: int = 1
     marker_token_id: int | None = None
+    recurrence_mode: str = "standard"
 
     def __post_init__(self):
         if self.workspace_size < 1 or self.loop_budget < 1 or self.periodic_interval < 1:
@@ -29,6 +30,8 @@ class AnchorConfig:
             raise ValueError("Gate threshold must be in [0, 1]")
         if self.write_mode not in {"static", "every_loop", "periodic", "learned"}:
             raise ValueError("Unknown write policy")
+        if self.recurrence_mode not in {"standard", "flt_memory"}:
+            raise ValueError("Unknown recurrence mode")
 
 
 @dataclass
@@ -54,6 +57,8 @@ class AnchoredLoop(nn.Module):
         super().__init__()
         self.backbone = backbone
         self.config = config
+        if config.recurrence_mode == "flt_memory" and backbone.kind != "gpt2":
+            raise ValueError("FLT-inspired memory injection currently supports GPT-2 only")
         width = backbone.hidden_size
         self.initial_anchor = nn.Parameter(torch.randn(1, 1, width) * 0.02)
         self.initial_workspace = nn.Parameter(torch.randn(1, config.workspace_size, width) * 0.02)
@@ -80,14 +85,17 @@ class AnchoredLoop(nn.Module):
         batch, question_width, _ = question.shape
         anchor = self.initial_anchor.expand(batch, -1, -1)
         workspace = self.initial_workspace.expand(batch, -1, -1)
+        base_embeds = torch.cat((question, anchor, workspace), dim=1)
         memory_mask = attention_mask.new_ones(batch, 1 + self.config.workspace_size)
         mask = torch.cat((attention_mask, memory_mask), dim=1)
         positions = position_ids(mask)
         logits, decisions, candidates, anchors = [], [], [], [anchor]
         for step in range(1, budget + 1):
-            hidden = self.backbone.forward_embeds(
-                torch.cat((question, anchor, workspace), dim=1), mask, positions
-            )
+            inputs = torch.cat((question, anchor, workspace), dim=1)
+            if self.config.recurrence_mode == "flt_memory" and step > 1:
+                hidden = self.backbone.forward_memory_embeds(inputs, mask, positions, base_embeds, question_width)
+            else:
+                hidden = self.backbone.forward_embeds(inputs, mask, positions)
             workspace = self.workspace_norm(hidden[:, question_width + 1:])
             pooled = workspace.mean(dim=1)
             gate_logit = self.gate_head(pooled).squeeze(-1)
@@ -165,7 +173,7 @@ class AnchoredLoop(nn.Module):
     def from_pretrained(cls, directory):
         from transformers import AutoModelForCausalLM
         directory = Path(directory)
-        backbone = BackboneAdapter(AutoModelForCausalLM.from_pretrained(directory / "backbone"))
+        backbone = BackboneAdapter(AutoModelForCausalLM.from_pretrained(directory / "backbone", attn_implementation="eager"))
         model = cls(backbone, AnchorConfig(**json.loads((directory / "anchor_config.json").read_text())))
         memory = torch.load(directory / "anchor.pt", map_location="cpu", weights_only=True)
         missing, unexpected = model.load_state_dict(memory, strict=False)

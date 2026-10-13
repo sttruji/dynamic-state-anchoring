@@ -98,7 +98,9 @@ def _validate_training_identity(run_dir, checkpoint, manifest, manifest_sha256):
               "periodic_interval": settings["periodic_interval"]}
     if any(anchor.get(key) != value for key, value in checks.items()):
         raise ValueError("Saved anchor configuration differs from the training contract")
-    for name in ("dsa/models/backbone.py", "dsa/models/anchored_loop.py", "dsa/evaluation/evaluate.py"):
+    if anchor.get("recurrence_mode", "standard") != settings.get("recurrence_mode", "standard"):
+        raise ValueError("Saved recurrence differs from the training contract")
+    for name in ("dsa/models/backbone.py", "dsa/models/anchored_loop.py", "dsa/models/flt_memory.py", "dsa/evaluation/evaluate.py"):
         expected = contract.get("runtime", {}).get("implementation_sha256", {}).get(name)
         if expected is not None and file_sha256(ROOT / name) != expected:
             raise ValueError("Inference implementation differs from the training run")
