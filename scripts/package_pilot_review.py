@@ -31,11 +31,11 @@ def jsonl(path, errors=None):
     return rows
 
 
-def package_review(project_dir, run_name, review_name, prepared_dir, output=None, arms=("static", "learned")):
+def package_review(project_dir, run_name, review_name, prepared_dir, output=None, arms=("static", "learned"), run_root=None):
     project_dir, prepared_dir = Path(project_dir).resolve(), Path(prepared_dir).resolve()
     if Path(run_name).name != run_name or Path(review_name).name != review_name:
         raise ValueError("Run/review names must be single path components")
-    runs = project_dir / "runs" / run_name
+    runs = Path(run_root).resolve() if run_root else project_dir / "runs" / run_name
     reports = project_dir / "reports" / run_name
     review = reports / review_name
     review.mkdir(parents=True, exist_ok=True)
@@ -90,7 +90,8 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
             arm_evidence["validation"] = {key: r[key] for key in ("total", "correct", "accuracy", "invalid_answer_rate", "average_latency_seconds")}
         evidence["arms"][arm] = arm_evidence
     required += [review / "original-explicit-control" / "report.json", review / "protocol.json", review / "session_status.json"]
-    missing = [str(p.relative_to(project_dir)) for p in required if not p.is_file()]
+    missing = [str(p.relative_to(project_dir)) if p.is_relative_to(project_dir) else str(p)
+               for p in required if not p.is_file()]
     evidence["missing_required_artifacts"] = missing
     evidence["blocking"] += ["missing evidence: " + name for name in missing]
     if len(manifests) == len(arms):
@@ -161,7 +162,7 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
         if any(part == "test" or part.startswith("test-") for part in path.relative_to(review).parts): continue
         if path.suffix in {".json", ".jsonl", ".log"}:
             add(path, f"review/{path.relative_to(review)}")
-    for name in ("notebooks/DSA_Colab.ipynb", "scripts/diagnose_dsa_pilot.py", "scripts/pilot_explicit_controls.py", "scripts/package_pilot_review.py"):
+    for name in ("notebooks/DSA_Colab.ipynb", "scripts/ensure_pilot_arm.py", "scripts/diagnose_dsa_pilot.py", "scripts/pilot_explicit_controls.py", "scripts/package_pilot_review.py"):
         add(ROOT / name, f"source/{name}")
     inventory = {name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for name, path in entries.items()}
     if sum(v["bytes"] for v in inventory.values()) > 150_000_000: raise ValueError("Review bundle exceeds 150 MB")
@@ -186,6 +187,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("project-dir", "run-name", "review-name", "prepared-dir"): parser.add_argument("--"+name, required=True)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--run-root", type=Path)
     parser.add_argument("--arms", nargs="+", default=["static", "learned"])
     args = vars(parser.parse_args())
     package_review(**args)

@@ -129,6 +129,7 @@ class PilotReviewTests(unittest.TestCase):
         sources = {c["id"]: "".join(c["source"]) for c in notebook["cells"]}
         config = sources["config"].replace('EXISTING_RUN_NAME = "gpt2-pilot-v1-ba4e69315086"',
                                           f'EXISTING_RUN_NAME = "{self.run_name}"')
+        config = config.replace('RUN_MODE = "auto_pilot"', 'RUN_MODE = "review_existing"')
         config = config.replace('Path("/content/dsa-prepared")', f"Path({str(self.project / 'vm')!r})")
         namespace = {"Path": Path, "json": json, "hashlib": hashlib, "shutil": shutil, "os": os,
                      "PROJECT_DIR": self.project, "REPO_DIR": ROOT, "REPO_COMMIT": "new-review-code",
@@ -151,10 +152,11 @@ class UnifiedNotebookTests(unittest.TestCase):
         notebook = json.loads((ROOT / "notebooks/DSA_Colab.ipynb").read_text())
         sources = {c["id"]: "".join(c["source"]) for c in notebook["cells"]}
         ids = [c["id"] for c in notebook["cells"]]
-        self.assertIn('RUN_MODE = "review_existing"', sources["config"])
+        self.assertIn('RUN_MODE = "auto_pilot"', sources["config"])
         self.assertIn('EXISTING_RUN_NAME = "gpt2-pilot-v1-ba4e69315086"', sources["config"])
         self.assertIn('if RUN_MODE == "train_pilot"', sources["data"])
-        self.assertIn('if RUN_MODE == "train_pilot"', sources["training"])
+        self.assertIn('scripts/ensure_pilot_arm.py', sources["training"])
+        self.assertIn('download_full_checkpoints()', sources["training"])
         self.assertLess(ids.index("pilot-diagnostics"), ids.index("pilot-export"))
         self.assertLess(ids.index("pilot-controls"), ids.index("pilot-export"))
         self.assertIn("session_status.json", sources["config"])

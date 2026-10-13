@@ -11,9 +11,11 @@ is claimed.
 
 [Open the pilot and review notebook in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb).
 
-The notebook defaults to reviewing the saved 200-step pilot after reconnecting.
-It skips training/downloads, runs training/validation and latent-state diagnostics,
-and exports one review ZIP. Select `train_pilot` mode to start a new small run.
+The notebook automatically reuses verified finished 200-step arms and retrains
+missing, partial or incompatible arms from scratch. Training writes locally, then
+saves full checkpoint archives to Drive and downloads an independent backup before
+diagnostics. The last cell exports a small review ZIP to hand back for analysis.
+Select `restart_all` to retrain both arms or `train_pilot` to choose a new run name.
 
 The original LOTUS documentation and attribution follow.
 

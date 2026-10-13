@@ -168,9 +168,10 @@ class ColabNotebookContractTests(unittest.TestCase):
     def test_notebook_runner_surfaces_and_saves_the_underlying_error(self):
         with tempfile.TemporaryDirectory() as temp, redirect_stdout(io.StringIO()):
             namespace = {"Path": Path, "sys": sys, "os": os, "json": json,
+                         "hashlib": hashlib,
                          "REPO_DIR": ROOT, "REPO_COMMIT": "fixture-commit",
                          "PROJECT_DIR": Path(temp), "PYTHON": sys.executable}
-            config_source = self.stage_source("config").replace('RUN_MODE = "review_existing"', 'RUN_MODE = "train_pilot"')
+            config_source = self.stage_source("config").replace('RUN_MODE = "auto_pilot"', 'RUN_MODE = "train_pilot"')
             exec(compile(config_source, "notebook-config", "exec"), namespace)
             with self.assertRaisesRegex(RuntimeError, "underlying child error"):
                 namespace["run_project"](

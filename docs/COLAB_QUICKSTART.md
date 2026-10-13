@@ -5,28 +5,36 @@ select **T4 GPU**, and run all cells in order. This is the original notebook,
 expanded to collect the evidence needed before choosing a larger experiment.
 A saved Drive copy does not update automatically; open the current GitHub version.
 
-## Reconnect to the completed pilot
+## Run the automatic small pilot
 
-The default `RUN_MODE="review_existing"` selects
-`gpt2-pilot-v1-ba4e69315086`. Fetching newer review code does not select a new run.
-The notebook locates the original prepared Drive cache by manifest checksum and
-reads each arm's latest completed checkpoint. This mode skips training, corpus
-preparation/downloads and original-model smoke generation. It does not create an
-optimizer. Model controls load original pretrained weights from the HF cache with
-`local_files_only=True`; a missing cache is reported rather than downloaded.
+The default `RUN_MODE="auto_pilot"` selects `gpt2-pilot-v1-ba4e69315086`.
+It checks actual model, tokenizer and training-state files at the **200-step target**.
+A complete compatible arm is reused. A missing, corrupt, partial or incompatible
+arm restarts from the original pretrained model for 200 updates. It does not
+repair or resume partial checkpoints. The historical Drive folders are preserved.
+The expected cost of restarting one arm is roughly the previous 8-minute training
+measurement, plus model loading, checkpoint writing and backup transfer.
 
-On a fresh VM, dependency setup and Drive mounting must run again. Dataset files,
-model downloads, model/optimizer checkpoints and completed review cases persist
-on Drive. Inputs are staged back to the VM from the existing prepared cache.
-The default project folder is `MyDrive/dynamic-state-anchoring`.
+Both arms must match initialization, prepared data, sample order, settings and
+training runtime. If the current GPU/packages differ from a saved arm, it can
+retrain that arm too so the comparison remains matched. Initialization is checked
+before optimizer updates on the second arm. Set `RUN_MODE="restart_all"` if you
+prefer both arms to start fresh without inspecting old checkpoints.
 
-`REVIEW_NAME="pilot-review-v2"` keeps the new review separate from the original
-200-step reports. A review freezes its configuration and code commit in
-`protocol.json`; changed settings/code require a new review name. Individual
-runners also validate source, checkpoint, tokenizer, implementation and runtime
-identities before reusing results. Identical interrupted cases resume without
-regenerating completed examples. Reviews can record different hardware from the
-training run, but do not claim exact training continuation across hardware.
+Active checkpoints live at `/content/dsa-pilot-working/<run>/<arm>` on the VM.
+After each completed arm, a full ZIP is written locally, copied as **one file**
+to Drive and checked by mounted readback. After training, both arm ZIPs are
+combined into an independent browser download, **before diagnostics**. Keep that
+file on your computer and wait for its download to finish before disconnecting.
+Mounted readback cannot verify server-side durability.
+
+On a fresh VM, run setup and Drive mounting again. Cached corpus/model downloads
+and checksum-selected prepared data are reused if available; missing inputs are
+rebuilt. The runner tries completed local/Drive archives and historical files,
+then restarts any unusable arm. Report folders include settings, code and actual
+checkpoint identities so predictions from a different restart cannot be mixed in.
+Completed diagnostic cases can be reused within the same identity. No larger
+training run starts automatically.
 
 ## Evidence collected in one run
 
@@ -61,26 +69,23 @@ is for development; the full test evaluation remains disabled by default.
 
 ## The final review ZIP
 
-The last cell creates and downloads:
+The last cell saves and downloads a **small review ZIP** under
+`MyDrive/dynamic-state-anchoring/bundles/`. Its name includes the run, code,
+settings and checkpoint identities. **Hand back this ZIP for analysis.**
+It contains training journals/manifests, checkpoint metadata, prepared train/valid
+records, old/new predictions, diagnostics, explicit controls, provenance, logs,
+per-file hashes and completeness status. It excludes weights and test answers.
+Recorded GPU-stage failures do not prevent partial export; missing evidence is
+listed explicitly. Setup and Drive authorization still require a working runtime.
 
-```text
-MyDrive/dynamic-state-anchoring/bundles/
-  gpt2-pilot-v1-ba4e69315086-pilot-review-v2.zip
-```
-
-Hand back this one ZIP. It includes original training journals/manifests and
-checkpoint metadata, prepared training/validation records and selection metadata,
-old/new validation predictions, diagnostics, explicit controls, runtime/protocol
-identities, logs, source scripts, per-file hashes and a completeness manifest.
-Weights, optimizer tensors, HF downloads, the raw full training corpus and test
-questions/answers are excluded. Checkpoints remain on Drive for continuation.
-
-GPU stage failures are logged in `session_status.json` and do not stop later
-stages or the final export. Partial ZIPs explicitly report missing evidence.
-Setup/Drive/input-location failures still need resolution before a review can
-run. If disconnected before export, reconnect with the same review configuration;
-finished cases are reused and remaining cases continue. The bundle also stays on
-Drive if the browser download is interrupted.
+The separate `<run>-full-checkpoints.zip` downloads after training. **Keep it as
+your independent backup.** It can be several GB and includes model/tokenizer,
+optimizer, scheduler, RNG and journals, with a SHA256 inventory inside each arm ZIP.
+Individual full archives also live at
+`MyDrive/dynamic-state-anchoring/bundles/<run>/checkpoints/`.
+If the Drive copy fails, the local archive remains downloadable. The export cell
+retries initiating a full download if the earlier attempt raised an error.
+A browser download request is not confirmation that the transfer completed.
 
 `scale_readiness.json` uses an explicitly labeled 80% training-accuracy heuristic
 for memorization and reports nonfinite gradients, mismatched controls or missing
@@ -92,14 +97,13 @@ comes after that protocol is frozen. No larger run is started automatically.
 
 ## Starting another small pilot
 
-Set `RUN_MODE="train_pilot"` and choose `NEW_RUN_NAME`. Defaults remain the
-original 32 unchanged training rows, 200 one-example updates per static/learned
-arm, K=16, workspace size four, FP32 and activation checkpointing. Training starts
-from matching seeds and data order and retains two complete checkpoints per arm.
-`--resume auto` restores model, Adam, scheduler and RNG state only when the exact
-training contract matches; changed dependencies/hardware/settings/code need a
-separate experiment. Increase the total step target only for an authorized
-extension of the same matched experiment.
+Set `RUN_MODE="train_pilot"` and choose `NEW_RUN_NAME`. Defaults remain
+32 unchanged training rows, 200 one-example updates per static/learned arm,
+K=16, workspace four, FP32 and activation checkpointing. A fully completed
+compatible arm can be reused; any partial arm restarts. This notebook deliberately
+favors cheap small-pilot restarts over exact-resume recovery. The underlying CLI
+still supports exact resume for larger experiments when its full contract matches.
+`review_existing` remains an explicit review-only option for intact historical runs.
 
 ## Setup and verification boundary
 
@@ -111,7 +115,8 @@ Subprocess output is streamed and saved under the selected review's `logs` folde
 CUDA unavailable means select a T4 runtime and reconnect before changing packages.
 
 The expanded workflow has end-to-end CPU tests using tiny saved checkpoints,
-including reconnect without training, full/partial exports, latent intervention
-isolation and preservation of the joint objective. Pretrained T4 execution of
+including automatic retraining from metadata-only runs, full-backup restoration,
+Drive copy failures, full/partial exports, latent intervention isolation and
+preservation of the joint objective. Pretrained T4 execution of
 these new checks still needs to happen in Colab. No claim is made that every
 future scientific question can be answered from a small single-seed pilot.

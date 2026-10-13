@@ -72,17 +72,18 @@ hashes. A mismatch must stop, preserving the existing file for inspection.
 Hugging Face documents the cache environment and offline/local-file behavior in
 its [versioned installation guide](https://huggingface.co/docs/transformers/v4.46.2/installation).
 
-Checkpoint after a bounded number of updates and resume from the last complete
-checkpoint. An interrupted update after that checkpoint may need to be repeated.
-Save the first cell's resolved `REPO_COMMIT`; set `REPO_REF` to that commit when
-reconnecting. The default `main` branch can advance after new code is published.
-Keep run settings and input identities fixed when resuming; use a separate run
-directory when changing the dataset subset, seed, write mode, loops, or losses.
-Exact resume also checks the device type/name, package versions, CUDA/cuDNN,
-and implementation hashes. A new session with different GPU hardware or a
-changed runtime can require a fresh run; deterministic continuation across
-different hardware is not claimed. The default retains the latest two complete
-checkpoints. Reserve several GB for model weights and Adam state per run.
+For this 200-update pilot, finished compatible arms are reused; missing or partial
+arms restart from scratch. The notebook does not spend time on partial-checkpoint
+repair. Active checkpoints stay on VM disk, with the latest two retained locally.
+A finished arm is archived as one full checksummed ZIP for Drive and independent
+download. Mounted readback is checked but does not prove cloud server durability;
+keep the downloaded full backup until the experiment is safely stored elsewhere.
+Reserve several GB for weights and Adam state per arm, plus archive copies.
+
+Save the resolved `REPO_COMMIT` for reproducibility. A change in settings, data,
+packages, CUDA/cuDNN, device or implementation can require retraining both matched
+arms. Core CLI exact resume remains available for larger runs, where preserving
+expensive completed updates warrants it. It requires the full training contract.
 Use validation for pilot decisions and leave official test evaluation explicitly
 disabled until the experimental settings are frozen.
 

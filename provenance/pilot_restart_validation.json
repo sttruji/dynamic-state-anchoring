@@ -1,0 +1,39 @@
+{
+  "schema_version": "dsa_pilot_restart_validation_v1",
+  "tests": 219,
+  "passed": true,
+  "command": ".venv/bin/python -m unittest discover -s tests -q",
+  "runtime": {
+    "python": "3.12.14",
+    "device": "cpu",
+    "packages": {
+      "torch": "2.7.1",
+      "transformers": "4.46.2",
+      "tokenizers": "0.20.3",
+      "numpy": "2.2.6"
+    }
+  },
+  "tested": [
+    "metadata-only learned run retrains while complete static is reused",
+    "initialization mismatch stops before optimizer updates",
+    "complete marker without actual model bytes triggers restart",
+    "partial working run restarts instead of resuming",
+    "full archive restores after loss of VM/historical checkpoint files",
+    "failed Drive copy retains independent local full backup",
+    "forced restart ignores complete checkpoints",
+    "review bundle reads local training journals with Drive report locations",
+    "notebook cells run through automatic restart, validation, diagnostics, controls and both exports using tiny CPU fixtures"
+  ],
+  "default_run_mode": "auto_pilot",
+  "partial_resume_policy": "restart the small 200-update arm",
+  "primary_dsa_training_code_changed": false,
+  "hosted_colab_execution": false,
+  "drive_and_browser_downloads": "mocked in local integration; server durability and browser transfer not verified",
+  "user_artifacts_published": false,
+  "source_sha256": {
+    "notebooks/DSA_Colab.ipynb": "62d06236ecb95713b5bc3a2b8845a6c49a6e970b0864f604b148d13ab54dbd13",
+    "scripts/ensure_pilot_arm.py": "3c3c83a2ab303b1ac2cd20d488c115750c3212d9d897dbae24865f1c6249702c",
+    "scripts/package_pilot_review.py": "970a3fc75ec3d84dc0e3a6326ee97d764b69646cd7dd370b775df615ba9a6454",
+    "tests/test_pilot_restart.py": "2e23b38fa03d97079eb3d2aa31ec91fbe6ff36572f2e70bae37f1aa24570c443"
+  }
+}
