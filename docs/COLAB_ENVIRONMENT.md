@@ -19,9 +19,14 @@ CPU environment lock. PyTorch installation must match the CUDA platform, so
 the notebook retains the managed runtime's existing GPU stack. See the
 [official PyTorch installation selector](https://pytorch.org/get-started/locally/).
 
-The notebook creates `/content/dsa-venv` with `--system-site-packages`, allowing
-access to that existing stack while installing DSA's Hugging Face pins into the
-virtual environment. Training and verification use this environment's Python
+The notebook creates `/content/dsa-venv` with `--without-pip --system-site-packages`,
+allowing access to that existing stack while installing DSA's Hugging Face pins
+into the virtual environment. It uses Colab's existing pip with an explicit
+`--python /content/dsa-venv/bin/python` target, so creation does not depend on
+`ensurepip` being available. This is a supported pip workflow for pip-less
+environments; see [pip's interpreter targeting guide](https://pip.pypa.io/en/stable/topics/python-option/).
+The setup helper validates and repairs partial environments instead of treating
+an existing `bin/python` as proof of successful installation. Training and verification use this environment's Python
 through subprocesses. The notebook kernel itself uses the standard library and
 the Colab Drive helper. This avoids changing the global Transformers/Hub packages
 used by other preinstalled tools and avoids a kernel restart after installation.
@@ -39,10 +44,13 @@ Hub `>=0.23.2,<1.0`, so the selected pins satisfy its published dependency
 constraints. This is a DSA environment, not an environment for every preinstalled
 Colab ML package. See the [versioned Transformers dependency table](https://github.com/huggingface/transformers/blob/v4.46.2/src/transformers/dependency_versions_table.py).
 
-Google's published runtime inventory lists Python 3.12.13, NumPy 2.0.2, and
-PyTorch 2.11.0 for the 2026.07 runtime. Its own notice says inventory snapshots
-can lag production, so the notebook reports its actual environment instead of
-assuming those values. Tokenizers 0.20.3 publishes Python 3.12 Linux wheels.
+Google announced the Python 3.13 rollout on August 18, 2026 and reported it live
+on August 25. The runtime guard now accepts Python 3.10–3.13. The earlier
+2026.07 inventory described Python 3.12 and is a historical snapshot, so the
+notebook reports the actual runtime instead of assuming that version.
+Tokenizers 0.20.3 and PyYAML 6.0.3 publish Python 3.13 Linux wheels; no Hugging Face
+pin change is needed to address environment creation.
+See [Google's upgrade announcement](https://github.com/googlecolab/colabtools/issues/6081).
 See [Google's backend inventory](https://github.com/googlecolab/backend-info)
 and [Tokenizers release files](https://pypi.org/project/tokenizers/0.20.3/).
 
@@ -83,9 +91,12 @@ disabled until the experimental settings are frozen.
 Local tests check notebook syntax and its workflow contract, dependency policy,
 data reuse, and training/evaluation integration. The notebook checks also run its
 embedded runtime preflight on CPU and execute its disabled-test/summary cells
-against fixtures, verifying that their persisted reports are valid JSON. The
-local correctness environment
-uses Python 3.12 and CPU PyTorch. No hosted Colab session, Google Drive mount, or
+against fixtures, verifying that their persisted reports are valid JSON.
+The complete 186-test suite passes on local Python 3.12 and Python 3.13 CPU
+environments. The Python 3.13 setup command also completed a real installation
+of the pinned requirements into a pip-less environment. These checks exercise
+the environment repair but do not reproduce Colab's GPU image.
+No hosted Colab session, Google Drive mount, or
 GPU execution is implied by these checks. Start with the small FP32,
 one-record-per-update pilot and inspect measured speed and peak memory before
 increasing the training size or loop budget.

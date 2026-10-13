@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 from packaging.requirements import Requirement
 from packaging.version import Version
@@ -40,7 +41,7 @@ class ColabNotebookContractTests(unittest.TestCase):
         self.assertEqual(len(self.stages.get(tag, [])), 1, f"one code cell tagged {tag}")
         return self.source(self.stages[tag][0][1])
 
-    def test_first_cell_clones_intended_future_repository(self):
+    def test_first_cell_clones_published_repository(self):
         first = self.cells[0]
         self.assertEqual(first["cell_type"], "code")
         self.assertIn("clone", first["metadata"]["tags"])
@@ -92,6 +93,18 @@ class ColabNotebookContractTests(unittest.TestCase):
         self.assertIn("--system-site-packages", dependencies)
         self.assertIn("requirements-colab.txt", dependencies)
         self.assertNotIn("requirements-dsa.lock.txt", dependencies)
+
+    def test_dependency_cell_runs_the_targeted_setup_helper(self):
+        runner = mock.Mock()
+        namespace = {"Path": Path, "sys": sys, "subprocess": runner, "REPO_DIR": ROOT}
+        with redirect_stdout(io.StringIO()):
+            exec(compile(self.stage_source("dependencies"), "notebook-dependencies", "exec"), namespace)
+        runner.run.assert_called_once_with(
+            [sys.executable, str(ROOT / "scripts/setup_colab.py"),
+             "--venv-dir", "/content/dsa-venv",
+             "--requirements", str(ROOT / "requirements-colab.txt")], check=True)
+        self.assertEqual(namespace["PYTHON"], "/content/dsa-venv/bin/python")
+        self.assertTrue((ROOT / "scripts/setup_colab.py").is_file())
 
     def test_drive_and_hugging_face_persistence_precede_model_use(self):
         drive = self.stage_source("drive")

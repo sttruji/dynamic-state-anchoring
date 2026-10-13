@@ -85,6 +85,20 @@ update duration and peak memory. The notebook summary derives throughput and
 loss/write profiles from those metrics. Keep these artifacts with any result
 you report.
 
+## Repair an older notebook copy after a setup failure
+
+The corrected dependency cell uses `scripts/setup_colab.py`. It creates the
+environment without invoking `ensurepip`, installs through Colab's existing pip
+with an explicit target interpreter, and repairs a partial environment left by
+an earlier failed attempt. The preflight accepts Python 3.13.
+
+A saved Drive notebook does not update when the repository changes. Open the
+current GitHub notebook linked above, or rerun your first clone cell and replace
+the dependency and preflight cells with their current versions from
+`notebooks/DSA_Colab.ipynb`. Merely rerunning the old dependency cell leaves its
+old setup command in place. This repair requires no GPU upgrade or global
+PyTorch reinstall.
+
 ## Current verification boundary
 
 Notebook syntax, dependency isolation, source caching, tiny-model training,

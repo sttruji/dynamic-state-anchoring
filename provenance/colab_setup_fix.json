@@ -1,0 +1,70 @@
+{
+  "schema_version": "dsa_colab_setup_fix_v1",
+  "verified_at_utc": "2026-10-13T15:01:21.551282+00:00",
+  "reported_failure": "Python 3.13 Colab: python -m venv --system-site-packages returned exit 1; original command stderr unavailable",
+  "exact_original_cause_confirmed": false,
+  "changes": [
+    "bypass ensurepip using --without-pip",
+    "target a project venv through host pip --python",
+    "repair partial venvs and preserve incompatible environments as backups",
+    "verify inherited CUDA package identity before and after installation",
+    "allow Python 3.13 in preflight"
+  ],
+  "hugging_face_pins_changed": false,
+  "core_dsa_implementation_changed": false,
+  "local_cpu_validation": [
+    {
+      "tested_python": "3.12",
+      "runtime": {
+        "python": "3.12.14",
+        "packages": {
+          "torch": "2.7.1",
+          "transformers": "4.46.2",
+          "tokenizers": "0.20.3",
+          "huggingface_hub": "0.36.2",
+          "numpy": "2.2.6"
+        }
+      },
+      "tests_passed": 186,
+      "tests_failed": 0,
+      "log": "artifacts/colab-setup-fix-python312-tests.txt",
+      "log_sha256": "ada4cb92a0fa1a45273dcf0dc71210296a313a6b2d894e6ce61cad6cd21cd567"
+    },
+    {
+      "tested_python": "3.13",
+      "runtime": {
+        "python": "3.13.3",
+        "packages": {
+          "torch": "2.7.1",
+          "transformers": "4.46.2",
+          "tokenizers": "0.20.3",
+          "huggingface_hub": "0.36.2",
+          "numpy": "2.5.4"
+        }
+      },
+      "tests_passed": 186,
+      "tests_failed": 0,
+      "log": "artifacts/colab-setup-fix-python313-tests.txt",
+      "log_sha256": "76b6c9336664c90ba657922b60855c2797d936eaf05a2eac6c306babe6091f34"
+    }
+  ],
+  "python313_setup_installation": {
+    "passed": true,
+    "ensurepip_used": false,
+    "host_packages_modified": false,
+    "cuda_packages_present_in_local_base": false,
+    "log_sha256": "ba38b6c1d12ac438b04bd89bc825ea5742e756616fb00cc82f6721ab5ebb06f1"
+  },
+  "hosted_colab_verified": false,
+  "cuda_training_verified": false,
+  "files_sha256": {
+    "scripts/setup_colab.py": "065b439cd5eda95d0a8c5b828ead65a0a9eb644cb87436e8a5a4ef32a08e56ad",
+    "notebooks/DSA_Colab.ipynb": "33457957099433550eb676f2775d707ae2000717b88d6241d73f576bb01e7c86",
+    "tests/test_colab_setup.py": "2f3b256b39d49fed34c479c50c14d53dfe87ff008bcff6d0a78e747b428b64ec",
+    "tests/test_colab_contract.py": "b4840ec8b0cf04d741dbbf0d343e615c304bbc7249f368ddb3401bb9b1b71ab0",
+    "requirements-colab.txt": "b1a4d70c3c782a47baf539fa8d678130d33feb5a982406b882e5baa487e22ae0",
+    "docs/COLAB_ENVIRONMENT.md": "8df9aa73697326064f4ad8af583de4ec93870c1fccb4055dd5e1b42af308c50d",
+    "docs/COLAB_QUICKSTART.md": "a3aa86705195c1fa24407b6964af63de9803d61d5c8576d17e3e5be10776138d",
+    "IMPLEMENTATION_STATUS.md": "135b36141b3b499c14f3cf06c73dddbcc159290e574579f72bc297e8fb2875a9"
+  }
+}

@@ -125,7 +125,7 @@ interrupted prediction logs, binds checkpoint/source hashes and preserves the
 complete final-test denominator. Exact training resume rejects changed runtime
 or experimental identities.
 
-Latest validation: **175 tests pass**, including actual execution of the embedded
+Initial Colab workflow validation: **175 tests pass**, including actual execution of the embedded
 CPU preflight and notebook summary. A CLI integration prepared 32 unchanged LOTUS
 training records with the offline tokenizer, trained a random tiny GPT-2 to step
 3, resumed to step 5 and evaluated eight validation questions at K=16. This
@@ -135,6 +135,15 @@ verification is recorded in `provenance/colab_validation.json`; the suite log is
 
 Hosted Colab/Drive authorization and pretrained CUDA execution remain pending.
 No source dataset records were changed or filtered.
+
+The user's Python 3.13 Colab runtime subsequently failed during venv creation.
+Setup now creates a pip-less environment and uses the host pip with an explicit
+target interpreter, repairs partial environments, and preserves the installed
+CUDA stack. The preflight now accepts Python 3.13. **186 tests pass on both
+Python 3.12 and Python 3.13 locally**, and a real Python 3.13 setup installation
+completed. Original failure stderr was not supplied, so its exact cause is not
+asserted. See `provenance/colab_setup_fix.json`; hosted GPU verification remains
+pending.
 
 ## Remaining work
 
