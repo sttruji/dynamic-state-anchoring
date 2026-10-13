@@ -15,7 +15,8 @@ implementations of the written contracts**, not recovered reference files.
 
 The [Colab notebook](notebooks/DSA_Colab.ipynb) provides GitHub checkout, dependency
 installation, Drive-backed corpus/model caches, a pretrained inference smoke,
-resumable training and question-only evaluation. It clones
+resumable training, saved-run review and one final evidence ZIP. It defaults to
+reviewing the existing pilot without retraining. It clones
 `sttruji/dynamic-state-anchoring`. See the [Colab quickstart](docs/COLAB_QUICKSTART.md)
 or [open the notebook in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb).
 
@@ -103,15 +104,13 @@ pinned sources; this preserves raw files and rejects checksum mismatches. Full
 annotation derivatives and group/evaluation manifests are stored under ignored
 `artifacts/` directories; concise hashed reports are under `provenance/`.
 
-The next model step is to smoke-test the unmodified pinned GPT-2 checkpoint and
-then overfit a small training subset with profiling. A tokenizer/config pin is
-recorded, but pretrained model weights have not been downloaded. The [personal semantic review](docs/LOTUS_PERSONAL_REVIEW.md) is complete;
-source-data noise is documented and proposed clean sensitivity exclusions remain
-separate from the unchanged primary benchmark. No GPU jobs have run.
-
-The pilot launcher and persistence workflow are implemented. The first hosted
-run still needs to verify unmodified pretrained inference, overfit/profile a
-small training subset, and inspect validation outputs before scaling up.
+The personal semantic review is complete; source-data noise is documented and
+proposed clean sensitivity exclusions remain separate from the unchanged primary
+benchmark. A small T4 pilot has supplied training and validation artifacts.
+The next step is the unified saved-checkpoint review in the original Colab
+notebook: verify training-question generation, latent/gradient behavior and
+explicit-route controls, then review the exported ZIP before freezing a larger
+exploratory protocol. No comparative benchmark improvement is claimed.
 
 See [implementation status](IMPLEMENTATION_STATUS.md),
 [upstream inspection](docs/UPSTREAM_INSPECTION.md), and

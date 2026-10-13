@@ -1,0 +1,36 @@
+{
+  "schema_version": "dsa_unified_pilot_review_validation_v1",
+  "tests": 210,
+  "passed": true,
+  "command": ".venv/bin/python -m unittest discover -s tests -q",
+  "runtime": {
+    "python": "3.12.14",
+    "device": "cpu",
+    "packages": {
+      "torch": "2.7.1",
+      "transformers": "4.46.2",
+      "tokenizers": "0.20.3",
+      "numpy": "2.2.6"
+    }
+  },
+  "tested": [
+    "saved-run reconnect skips training/download/smoke",
+    "complete and partial ZIP exports with checksums",
+    "torn JSONL retained and marked incomplete",
+    "latent intervention preserves trajectory",
+    "forward profiles preserve the joint objective",
+    "gradient instrumentation preserves gradients and model weights"
+  ],
+  "default_run_mode": "review_existing",
+  "original_run": "gpt2-pilot-v1-ba4e69315086",
+  "primary_dsa_training_code_changed": false,
+  "pretrained_cuda_review_executed": false,
+  "user_artifacts_published": false,
+  "source_sha256": {
+    "notebooks/DSA_Colab.ipynb": "bbfc33b4d82e0b91277e0f3a63f34e673c5de462aaca073fa669e536d460ded5",
+    "scripts/diagnose_dsa_pilot.py": "3ef70f8ce9a20b1de53fc42ad3302f777ccb922be645db7ba456ba884c0d36b7",
+    "scripts/pilot_explicit_controls.py": "d0a28afc4f7b48d9ef211ee3f921905fec856e6da11c9d5d1597f47dbc91af50",
+    "scripts/package_pilot_review.py": "4393d125107e6997f4b8eeddaa1d7c880e4e41eb02a06f40d4a2a1e8740bdf44",
+    "tests/test_pilot_review.py": "5202057c65435162b7172fd4dc8554eebd61200c2b31423dc71b2fb6c12b6290"
+  }
+}

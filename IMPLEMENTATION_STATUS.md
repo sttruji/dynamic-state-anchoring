@@ -165,3 +165,16 @@ pending.
 5. Run matched B0/B1/B2/DSA and unmodified LOTUS comparisons with validation-only
    selection, complete ordered test denominators, three seeds and measured costs.
    Distributed training and optimized caches remain deferred.
+
+## Unified pilot review
+
+The original `notebooks/DSA_Colab.ipynb` now defaults to loading the saved
+`gpt2-pilot-v1-ba4e69315086` experiment after reconnecting. Its new review collects
+training generation/losses, validation, latent/gate/teacher-alignment profiles,
+per-loop and per-loss gradients, paired interventions and explicit-route controls.
+It exports one bounded, hashed ZIP with stage errors and missing evidence clearly
+identified. New small training remains available through `train_pilot` mode.
+The primary model/training implementation is unchanged, preserving historical
+checkpoint contracts. The older standalone diagnostic notebook is no longer
+the recommended entry point. Hosted execution of the expanded review is pending.
+See `docs/COLAB_QUICKSTART.md` for the protocol and export contents.

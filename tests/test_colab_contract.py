@@ -170,11 +170,12 @@ class ColabNotebookContractTests(unittest.TestCase):
             namespace = {"Path": Path, "sys": sys, "os": os, "json": json,
                          "REPO_DIR": ROOT, "REPO_COMMIT": "fixture-commit",
                          "PROJECT_DIR": Path(temp), "PYTHON": sys.executable}
-            exec(compile(self.stage_source("config"), "notebook-config", "exec"), namespace)
+            config_source = self.stage_source("config").replace('RUN_MODE = "review_existing"', 'RUN_MODE = "train_pilot"')
+            exec(compile(config_source, "notebook-config", "exec"), namespace)
             with self.assertRaisesRegex(RuntimeError, "underlying child error"):
                 namespace["run_project"](
                     "-c", "import sys; print('underlying child error', file=sys.stderr); sys.exit(9)")
-            logs = list((namespace["REPORT_ROOT"] / "logs").glob("*.log"))
+            logs = list((namespace["REVIEW_ROOT"] / "logs").glob("*.log"))
             self.assertEqual(len(logs), 1)
             self.assertIn("underlying child error", logs[0].read_text())
 

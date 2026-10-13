@@ -149,7 +149,7 @@ def gradient_probe(model, record, prefix, budget, weights, seed, *, full_objecti
                     ids(record["latent_suffix_labels"])[:, 1:].reshape(-1), ignore_index=-100)
             losses = {"answer": loss}
     states, workspaces = captured
-    profiles = {}
+    profiles, head_gradients = {}, {}
     try:
         for i, (name, loss) in enumerate(losses.items()):
             model.zero_grad(set_to_none=True)
@@ -159,10 +159,27 @@ def gradient_probe(model, record, prefix, budget, weights, seed, *, full_objecti
             profiles[name] = {"weighted_loss": finite_number(loss.detach().item()),
                               "parameter_gradients": parameter_gradients(model),
                               "states": state_statistics(states, workspaces, len(record["question_input_ids"]))}
+            # Compact controller/projection gradients let us measure competing
+            # loss directions without retaining four full backbone gradients.
+            head_gradients[name] = {}
+            for group in ("gate_head", "anchor_projection"):
+                values = [p.grad.detach().flatten().cpu().double() if p.grad is not None
+                          else torch.zeros(p.numel(), dtype=torch.float64)
+                          for key, p in model.named_parameters() if key.startswith(group + ".")]
+                head_gradients[name][group] = torch.cat(values)
+        directions = {}
+        for group in ("gate_head", "anchor_projection"):
+            directions[group] = {}
+            for i, left in enumerate(profiles):
+                for right in list(profiles)[i+1:]:
+                    a, b = head_gradients[left][group], head_gradients[right][group]
+                    denominator = a.norm().item() * b.norm().item()
+                    directions[group][f"{left}:{right}"] = finite_number(torch.dot(a, b).item() / denominator) if denominator else None
         return {"sample_id": record["sample_id"], "loop_budget": budget,
                 "kind": "joint_loss_contributions" if full_objective else "answer_only_depth_probe",
                 "seed": seed, "training_mode": True, "gradient_clipping_applied": False,
-                "controller_supervised": record["controller_supervised"], "losses": profiles}
+                "controller_supervised": record["controller_supervised"], "losses": profiles,
+                "head_gradient_cosines": directions}
     finally:
         model.zero_grad(set_to_none=True)
 
@@ -170,14 +187,77 @@ def gradient_probe(model, record, prefix, budget, weights, seed, *, full_objecti
 @contextmanager
 def inference_condition(model, mode):
     original = model.config
-    if mode not in {"normal", "no_writes", "all_writes"}:
+    if mode not in {"normal", "no_writes", "all_writes", "zero_anchor", "zero_workspace", "zero_memory"}:
         raise ValueError("Unknown diagnostic inference condition")
-    override = {"normal": original.write_mode, "no_writes": "static", "all_writes": "every_loop"}[mode]
+    override = {"no_writes": "static", "all_writes": "every_loop"}.get(mode, original.write_mode)
     model.config = replace(original, write_mode=override)
+    answer_logits = model.answer_logits
+    if mode.startswith("zero_"):
+        def altered(loop, suffix, mask):
+            return answer_logits(replace(loop,
+                anchor=torch.zeros_like(loop.anchor) if mode in {"zero_anchor", "zero_memory"} else loop.anchor,
+                workspace=torch.zeros_like(loop.workspace) if mode in {"zero_workspace", "zero_memory"} else loop.workspace), suffix, mask)
+        model.answer_logits = altered
     try:
         yield
     finally:
         model.config = original
+        model.answer_logits = answer_logits
+
+
+def forward_profile(model, record, prefix, weights):
+    """Deterministic teacher-forced train losses and latent trajectories, no grads."""
+    model.eval()
+    original = model.backbone.forward_embeds
+    calls, teacher, workspace_states = [0], [], []
+    def forward(*args, **kwargs):
+        result = original(*args, **kwargs)
+        calls[0] += 1
+        if calls[0] == 1:
+            teacher.append(result)
+        return result
+    handle = model.workspace_norm.register_forward_hook(lambda module, inputs, output: workspace_states.append(output))
+    model.backbone.forward_embeds = forward
+    try:
+        with torch.no_grad():
+            losses = joint_objective(model, record, prefix, weights)
+            loop = losses["loop"]
+            question_rms = torch.linalg.vector_norm(loop.question_embeds.double()).item() / math.sqrt(loop.question_embeds.numel())
+            frames = []
+            for i, workspace in enumerate(workspace_states):
+                anchor = loop.anchors[:, i+1]
+                previous = loop.anchors[:, i]
+                previous_workspace = workspace_states[i-1] if i else model.initial_workspace
+                frames.append({"loop": i+1, "anchor_l2": norm(anchor), "anchor_change_l2": norm(anchor-previous),
+                               "anchor_cosine_to_previous": finite_number(torch.nn.functional.cosine_similarity(anchor.flatten()[None], previous.flatten()[None]).item()),
+                               "workspace_l2": norm(workspace), "candidate_l2": norm(loop.candidates[:, i]),
+                               "workspace_change_l2": norm(workspace-previous_workspace),
+                               "workspace_cosine_to_previous": finite_number(torch.nn.functional.cosine_similarity(workspace.flatten()[None], previous_workspace.flatten()[None]).item()),
+                               "workspace_rms": finite_number(workspace.double().square().mean().sqrt().item()),
+                               "question_embedding_rms": finite_number(question_rms),
+                               "gate_probability": finite_number(loop.gate_logits[0, i].sigmoid().item()),
+                               "write": loop.writes[0, i].item()})
+            alignments = []
+            for event, (step, position) in enumerate(zip(record["event_loops"], record["checkpoint_positions"])):
+                target = teacher[0][:, position]
+                candidate = loop.candidates[:, step-1]
+                normalized_candidate = torch.nn.functional.layer_norm(candidate, (candidate.shape[-1],))
+                normalized_target = torch.nn.functional.layer_norm(target, (target.shape[-1],))
+                alignments.append({"event": event, "loop": step, "teacher_position": position,
+                                   "teacher_target_l2": norm(target), "candidate_l2": norm(candidate),
+                                   "normalized_mse": finite_number((normalized_candidate-normalized_target).square().mean().item()),
+                                   "cosine": finite_number(torch.nn.functional.cosine_similarity(candidate, target).item())})
+            return {"sample_id": record["sample_id"], "question_hash": record["question_hash"],
+                    "losses": {name: finite_number(losses[name].item()) for name in ("total", "answer", "cot", "gate", "anchor")},
+                    "training_mode": False, "teacher_forced": True,
+                    "question_tokens": len(record["question_input_ids"]), "explicit_tokens": len(record["explicit_input_ids"]),
+                    "answer_tokens_including_eos": len(record["answer_input_ids"]),
+                    "controller_supervised": record["controller_supervised"], "controller_mask_reason": record["controller_mask_reason"],
+                    "gate_targets": record["gate_targets"], "event_loops": record["event_loops"],
+                    "states": frames, "scheduled_teacher_alignments": alignments}
+    finally:
+        handle.remove()
+        model.backbone.forward_embeds = original
 
 
 def predict_record(model, tokenizer, record, row, index, prefix, budget, cap):
@@ -260,7 +340,7 @@ def prediction_journal(model, tokenizer, records, rows, path, prefix, budget, ca
 
 
 def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit=2,
-             probe_limit=4, depth_grid=(1, 2, 4, 8, 16), max_new_tokens=64):
+             probe_limit=4, depth_grid=(1, 2, 4, 8, 16), max_new_tokens=64, comprehensive=False):
     if gradient_limit < 1 or probe_limit < 1 or max_new_tokens < 1 or not depth_grid or any(k < 1 for k in depth_grid):
         raise ValueError("Positive diagnostic limits and depth budgets required")
     if len(set(depth_grid)) != len(depth_grid):
@@ -311,6 +391,7 @@ def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit
                     ("scripts/evaluate_dsa.py", "scripts/smoke_pretrained_dsa.py")},
                 "gradient_limit": min(gradient_limit, len(rows)), "probe_limit": min(probe_limit, len(rows)),
                 "depth_grid": list(depth_grid), "max_new_tokens": max_new_tokens,
+                "comprehensive": comprehensive,
                 "runtime": {"device": str(device), "gpu": torch.cuda.get_device_name(device) if device.type == "cuda" else None,
                             "python": platform.python_version(), "torch": torch.__version__,
                             "cuda": torch.version.cuda, "cudnn": torch.backends.cudnn.version(),
@@ -346,6 +427,8 @@ def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit
     baseline = _recover_predictions(output_dir / "normal-training-set/predictions.jsonl", rows, budget)[:count]
     prediction_reports[f"normal-k{budget}-first{count}"] = summarize_predictions(baseline, budget, records[:count])
     conditions = [("normal", k) for k in depth_grid if k != budget] + [("no_writes", budget), ("all_writes", budget)]
+    if comprehensive:
+        conditions += [(mode, budget) for mode in ("zero_anchor", "zero_workspace", "zero_memory")]
     for mode, k in conditions:
         name = f"{mode}-k{k}-first{count}"
         with inference_condition(model, mode):
@@ -358,6 +441,19 @@ def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit
             "extracted_answer_changes": sum(a["prediction"] != b["prediction"] for a, b in zip(baseline, condition_rows)),
             "correct_to_wrong": sum(a["correct"] and not b["correct"] for a, b in zip(baseline, condition_rows)),
             "wrong_to_correct": sum(not a["correct"] and b["correct"] for a, b in zip(baseline, condition_rows))}
+    forward_reports = []
+    if comprehensive:
+        for index, record in enumerate(records):
+            path = output_dir / "forward-profiles" / f"sample{index:04d}.json"
+            if path.exists():
+                result = read_json(path)
+                if result.get("identity_sha256") != stable_json_hash(identity) or result.get("sample_id") != record["sample_id"]:
+                    raise ValueError("Saved forward diagnostic identity differs")
+            else:
+                result = forward_profile(model, record, prefix, weights)
+                result["identity_sha256"] = stable_json_hash(identity)
+                atomic_json(path, result)
+            forward_reports.append(result)
     gradient_reports = []
     for index, record in enumerate(records[:identity["gradient_limit"]]):
         cases = [(k, False) for k in depth_grid] + [(budget, True)]
@@ -387,7 +483,7 @@ def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit
               "training_subset_order": "prepared source order; first rows for probes",
               "test_or_validation_answers_read": False, "optimizer_updates": 0,
               "model_state_unchanged": True, "model_state_sha256": before,
-              "prediction_reports": prediction_reports, "gradient_reports": gradient_reports,
+              "prediction_reports": prediction_reports, "gradient_reports": gradient_reports, "forward_reports": forward_reports,
               "artifacts_sha256": artifact_hashes,
               "limitations": ["Inference interventions can shift the state distribution; effects do not prove semantic reasoning.",
                               "Depth probes use the saved checkpoint, not separately trained matched-depth models.",
@@ -406,6 +502,7 @@ def main():
     parser.add_argument("--probe-limit", type=int, default=4)
     parser.add_argument("--depth-grid", type=int, nargs="+", default=[1, 2, 4, 8, 16])
     parser.add_argument("--max-new-tokens", type=int, default=64)
+    parser.add_argument("--comprehensive", action="store_true")
     args = parser.parse_args()
     report = diagnose(**vars(args))
     print(json.dumps({"complete": report["complete"], "optimizer_updates": report["optimizer_updates"],
