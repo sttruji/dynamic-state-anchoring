@@ -5,6 +5,7 @@ from contextlib import redirect_stdout
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -147,6 +148,35 @@ class ColabNotebookContractTests(unittest.TestCase):
             self.assertIs(report["tiny_gpt2_forward_passed"], True)
             self.assertIn("torch", report["packages"])
             self.assertTrue(output.read_bytes().endswith(b"\n"))
+
+    def test_runtime_check_explains_a_missing_cuda_device(self):
+        tree = ast.parse(self.stage_source("preflight"))
+        runtime_code = next(node.value.value for node in tree.body
+                            if isinstance(node, ast.Assign)
+                            and any(isinstance(target, ast.Name) and target.id == "runtime_code"
+                                    for target in node.targets))
+        with tempfile.TemporaryDirectory() as temp:
+            result = subprocess.run(
+                [sys.executable, "-c", runtime_code, "cuda", str(Path(temp) / "runtime.json")],
+                cwd=ROOT, text=True, capture_output=True, timeout=60,
+                env={**os.environ, "CUDA_VISIBLE_DEVICES": ""})
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('"cuda_available": false', result.stdout)
+        self.assertIn("CUDA is unavailable", result.stderr)
+        self.assertIn("T4 GPU", result.stderr)
+
+    def test_notebook_runner_surfaces_and_saves_the_underlying_error(self):
+        with tempfile.TemporaryDirectory() as temp, redirect_stdout(io.StringIO()):
+            namespace = {"Path": Path, "sys": sys, "os": os, "json": json,
+                         "REPO_DIR": ROOT, "REPO_COMMIT": "fixture-commit",
+                         "PROJECT_DIR": Path(temp), "PYTHON": sys.executable}
+            exec(compile(self.stage_source("config"), "notebook-config", "exec"), namespace)
+            with self.assertRaisesRegex(RuntimeError, "underlying child error"):
+                namespace["run_project"](
+                    "-c", "import sys; print('underlying child error', file=sys.stderr); sys.exit(9)")
+            logs = list((namespace["REPORT_ROOT"] / "logs").glob("*.log"))
+            self.assertEqual(len(logs), 1)
+            self.assertIn("underlying child error", logs[0].read_text())
 
     def test_disabled_test_and_summary_cells_execute_without_external_access(self):
         def forbidden_run(*args):

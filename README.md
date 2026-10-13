@@ -5,10 +5,15 @@ Start with the [DSA overview](DSA_README.md),
 [Colab notebook](notebooks/DSA_Colab.ipynb), and
 [Colab quickstart](docs/COLAB_QUICKSTART.md). The GitHub repository is
 [`sttruji/dynamic-state-anchoring`](https://github.com/sttruji/dynamic-state-anchoring).
-The first hosted GPU pilot is pending. Source audits and CPU correctness checks are complete; no comparative
-benchmark result is claimed.
+Source audits and CPU correctness checks are complete. Saved GPU pilots can be
+inspected with the checkpoint diagnostics below; no comparative benchmark result
+is claimed.
 
 [Open the pilot in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb).
+
+[Inspect the saved pilot in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Pilot_Diagnostics.ipynb)
+for training-question generation, paired write/depth interventions and per-loop
+gradient probes without optimizer updates.
 
 The original LOTUS documentation and attribution follow.
 

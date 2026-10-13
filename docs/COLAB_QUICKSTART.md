@@ -58,6 +58,39 @@ so decreasing teacher-forced loss alone does not confirm successful overfitting.
 Training-set generation is a useful follow-up, then larger matched comparisons,
 all four write policies, multiple seeds and causal intervention tests.
 
+## Diagnose the saved 200-step pilot
+
+Open [the checkpoint diagnostics notebook in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Pilot_Diagnostics.ipynb)
+on a T4 GPU. Run its cells in order. It targets
+`gpt2-pilot-v1-ba4e69315086` at step 200, independently of the newer diagnostic
+code commit. It finds the original prepared Drive cache by manifest checksum;
+it does not call training, download data/model weights, or use validation/test
+answers. It loads the existing checkpoint files and creates no optimizer.
+
+The notebook generates answers on all 32 training questions, then probes the
+first four prepared training rows using K=1,2,4,8,16 and disabled/always-on anchor
+writes. Each intervention is paired with normal inference on the same questions.
+These are interventions on saved weights, not separately trained depth controls.
+Controller precision/recall against training labels is reported at the original
+budget. Generated token IDs, EOS/cap stop reasons and source identities are saved.
+
+On the first two prepared training rows it measures answer-loss gradients at
+each depth, then separates weighted answer/explicit-CoT/gate/alignment and total
+gradients at K=16. Each component shares a forward graph and dropout realization.
+The full objective keeps the original labels and training straight-through gate;
+the depth sweep uses answer loss only. Hooks measure the actual recurrent input
+tensors. State norms, changes, similarities and gradients are numerical
+diagnostics; decoded text is not a transcript of continuous latent reasoning.
+
+No clipping or optimizer updates occur. Model-state checksums must remain equal
+before/after. Outputs persist under
+`reports/gpt2-pilot-v1-ba4e69315086/checkpoint-diagnostics-v1/`. Each completed
+prediction and gradient case is reusable after interruption with matching
+settings/code/runtime. Changed diagnostic settings need a new `DIAGNOSTIC_NAME`.
+The last cell downloads `dsa-checkpoint-diagnostics.zip` for review. The diagnostic
+pipeline is tested locally with tiny checkpoints; the pretrained T4 diagnostic
+still requires execution in Colab.
+
 Update timings exclude setup/checkpoint overhead; GPU memory records allocated
 tensors rather than total device occupancy. Use the measured profile to plan the
 next run, without treating it as a complete billing/runtime estimate.
@@ -101,12 +134,24 @@ PyTorch reinstall.
 
 ## Current verification boundary
 
+If preflight reports CUDA unavailable, inspect its printed runtime probe. It
+shows the PyTorch version, CUDA build, availability and visible device count.
+Select a T4 GPU in Colab's runtime settings, save/connect, and rerun setup after
+the runtime changes. Keep `DEVICE="cuda"` for the GPU pilot. If a GPU is already
+allocated, compare `nvidia-smi` with that probe before changing packages; CUDA
+unavailability alone does not identify a package defect.
+
+Project subprocess output is streamed into the notebook and saved under the
+experiment's `reports/.../logs` directory on Drive. A failed command displays
+the underlying error and its log path, instead of only a generic
+`CalledProcessError` containing the entire inline Python program.
+
 Notebook syntax, dependency isolation, source caching, tiny-model training,
-checkpoint resume and evaluation are tested locally. Hosted Colab, Drive
-authorization and the pretrained CUDA run still need execution.
-The next experiment is the unmodified-checkpoint smoke followed by this small
-matched training pilot. Inspect losses, generation, memory and throughput before
-increasing training size or running the four-policy, multi-seed study.
+checkpoint resume and evaluation are tested locally. Each new hosted runtime
+still needs its own preflight. For an already completed pilot, the saved-checkpoint
+diagnostics above are the next step before increasing training size or running
+the four-policy, multi-seed study. The pretrained CUDA diagnostic has not been
+executed locally.
 
 See `docs/COLAB_ENVIRONMENT.md` for dependency and persistence details,
 `docs/LOTUS_CORPUS_AUDIT.md` and `docs/LOTUS_PERSONAL_REVIEW.md` for the source-data

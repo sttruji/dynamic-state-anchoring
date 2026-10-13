@@ -1,0 +1,31 @@
+{
+  "schema_version": "dsa_checkpoint_diagnostics_validation_v1",
+  "purpose": "Saved-checkpoint training-only diagnostics; no pretrained CUDA result claimed.",
+  "validation": {
+    "command": ".venv/bin/python -m unittest discover -s tests -q",
+    "tests": 204,
+    "passed": true,
+    "device": "cpu",
+    "python": "3.12.14",
+    "packages": {
+      "torch": "2.7.1",
+      "transformers": "4.46.2",
+      "tokenizers": "0.20.3",
+      "numpy": "2.2.6"
+    },
+    "new_diagnostic_tests": 10,
+    "notebook_code_cells_compile": true
+  },
+  "original_pilot_run": "gpt2-pilot-v1-ba4e69315086",
+  "model_training_code_modified": false,
+  "pretrained_cuda_diagnostics_executed": false,
+  "external_training_artifacts_published": false,
+  "source_sha256": {
+    "scripts/diagnose_dsa_pilot.py": "39523a659c4f6d40a0c9c5709886dbb21a24ef4bb3d1450dabd845016b015f0b",
+    "scripts/colab_process.py": "32dd384285f7e6769f3b748b0e7cc69593758dcfcdf2f84b66bb9e2bd124dea9",
+    "notebooks/DSA_Pilot_Diagnostics.ipynb": "3b9bd38577ce70df072c126706fe2a89638992c4bb7a7dc2e121968e6e5e9d70",
+    "notebooks/DSA_Colab.ipynb": "f2e87bf11279ad5d1b9bd6ff2ea460ffa64d79810330e82cb20a3ac920cd9b32",
+    "tests/test_pilot_diagnostics.py": "a8f85ac5fa63c01af9862a24995225fedc7fe1d1ea682e6fcc2f105aae1b39fd",
+    "tests/test_colab_process.py": "ad7d4500651f05a244c3a359d901f6c267cd5ab935e716c03dc8fc599ba380af"
+  }
+}
