@@ -118,6 +118,13 @@ class PilotReviewTests(unittest.TestCase):
 
     def test_reconnected_notebook_review_skips_download_smoke_and_training(self):
         import os, shutil, sys
+        # Drive may retain the start-of-run manifest after a successful atomic
+        # checkpoint save. Review must use the validated checkpoint, not this flag.
+        for arm in ("static", "learned"):
+            path = self.runs / arm / "run_manifest.json"
+            stale = json.loads(path.read_text())
+            stale.update(status="running", completed_steps=0)
+            path.write_text(json.dumps(stale))
         notebook = json.loads((ROOT / "notebooks/DSA_Colab.ipynb").read_text())
         sources = {c["id"]: "".join(c["source"]) for c in notebook["cells"]}
         config = sources["config"].replace('EXISTING_RUN_NAME = "gpt2-pilot-v1-ba4e69315086"',
@@ -135,6 +142,8 @@ class PilotReviewTests(unittest.TestCase):
         self.assertEqual(namespace["RUN_ROOT"], self.runs)
         self.assertEqual(namespace["PREPARED_DRIVE"], self.prepared)
         self.assertEqual(namespace["training_reports"]["learned"]["step"], 2)
+        self.assertEqual(namespace["STEPS"], 2)
+        self.assertEqual(namespace["review_steps"], {"static": 2, "learned": 2})
 
 
 class UnifiedNotebookTests(unittest.TestCase):

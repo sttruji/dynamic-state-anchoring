@@ -53,7 +53,9 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
         if manifest.exists(): manifests[arm] = load(manifest)
         metrics = jsonl(runs / arm / "metrics.jsonl", artifact_errors)
         journals[arm] = metrics
-        arm_evidence = {"training_steps_logged": len(metrics)}
+        latest_path = runs / arm / "latest.json"
+        arm_evidence = {"training_steps_logged": len(metrics),
+                        "selected_checkpoint_step": load(latest_path)["step"] if latest_path.exists() else None}
         if metrics:
             n = manifests.get(arm, {}).get("contract", {}).get("record_count", 32)
             windows = {"first_complete_pass": metrics[:n], "last_complete_window": metrics[-n:]}
@@ -100,7 +102,9 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
                 for k in first["contract"]["settings"] if first["contract"]["settings"][k] != other["contract"]["settings"][k]}
             actual_order_equal = (bool(journals[arms[0]]) and
                 [r["sample_ids"] for r in journals[arms[0]]] == [r["sample_ids"] for r in journals[arm]])
-            matched = (actual_order_equal and first["initial_state_sha256"] == other["initial_state_sha256"]
+            matched = (actual_order_equal
+                and evidence["arms"][arms[0]]["selected_checkpoint_step"] == evidence["arms"][arm]["selected_checkpoint_step"]
+                and first["initial_state_sha256"] == other["initial_state_sha256"]
                 and first["contract"]["prepared_manifest_sha256"] == other["contract"]["prepared_manifest_sha256"]
                 and first["contract"]["record_order_sha256"] == other["contract"]["record_order_sha256"]
                 and first["contract"]["runtime"] == other["contract"]["runtime"]
