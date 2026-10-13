@@ -1,0 +1,43 @@
+{
+  "controller_label_overflow": null,
+  "coverage_scope": "input records only; tokenizer alignment and loop-label overflow are reported by tokenization",
+  "event_count": 6,
+  "event_count_histogram": {
+    "0": 4,
+    "1": 2,
+    "2": 2
+  },
+  "events_per_record": 0.75,
+  "evidence_counts": {
+    "arithmetic_verified": 4,
+    "structural_only": 2
+  },
+  "implementation": "new implementation reconstructed from revision 4 PDF; original reference package absent",
+  "input_file_sha256": "4a96c5d2d49a6f4678b8df501ebc52fdd0b08318a885b7d6d7e4a1d22260dbec",
+  "input_path": "examples/synthetic_gsm8k.jsonl",
+  "no_event_count": 4,
+  "no_event_rate": 0.5,
+  "policy": {
+    "exclude_terminal": true,
+    "marker_token": "<SA>",
+    "mode": "conclusive",
+    "steps_join": "space"
+  },
+  "record_count": 8,
+  "rejection_reasons": {
+    "division_by_zero": 1,
+    "incorrect_arithmetic": 1,
+    "non_scalar_result": 2,
+    "terminal_answer_match": 5,
+    "unsupported_expression": 1
+  },
+  "rule_counts": {
+    "bare_numeric_equation": 1,
+    "calculator_equation": 3,
+    "isolated_variable": 2
+  },
+  "schema_version": "dsa_rules_v1",
+  "terminal_exclusions": 5,
+  "terminal_policy_limitation": "Excluding the last accepted conclusion when its value matches the final answer can withhold a legitimate intermediate with that same value.",
+  "tokenizer_mapping_failures": null
+}

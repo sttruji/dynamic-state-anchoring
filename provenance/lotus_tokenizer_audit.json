@@ -1,0 +1,631 @@
+{
+  "deterministic_samples": {
+    "count": 36,
+    "file": "artifacts/lotus-tokenizer-audit/mapping_samples.jsonl",
+    "selection": "first three per train/valid mode and category in source order; test excluded",
+    "sha256": "d40e43aae07370f5f83666f40cab783d8accf1e073785392129aef701e54c309"
+  },
+  "implementation_file_sha256s": {
+    "dsa/data/adapters.py": "00c6989a56a8c8448dad3725f49d303ba02a601201dff27daf666e30d2560391",
+    "dsa/data/milestones.py": "546a1354cfd1a570ae57d9f0ee1737b0decc6f68fd0b259b6bcd6e08594b4f97",
+    "dsa/data/tokenize.py": "36a775331e92bb090965c79130d831c06ea37b8cad997180beabacc69a45a80a",
+    "scripts/audit_lotus_tokenizer.py": "42290e7c96f12664d56ae504e76d5e4b2e64c9611e1eb34644d5853a277b98ea"
+  },
+  "limitations": [
+    "Mapping success is not a measurement of milestone semantic precision.",
+    "No-event and event-overflow rows are retained in all denominators; their controller and anchor supervision is masked.",
+    "Question-plus-suffix lengths omit anchor/workspace slots; downstream context checks must include configured memory and generation allowance.",
+    "The held-out test split receives no annotation, tokenization, examples, or parameter selection.",
+    "No model weights were downloaded or validated; tokenizer pinning is not a checkpoint smoke test.",
+    "Canonical steps_join=space follows the upstream training text convention; no parser changes were made."
+  ],
+  "no_filtering": true,
+  "runtime": {
+    "tokenizers": "0.20.3",
+    "transformers": "4.46.2"
+  },
+  "schema_version": "dsa_lotus_tokenizer_audit_v1",
+  "scope": "descriptive audit; no training data emitted and no benchmark selection performed",
+  "splits": {
+    "test": {
+      "format_failure_reasons": {},
+      "format_failures": 0,
+      "format_successes": 1319,
+      "input_bytes": 447368,
+      "input_file": "data/gsm_test.json",
+      "input_sha256": "46ce5b0c44fde0bfc8cf1e7492aa640b96111d9dcb80a54340d9911141a9caa9",
+      "literal_control_token_occurrences": {},
+      "literal_control_token_record_counts": {},
+      "policies": {},
+      "record_count": 1319,
+      "records_with_literal_control_tokens": 0,
+      "scope": "held_out_membership_format_and_literal_controls_only"
+    },
+    "train": {
+      "format_failure_reasons": {},
+      "format_failures": 0,
+      "format_successes": 385620,
+      "input_bytes": 104324531,
+      "input_file": "data/gsm_train.json",
+      "input_sha256": "93a266b1f7425a00463bb775de2946f9b30f76514944b5456bbffceb50b5de30",
+      "literal_control_token_occurrences": {},
+      "literal_control_token_record_counts": {},
+      "policies": {
+        "conclusive": {
+          "accepted_events": 613547,
+          "annotation_failures": 0,
+          "annotation_successes": 385620,
+          "event_count_histogram": {
+            "0": 63665,
+            "1": 143033,
+            "10": 10,
+            "11": 1,
+            "12": 1,
+            "2": 104791,
+            "3": 48022,
+            "4": 17638,
+            "5": 5475,
+            "6": 2280,
+            "7": 536,
+            "8": 128,
+            "9": 40
+          },
+          "events_ending_inside_bpe_token": 0,
+          "events_mapped_to_exact_token_end": 613547,
+          "events_sharing_raw_token_end": 0,
+          "explicit_roundtrip_failures": 0,
+          "failure_reasons": {},
+          "lengths": {
+            "explicit_including_eos": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 255,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 66,
+                "0.9": 98,
+                "0.95": 110,
+                "0.99": 136,
+                "1.0": 255
+              },
+              "record_count": 385620
+            },
+            "latent_suffix_including_eos": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 19,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 5,
+                "0.9": 6,
+                "0.95": 7,
+                "0.99": 7,
+                "1.0": 19
+              },
+              "record_count": 385620
+            },
+            "question_including_newline": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 214,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 41,
+                "0.9": 60,
+                "0.95": 68,
+                "0.99": 85,
+                "1.0": 214
+              },
+              "record_count": 385620
+            },
+            "question_plus_latent_suffix_excluding_memory": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 219,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 46,
+                "0.9": 66,
+                "0.95": 73,
+                "0.99": 91,
+                "1.0": 219
+              },
+              "record_count": 385620
+            },
+            "raw_rationale": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 178,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 18,
+                "0.9": 34,
+                "0.95": 40,
+                "0.99": 54,
+                "1.0": 178
+              },
+              "record_count": 385620
+            }
+          },
+          "loop_budgets": {
+            "16": {
+              "controller_supervised": 321955,
+              "event_overflow": 0,
+              "no_events": 63665
+            },
+            "32": {
+              "controller_supervised": 321955,
+              "event_overflow": 0,
+              "no_events": 63665
+            },
+            "4": {
+              "controller_supervised": 313484,
+              "event_overflow": 8471,
+              "no_events": 63665
+            },
+            "8": {
+              "controller_supervised": 321903,
+              "event_overflow": 52,
+              "no_events": 63665
+            }
+          },
+          "mapped_events": 613547,
+          "tokenized_records": 385620,
+          "tokenizer_mapping_failures": 0
+        },
+        "verified_only": {
+          "accepted_events": 613547,
+          "annotation_failures": 0,
+          "annotation_successes": 385620,
+          "event_count_histogram": {
+            "0": 63665,
+            "1": 143033,
+            "10": 10,
+            "11": 1,
+            "12": 1,
+            "2": 104791,
+            "3": 48022,
+            "4": 17638,
+            "5": 5475,
+            "6": 2280,
+            "7": 536,
+            "8": 128,
+            "9": 40
+          },
+          "events_ending_inside_bpe_token": 0,
+          "events_mapped_to_exact_token_end": 613547,
+          "events_sharing_raw_token_end": 0,
+          "explicit_roundtrip_failures": 0,
+          "failure_reasons": {},
+          "lengths": {
+            "explicit_including_eos": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 255,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 66,
+                "0.9": 98,
+                "0.95": 110,
+                "0.99": 136,
+                "1.0": 255
+              },
+              "record_count": 385620
+            },
+            "latent_suffix_including_eos": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 19,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 5,
+                "0.9": 6,
+                "0.95": 7,
+                "0.99": 7,
+                "1.0": 19
+              },
+              "record_count": 385620
+            },
+            "question_including_newline": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 214,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 41,
+                "0.9": 60,
+                "0.95": 68,
+                "0.99": 85,
+                "1.0": 214
+              },
+              "record_count": 385620
+            },
+            "question_plus_latent_suffix_excluding_memory": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 219,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 46,
+                "0.9": 66,
+                "0.95": 73,
+                "0.99": 91,
+                "1.0": 219
+              },
+              "record_count": 385620
+            },
+            "raw_rationale": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 178,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 18,
+                "0.9": 34,
+                "0.95": 40,
+                "0.99": 54,
+                "1.0": 178
+              },
+              "record_count": 385620
+            }
+          },
+          "loop_budgets": {
+            "16": {
+              "controller_supervised": 321955,
+              "event_overflow": 0,
+              "no_events": 63665
+            },
+            "32": {
+              "controller_supervised": 321955,
+              "event_overflow": 0,
+              "no_events": 63665
+            },
+            "4": {
+              "controller_supervised": 313484,
+              "event_overflow": 8471,
+              "no_events": 63665
+            },
+            "8": {
+              "controller_supervised": 321903,
+              "event_overflow": 52,
+              "no_events": 63665
+            }
+          },
+          "mapped_events": 613547,
+          "tokenized_records": 385620,
+          "tokenizer_mapping_failures": 0
+        }
+      },
+      "record_count": 385620,
+      "records_with_literal_control_tokens": 0,
+      "scope": "all_augmented_traces_descriptive_mapping"
+    },
+    "valid": {
+      "format_failure_reasons": {},
+      "format_failures": 0,
+      "format_successes": 500,
+      "input_bytes": 165759,
+      "input_file": "data/gsm_valid.json",
+      "input_sha256": "1833a3479186e4e6c0183aad32fb7ee343479c958f2a1b57631ec22f5ee3aa7f",
+      "literal_control_token_occurrences": {},
+      "literal_control_token_record_counts": {},
+      "policies": {
+        "conclusive": {
+          "accepted_events": 1107,
+          "annotation_failures": 0,
+          "annotation_successes": 500,
+          "event_count_histogram": {
+            "0": 20,
+            "1": 160,
+            "2": 141,
+            "3": 95,
+            "4": 54,
+            "5": 19,
+            "6": 8,
+            "7": 3
+          },
+          "events_ending_inside_bpe_token": 0,
+          "events_mapped_to_exact_token_end": 1107,
+          "events_sharing_raw_token_end": 0,
+          "explicit_roundtrip_failures": 0,
+          "failure_reasons": {},
+          "lengths": {
+            "explicit_including_eos": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 209,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 81,
+                "0.9": 127,
+                "0.95": 140,
+                "0.99": 166,
+                "1.0": 209
+              },
+              "record_count": 500
+            },
+            "latent_suffix_including_eos": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 7,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 5,
+                "0.9": 5,
+                "0.95": 6,
+                "0.99": 6,
+                "1.0": 7
+              },
+              "record_count": 500
+            },
+            "question_including_newline": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 166,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 52,
+                "0.9": 84,
+                "0.95": 97,
+                "0.99": 117,
+                "1.0": 166
+              },
+              "record_count": 500
+            },
+            "question_plus_latent_suffix_excluding_memory": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 171,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 57,
+                "0.9": 89,
+                "0.95": 102,
+                "0.99": 122,
+                "1.0": 171
+              },
+              "record_count": 500
+            },
+            "raw_rationale": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 80,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 21,
+                "0.9": 39,
+                "0.95": 46,
+                "0.99": 58,
+                "1.0": 80
+              },
+              "record_count": 500
+            }
+          },
+          "loop_budgets": {
+            "16": {
+              "controller_supervised": 480,
+              "event_overflow": 0,
+              "no_events": 20
+            },
+            "32": {
+              "controller_supervised": 480,
+              "event_overflow": 0,
+              "no_events": 20
+            },
+            "4": {
+              "controller_supervised": 450,
+              "event_overflow": 30,
+              "no_events": 20
+            },
+            "8": {
+              "controller_supervised": 480,
+              "event_overflow": 0,
+              "no_events": 20
+            }
+          },
+          "mapped_events": 1107,
+          "tokenized_records": 500,
+          "tokenizer_mapping_failures": 0
+        },
+        "verified_only": {
+          "accepted_events": 1107,
+          "annotation_failures": 0,
+          "annotation_successes": 500,
+          "event_count_histogram": {
+            "0": 20,
+            "1": 160,
+            "2": 141,
+            "3": 95,
+            "4": 54,
+            "5": 19,
+            "6": 8,
+            "7": 3
+          },
+          "events_ending_inside_bpe_token": 0,
+          "events_mapped_to_exact_token_end": 1107,
+          "events_sharing_raw_token_end": 0,
+          "explicit_roundtrip_failures": 0,
+          "failure_reasons": {},
+          "lengths": {
+            "explicit_including_eos": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 209,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 81,
+                "0.9": 127,
+                "0.95": 140,
+                "0.99": 166,
+                "1.0": 209
+              },
+              "record_count": 500
+            },
+            "latent_suffix_including_eos": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 7,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 5,
+                "0.9": 5,
+                "0.95": 6,
+                "0.99": 6,
+                "1.0": 7
+              },
+              "record_count": 500
+            },
+            "question_including_newline": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 166,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 52,
+                "0.9": 84,
+                "0.95": 97,
+                "0.99": 117,
+                "1.0": 166
+              },
+              "record_count": 500
+            },
+            "question_plus_latent_suffix_excluding_memory": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 171,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 57,
+                "0.9": 89,
+                "0.95": 102,
+                "0.99": 122,
+                "1.0": 171
+              },
+              "record_count": 500
+            },
+            "raw_rationale": {
+              "at_context": 0,
+              "context_limit": 1024,
+              "max": 80,
+              "over_context": 0,
+              "quantile_method": "nearest_rank",
+              "quantiles": {
+                "0.5": 21,
+                "0.9": 39,
+                "0.95": 46,
+                "0.99": 58,
+                "1.0": 80
+              },
+              "record_count": 500
+            }
+          },
+          "loop_budgets": {
+            "16": {
+              "controller_supervised": 480,
+              "event_overflow": 0,
+              "no_events": 20
+            },
+            "32": {
+              "controller_supervised": 480,
+              "event_overflow": 0,
+              "no_events": 20
+            },
+            "4": {
+              "controller_supervised": 450,
+              "event_overflow": 30,
+              "no_events": 20
+            },
+            "8": {
+              "controller_supervised": 480,
+              "event_overflow": 0,
+              "no_events": 20
+            }
+          },
+          "mapped_events": 1107,
+          "tokenized_records": 500,
+          "tokenizer_mapping_failures": 0
+        }
+      },
+      "record_count": 500,
+      "records_with_literal_control_tokens": 0,
+      "scope": "all_augmented_traces_descriptive_mapping"
+    }
+  },
+  "test_used_for_annotation_or_selection": false,
+  "tokenizer": {
+    "class": "GPT2TokenizerFast",
+    "context_limit": 1024,
+    "eos_token_id": 50256,
+    "is_fast": true,
+    "marker_token": "<SA>",
+    "marker_token_id": 50257,
+    "original_special_tokens": [
+      "<|endoftext|>"
+    ],
+    "original_vocab_size": 50257,
+    "pad_token_id": null,
+    "registered_vocab_sha256": "4b1194108b7606e7407a24f04372ee4b2a2e04555e15e520e3905e349002ee26",
+    "registered_vocab_size": 50258
+  },
+  "tokenizer_source": {
+    "files": {
+      "config.json": {
+        "bytes": 907,
+        "sha256": "24684e9bafdfd13cd4174cee0bbf54e3ce3c2c38be2c4f734c7c5ce5e55306e6",
+        "url": "https://huggingface.co/yingfanbot/gsm-cot-gpt2/resolve/e0ef1887404adbf6c531d2cac7804694321f87bd/config.json"
+      },
+      "generation_config.json": {
+        "bytes": 119,
+        "sha256": "9271fbcc25379dcd6a7c35d7b740883d68f24db050baf55723645fe467e5622b",
+        "url": "https://huggingface.co/yingfanbot/gsm-cot-gpt2/resolve/e0ef1887404adbf6c531d2cac7804694321f87bd/generation_config.json"
+      },
+      "merges.txt": {
+        "bytes": 456318,
+        "sha256": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+        "url": "https://huggingface.co/yingfanbot/gsm-cot-gpt2/resolve/e0ef1887404adbf6c531d2cac7804694321f87bd/merges.txt"
+      },
+      "special_tokens_map.json": {
+        "bytes": 438,
+        "sha256": "98412137ae43c77f8af52eb51b19c3536d3242cb55339167d841005fa94a23b7",
+        "url": "https://huggingface.co/yingfanbot/gsm-cot-gpt2/resolve/e0ef1887404adbf6c531d2cac7804694321f87bd/special_tokens_map.json"
+      },
+      "tokenizer_config.json": {
+        "bytes": 515,
+        "sha256": "121ceef763437c047b272f242438a29e3979355c7c7080c3adb693bd9230ba3f",
+        "url": "https://huggingface.co/yingfanbot/gsm-cot-gpt2/resolve/e0ef1887404adbf6c531d2cac7804694321f87bd/tokenizer_config.json"
+      },
+      "vocab.json": {
+        "bytes": 999186,
+        "sha256": "f6bd25a65e4e63ca31360e9fb11c7e4f9a391a78385d640acd814092dd6eee4f",
+        "url": "https://huggingface.co/yingfanbot/gsm-cot-gpt2/resolve/e0ef1887404adbf6c531d2cac7804694321f87bd/vocab.json"
+      }
+    },
+    "model_api_url": "https://huggingface.co/api/models/yingfanbot/gsm-cot-gpt2",
+    "model_weights_downloaded": false,
+    "repository": "yingfanbot/gsm-cot-gpt2",
+    "resolved_revision": "e0ef1887404adbf6c531d2cac7804694321f87bd",
+    "retrieved_at_utc": "2026-10-13T04:26:25.175968+00:00",
+    "schema_version": "dsa_hf_tokenizer_source_v1"
+  },
+  "training_approval": "not_granted_by_this_audit; consult independent split audit",
+  "truncation": false
+}

@@ -1,0 +1,309 @@
+{
+  "schema_version": "dsa_lotus_agent_review_v1",
+  "reviewer_type": "AI agent, manual reading of sampled question/rationale/events/rejections",
+  "human_review_performed": false,
+  "sample_path": "artifacts/lotus-annotation-audit/train_review_sample.seed7.jsonl",
+  "sample_sha256": "4b5f3a4d992651195b59cd0c609510468beb80a1a7b28d574b6afdd91bc4da9c",
+  "seed": 7,
+  "record_count": 32,
+  "sampling": "stratified TRAIN-only sample across accepted and rejection/no-event categories; not an unbiased precision estimate",
+  "semantic_precision_estimate": null,
+  "outcome": "All 32 reviewed annotations follow the declared frozen V1 rules; this does not imply semantic correctness of all retained conclusions.",
+  "observations": [
+    {
+      "review_number": 1,
+      "row_index_0based": 252622,
+      "row_number_1based": 252623,
+      "selection_stratum": "accepted:calculator_equation:arithmetic_verified",
+      "sample_id": "856ddc9a87bdfba2045f9c3a92b077eb1aab7b265190b647ee2cbc4ea16989ce",
+      "declared_annotation_rules_followed": true,
+      "notes": "Local equality is correct; oval pool is treated as a rectangle. Arithmetic verification does not establish appropriate geometry."
+    },
+    {
+      "review_number": 2,
+      "row_index_0based": 84973,
+      "row_number_1based": 84974,
+      "selection_stratum": "no_events:no_candidates",
+      "sample_id": "008b5e327a31fa97b45858862b232aef91f5af815c5aa9d791b24b1946abbd65",
+      "declared_annotation_rules_followed": true,
+      "notes": "Empty rationale correctly yields no candidates or events."
+    },
+    {
+      "review_number": 3,
+      "row_index_0based": 97459,
+      "row_number_1based": 97460,
+      "selection_stratum": "no_events:rejected_candidates",
+      "sample_id": "28447ca4b45f4a593577aa0787a3d23e7abd95da34e1a6e8f6b700175e4de246",
+      "declared_annotation_rules_followed": true,
+      "notes": "Finite rounded decimal equalities are rejected under the exact-fraction V1 rule."
+    },
+    {
+      "review_number": 4,
+      "row_index_0based": 16291,
+      "row_number_1based": 16292,
+      "selection_stratum": "rejected:ambiguous_equality",
+      "sample_id": "23f9e4c44e703e4a7bc74d6de1d5fd9aa4af06991da8e6c544dd4c5fa5d9902a",
+      "declared_annotation_rules_followed": true,
+      "notes": "Chained rounding equality rejected; retained calculations are locally exact, but integer fruit allocation is questionable."
+    },
+    {
+      "review_number": 5,
+      "row_index_0based": 312721,
+      "row_number_1based": 312722,
+      "selection_stratum": "rejected:division_by_zero",
+      "sample_id": "2b50c1a43f2992c8bcfa61177cec46660b4b394775c821575d4ee22d4172a962",
+      "declared_annotation_rules_followed": true,
+      "notes": "Wrong signed subtraction and division by zero rejected; preceding exact calculations do not resolve an inconsistent source problem."
+    },
+    {
+      "review_number": 6,
+      "row_index_0based": 35516,
+      "row_number_1based": 35517,
+      "selection_stratum": "rejected:incorrect_arithmetic",
+      "sample_id": "6d9ac7c84cecbbe050a09765967add9f915b3189ed776a3bc88fc0ea451072f5",
+      "declared_annotation_rules_followed": true,
+      "notes": "Exact multiplication retained; finite approximation of 80/3 rejected."
+    },
+    {
+      "review_number": 7,
+      "row_index_0based": 182670,
+      "row_number_1based": 182671,
+      "selection_stratum": "rejected:invalid_thousands_separator",
+      "sample_id": "96743403bce4afa281a3fbec4e37b2102292f30a77127081fed866464c1c109a",
+      "declared_annotation_rules_followed": true,
+      "notes": "Decimal comma is rejected as malformed thousands grouping; earlier arithmetic is retained."
+    },
+    {
+      "review_number": 8,
+      "row_index_0based": 56887,
+      "row_number_1based": 56888,
+      "selection_stratum": "rejected:non_scalar_result",
+      "sample_id": "14163c017258042856e1e6b0697698cd347c9c5624c97c9d4bad201491208f31",
+      "declared_annotation_rules_followed": true,
+      "notes": "Approximation/tilde result rejected; retained total-painting equation is locally exact."
+    },
+    {
+      "review_number": 9,
+      "row_index_0based": 118329,
+      "row_number_1based": 118330,
+      "selection_stratum": "rejected:terminal_answer_match",
+      "sample_id": "8cceada242b4b4c8c6122b7332809b1e4da9d0ab44e99b62289f4846c7b07997",
+      "declared_annotation_rules_followed": true,
+      "notes": "Only final-answer-matching conclusion withheld, leaving no auxiliary event."
+    },
+    {
+      "review_number": 10,
+      "row_index_0based": 245487,
+      "row_number_1based": 245488,
+      "selection_stratum": "rejected:unsupported_expression",
+      "sample_id": "5df1afad645930b3b017276c630173f5bf27a85d07fe9cc2f45b6ce4ec41337a",
+      "declared_annotation_rules_followed": true,
+      "notes": "Powers unsupported; rounded quotients rejected; last exact final-value conclusion withheld."
+    },
+    {
+      "review_number": 11,
+      "row_index_0based": 98341,
+      "row_number_1based": 98342,
+      "selection_stratum": "rejected:unsupported_syntax",
+      "sample_id": "d3c4d5988a0c676c63538f233ed404c9e30668ab65e3fc98215d70e34f5ce65d",
+      "declared_annotation_rules_followed": true,
+      "notes": "Unbalanced parentheses rejected; earlier exact multiplication retained."
+    },
+    {
+      "review_number": 12,
+      "row_index_0based": 301326,
+      "row_number_1based": 301327,
+      "selection_stratum": "accepted:calculator_equation:arithmetic_verified",
+      "sample_id": "5dbd1a8f9c666e888a2d323441a35e5e79c00c56adce7b1dfc14cbf1d6ccaa0f",
+      "declared_annotation_rules_followed": true,
+      "notes": "Exact decimal intermediate retained as a rational value; final conclusion withheld."
+    },
+    {
+      "review_number": 13,
+      "row_index_0based": 99499,
+      "row_number_1based": 99500,
+      "selection_stratum": "no_events:no_candidates",
+      "sample_id": "4dd9f1f13519b158d3a5eaf3865bbb7b6d92bc96f2790b924105bb6933959673",
+      "declared_annotation_rules_followed": true,
+      "notes": "Empty rationale correctly yields no events."
+    },
+    {
+      "review_number": 14,
+      "row_index_0based": 284608,
+      "row_number_1based": 284609,
+      "selection_stratum": "no_events:rejected_candidates",
+      "sample_id": "b34a8446c76f90414afa15db5acc35c59965ae2ec510104a78a94de7414320f5",
+      "declared_annotation_rules_followed": true,
+      "notes": "Only accepted equality matches final answer and is correctly withheld."
+    },
+    {
+      "review_number": 15,
+      "row_index_0based": 329908,
+      "row_number_1based": 329909,
+      "selection_stratum": "rejected:ambiguous_equality",
+      "sample_id": "c213847bd40de2c8c3dd37354a369d048623538177860e51a398653e3b99776f",
+      "declared_annotation_rules_followed": true,
+      "notes": "Chained rounding equality rejected; preceding exact product retained."
+    },
+    {
+      "review_number": 16,
+      "row_index_0based": 372580,
+      "row_number_1based": 372581,
+      "selection_stratum": "rejected:division_by_zero",
+      "sample_id": "377ec792c9546a7a15cdef7b5dd6155b1f396da390bd5db28263a0acc1697b68",
+      "declared_annotation_rules_followed": true,
+      "notes": "Division by zero rejected; source assigns zero task duration to a worker, which remains a semantic problem."
+    },
+    {
+      "review_number": 17,
+      "row_index_0based": 162242,
+      "row_number_1based": 162243,
+      "selection_stratum": "rejected:incorrect_arithmetic",
+      "sample_id": "927b4f7d9fe635d702baf0b14122494b245099f95f1a936bf1fa95b069913c8e",
+      "declared_annotation_rules_followed": true,
+      "notes": "Exact food-per-day sum retained; finite approximation of 50/3 rejected."
+    },
+    {
+      "review_number": 18,
+      "row_index_0based": 153415,
+      "row_number_1based": 153416,
+      "selection_stratum": "rejected:non_scalar_result",
+      "sample_id": "c9ab2f4d3431446deada004c876d13378fd0adf00fce9c54b0a2101356434237",
+      "declared_annotation_rules_followed": true,
+      "notes": "Tilde approximation rejected; half-of-rabbits calculation retained; fractional animal premise remains questionable."
+    },
+    {
+      "review_number": 19,
+      "row_index_0based": 289411,
+      "row_number_1based": 289412,
+      "selection_stratum": "rejected:terminal_answer_match",
+      "sample_id": "0d36b3633f0bc52a4730740d5ef9ac313ef4d9f5984568b92f62393696121c1f",
+      "declared_annotation_rules_followed": true,
+      "notes": "Time conversions and addition are exact and appropriate; final quotient withheld."
+    },
+    {
+      "review_number": 20,
+      "row_index_0based": 326833,
+      "row_number_1based": 326834,
+      "selection_stratum": "rejected:unsupported_expression",
+      "sample_id": "c741ee37e1bb79f411c646b83e83ec99b75b891429c3f50470e82a43a323585f",
+      "declared_annotation_rules_followed": true,
+      "notes": "Square root is unsupported in V1; record retained without events."
+    },
+    {
+      "review_number": 21,
+      "row_index_0based": 167157,
+      "row_number_1based": 167158,
+      "selection_stratum": "rejected:unsupported_syntax",
+      "sample_id": "3453953b6985a6b334df1e418d484b5c1e44fc795e289ff11c29f04ec35e0516",
+      "declared_annotation_rules_followed": true,
+      "notes": "Unbalanced expression rejected and final quotient withheld; zero auxiliary events is expected."
+    },
+    {
+      "review_number": 22,
+      "row_index_0based": 10262,
+      "row_number_1based": 10263,
+      "selection_stratum": "accepted:calculator_equation:arithmetic_verified",
+      "sample_id": "1264577965769abf9d8705d733c54ac904d0058a045cfa327455a2c24adb2002",
+      "declared_annotation_rules_followed": true,
+      "notes": "Intermediate unit conversions are locally exact and consistent with the question; final subtraction withheld."
+    },
+    {
+      "review_number": 23,
+      "row_index_0based": 286643,
+      "row_number_1based": 286644,
+      "selection_stratum": "no_events:no_candidates",
+      "sample_id": "232a3b55e9163c3813e2015398292d52b1d5352395a63e59a7950d87e8bd2337",
+      "declared_annotation_rules_followed": true,
+      "notes": "Empty rationale correctly yields no events."
+    },
+    {
+      "review_number": 24,
+      "row_index_0based": 242008,
+      "row_number_1based": 242009,
+      "selection_stratum": "no_events:rejected_candidates",
+      "sample_id": "6a93b9ac02a90749786195a591768d0ba1e4d201e37f8fcb276da040ee44994a",
+      "declared_annotation_rules_followed": true,
+      "notes": "Only accepted conclusion equals the final answer and is withheld."
+    },
+    {
+      "review_number": 25,
+      "row_index_0based": 336418,
+      "row_number_1based": 336419,
+      "selection_stratum": "rejected:ambiguous_equality",
+      "sample_id": "0600b331c337f99fc1e4afb3cb2a372a16979e580bc5214290b6d1e842f97771",
+      "declared_annotation_rules_followed": true,
+      "notes": "Ratio sum is exact; two malformed/chained equalities rejected; final comparison withheld."
+    },
+    {
+      "review_number": 26,
+      "row_index_0based": 41569,
+      "row_number_1based": 41570,
+      "selection_stratum": "rejected:incorrect_arithmetic",
+      "sample_id": "4c51f78d1fa66838a434058f41949c4d26cd329bd221a6fb3b537ac66a7a3603",
+      "declared_annotation_rules_followed": true,
+      "notes": "Rounded 280/3=93.3 is rejected, but later 2*93.3=186.6 is exactly valid and retained. Local validity can propagate an upstream approximation."
+    },
+    {
+      "review_number": 27,
+      "row_index_0based": 383963,
+      "row_number_1based": 383964,
+      "selection_stratum": "rejected:non_scalar_result",
+      "sample_id": "7cbafc4a8bcbfd688b0f727d70297a517d33d1f78154d687046e779fe799d3e0",
+      "declared_annotation_rules_followed": true,
+      "notes": "Feet-and-inches result is outside scalar V1; record retained without events."
+    },
+    {
+      "review_number": 28,
+      "row_index_0based": 224621,
+      "row_number_1based": 224622,
+      "selection_stratum": "rejected:terminal_answer_match",
+      "sample_id": "5da3dedc99ebd0151464144baf4733f1c2b971297b50ec185fcf8dc7b3b66602",
+      "declared_annotation_rules_followed": true,
+      "notes": "Single final-answer equality withheld."
+    },
+    {
+      "review_number": 29,
+      "row_index_0based": 253651,
+      "row_number_1based": 253652,
+      "selection_stratum": "rejected:unsupported_expression",
+      "sample_id": "8655336c98079bd356724747b9bec54959527bfada460a6ad076adc11304da28",
+      "declared_annotation_rules_followed": true,
+      "notes": "Square root is unsupported in V1; record retained without events."
+    },
+    {
+      "review_number": 30,
+      "row_index_0based": 105565,
+      "row_number_1based": 105566,
+      "selection_stratum": "rejected:unsupported_syntax",
+      "sample_id": "3933d5fddf0ff6c58a75d4f2b4807f0332a93038c616419efc444e8d1f0c8e32",
+      "declared_annotation_rules_followed": true,
+      "notes": "Unbalanced opening parenthesis rejected; record retained without events."
+    },
+    {
+      "review_number": 31,
+      "row_index_0based": 310414,
+      "row_number_1based": 310415,
+      "selection_stratum": "accepted:calculator_equation:arithmetic_verified",
+      "sample_id": "03fc8e1adb758618e344f7dad0d71e9caeb3a3711a872e3d9576c0f751226ac6",
+      "declared_annotation_rules_followed": true,
+      "notes": "Intermediate speed is locally exact and consistent; final distance withheld."
+    },
+    {
+      "review_number": 32,
+      "row_index_0based": 221898,
+      "row_number_1based": 221899,
+      "selection_stratum": "no_events:no_candidates",
+      "sample_id": "231c69a4442747fb84af08237a2631963fdc6600ee4bb4e0bb10b0d3b6c38e47",
+      "declared_annotation_rules_followed": true,
+      "notes": "Empty rationale correctly yields no events."
+    }
+  ],
+  "findings": [
+    "Accepted local arithmetic may use the wrong problem model (oval versus rectangular perimeter).",
+    "A later locally valid equality can reuse an upstream rounded or erroneous state.",
+    "Unsupported functions, ambiguous/chained equalities, malformed parentheses, division by zero and rounded exactness mismatches remain rejected.",
+    "Terminal-only and empty-rationale records retain answer supervision without controller/checkpoint supervision."
+  ],
+  "next_precision_step": "The user-authorized assistant source-issue semantic review is complete; further population milestone precision estimates would require a separately predefined representative audit rather than extrapolating these targeted cases."
+}

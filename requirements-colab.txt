@@ -1,0 +1,10 @@
+# DSA pilot dependencies for a managed Google Colab GPU runtime.
+# Keep Colab's preinstalled, CUDA-matched torch/torchvision/torchaudio stack.
+# This is deliberately separate from the local CPU environment lock.
+transformers==4.46.2
+tokenizers==0.20.3
+huggingface_hub==0.36.2
+PyYAML==6.0.3
+# Preserve a compatible runtime NumPy instead of replacing Colab's copy.
+numpy>=1.26,<3
+packaging>=20

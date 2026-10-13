@@ -1,0 +1,4 @@
+# Isolated, CPU-first correctness environment; upstream requirements remain intact.
+torch==2.7.1
+transformers==4.46.2
+numpy==2.2.6

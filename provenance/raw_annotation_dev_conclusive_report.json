@@ -1,0 +1,167 @@
+{
+  "annotation_file": "artifacts/raw-annotation-dev/conclusive.jsonl",
+  "annotation_file_sha256": "87a0c9f97372c182b50474c97e6c90a4df5d15ab65802d315972986e19159937",
+  "benchmark_limitation": "These are raw_annotation_dev coverage observations, not lotus_mirror benchmark results or measured parser precision.",
+  "benchmark_regime": "raw_annotation_dev",
+  "controller_label_overflow": null,
+  "corpus_observations": {
+    "bare_numeric_events_retained": 0,
+    "calculator_candidates": 23716,
+    "jsonl_reading_note": "Iterate physical LF-delimited records; str.splitlines() incorrectly splits valid JSON strings containing U+0085/U+2028/U+2029.",
+    "locally_verified_calculator_candidates_before_terminal_exclusion": 23714,
+    "precision_status": "No human precision audit has been completed. Programmatic preservation/span checks do not establish semantic milestone quality.",
+    "records_with_unicode_line_or_paragraph_separators": 1,
+    "rejection_count_interpretation": "Totals include conservative terminal withholding and unsupported whole-line/prose equality candidates; they are not counts of arithmetic mistakes.",
+    "structural_candidates_before_policy_and_terminal_filtering": 6,
+    "unsupported_calculator_candidates": [
+      {
+        "input_line_1based": 395,
+        "reason": "Floor division is intentionally outside V1 + - * / support.",
+        "text": "<<560//10=56>>"
+      },
+      {
+        "input_line_1based": 4170,
+        "reason": "Floor division is intentionally outside V1 + - * / support.",
+        "text": "<<180//3=60>>"
+      }
+    ]
+  },
+  "coverage_scope": "input records only; tokenizer alignment and loop-label overflow are reported by tokenization",
+  "event_count": 16718,
+  "event_count_histogram": {
+    "0": 350,
+    "1": 2226,
+    "2": 2169,
+    "3": 1457,
+    "4": 798,
+    "5": 296,
+    "6": 131,
+    "7": 43,
+    "8": 3
+  },
+  "events_per_record": 2.2371202997457513,
+  "evidence_counts": {
+    "arithmetic_verified": 16714,
+    "structural_only": 4
+  },
+  "human_precision_audit": {
+    "limitation": "Uniform record sample supports reproducible human review but is not a completed or stratified precision audit.",
+    "sample_count": 12,
+    "sample_file": "artifacts/raw-annotation-dev/audit_sample.jsonl",
+    "sample_sha256": "3bd9f0719df1ba8ba0d580315ab704d98b9c438dab410e08146ae1e5d7724161",
+    "seed": 7,
+    "selection": "sorted(random.Random(7).sample(range(7473), 12)); zero-based indices converted to input line numbers",
+    "source_line_numbers_1based": [
+      396,
+      476,
+      594,
+      772,
+      1236,
+      2653,
+      2996,
+      3235,
+      4390,
+      4775,
+      5333,
+      6728
+    ],
+    "status": "pending"
+  },
+  "implementation": "new implementation reconstructed from revision 4 PDF; original reference package absent",
+  "input_file_sha256": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465",
+  "input_path": "../dsa-sources/grade-school-math/grade_school_math/data/train.jsonl",
+  "no_event_count": 350,
+  "no_event_rate": 0.0468352736518132,
+  "official_test_used": false,
+  "policy": {
+    "exclude_terminal": true,
+    "marker_token": "<SA>",
+    "mode": "conclusive",
+    "steps_join": "space"
+  },
+  "preprocessor_sha256s": {
+    "dsa/data/adapters.py": "00c6989a56a8c8448dad3725f49d303ba02a601201dff27daf666e30d2560391",
+    "dsa/data/milestones.py": "546a1354cfd1a570ae57d9f0ee1737b0decc6f68fd0b259b6bcd6e08594b4f97",
+    "scripts/annotate_milestones.py": "a27de7c27dc58693c7ff32b652fc216a8a3bcd236c30915835f729a2b78743c6"
+  },
+  "programmatic_audit": {
+    "accepted_event_spans_checked": 16718,
+    "checks": [
+      "original_record matches original input row",
+      "question and rationale exact preservation",
+      "final answer delimiter extraction",
+      "marker removal roundtrip",
+      "event count and contiguous ordinals",
+      "half-open Unicode spans and raw text slices",
+      "strictly increasing event character ends",
+      "exact insertion at every accepted end",
+      "rejected candidate text and span consistency"
+    ],
+    "records_checked": 7473,
+    "rejected_candidate_spans_checked": 9230,
+    "status": "passed"
+  },
+  "record_count": 7473,
+  "rejection_counts_by_rule": [
+    {
+      "count": 177,
+      "reason": "ambiguous_equality",
+      "rule": "bare_numeric_equation"
+    },
+    {
+      "count": 1416,
+      "reason": "non_scalar_result",
+      "rule": "bare_numeric_equation"
+    },
+    {
+      "count": 606,
+      "reason": "unsupported_expression",
+      "rule": "bare_numeric_equation"
+    },
+    {
+      "count": 7000,
+      "reason": "terminal_answer_match",
+      "rule": "calculator_equation"
+    },
+    {
+      "count": 2,
+      "reason": "unsupported_expression",
+      "rule": "calculator_equation"
+    },
+    {
+      "count": 10,
+      "reason": "ambiguous_equality",
+      "rule": "isolated_variable"
+    },
+    {
+      "count": 17,
+      "reason": "non_scalar_result",
+      "rule": "isolated_variable"
+    },
+    {
+      "count": 2,
+      "reason": "terminal_answer_match",
+      "rule": "isolated_variable"
+    }
+  ],
+  "rejection_reasons": {
+    "ambiguous_equality": 187,
+    "non_scalar_result": 1433,
+    "terminal_answer_match": 7002,
+    "unsupported_expression": 608
+  },
+  "reproduction_command": ".venv/bin/python scripts/annotate_milestones.py --input ../dsa-sources/grade-school-math/grade_school_math/data/train.jsonl --output artifacts/raw-annotation-dev/conclusive.jsonl --report artifacts/raw-annotation-dev/conclusive_report.json",
+  "rule_counts": {
+    "bare_numeric_equation": 0,
+    "calculator_equation": 16714,
+    "isolated_variable": 4
+  },
+  "schema_version": "dsa_rules_v1",
+  "source_partition": "official_train",
+  "source_preparation": "Original official training JSONL only; no resplitting, no LOTUS augmentation.",
+  "source_repository": "https://github.com/openai/grade-school-math.git",
+  "source_revision": "3101c7d5072418e28b9008a6636bde82a006892c",
+  "terminal_exclusions": 7002,
+  "terminal_policy_limitation": "Excluding the last accepted conclusion when its value matches the final answer can withhold a legitimate intermediate with that same value.",
+  "tokenizer_mapping_failures": null
+}

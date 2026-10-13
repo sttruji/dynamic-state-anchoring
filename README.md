@@ -1,3 +1,19 @@
+# Dynamic State Anchoring
+
+This repository develops Dynamic State Anchoring on the pinned LOTUS codebase.
+Start with the [DSA overview](DSA_README.md),
+[Colab notebook](notebooks/DSA_Colab.ipynb), and
+[Colab quickstart](docs/COLAB_QUICKSTART.md). The GitHub repository is
+[`sttruji/dynamic-state-anchoring`](https://github.com/sttruji/dynamic-state-anchoring).
+The first hosted GPU pilot is pending. Source audits and CPU correctness checks are complete; no comparative
+benchmark result is claimed.
+
+[Open the pilot in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb).
+
+The original LOTUS documentation and attribution follow.
+
+---
+
 # Bridging the Gap Between Latent and Explicit Reasoning with Looped Transformers
 
 This project is for the paper: [Bridging the Gap Between Latent and Explicit Reasoning with Looped Transformers](https://arxiv.org/abs/2606.31779).

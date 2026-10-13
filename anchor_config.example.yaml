@@ -1,0 +1,29 @@
+# Proposed pilot settings; scripts/smoke_dsa.py deliberately uses a smaller CPU budget.
+regime: lotus_mirror
+backbone:
+  model_id: yingfanbot/gsm-cot-gpt2
+  revision: null  # Resolve and pin before downloading/training the natural-language pilot.
+  use_cache: false
+anchor:
+  workspace_size: 4
+  slots: 1
+  loop_budget: 16
+  gate_threshold: 0.5
+  write_mode: learned  # static, every_loop, periodic, learned; identical modules/losses
+  periodic_interval: 4
+annotation:
+  marker_token: <SA>
+  mode: conclusive
+  exclude_terminal: true
+  steps_join: space
+loss:
+  cot: 1.0
+  gate: 0.1
+  anchor: 0.1
+  gate_positive_weight: 1.0
+benchmark:
+  dataset_source_commit: e06a32ee5e4cd117171daeb4755d2a97ece62761
+  evaluation_loop_budgets: [4, 8, 16, 32]
+  max_new_tokens: 64
+  seeds: [7, 13, 29]
+# Configuration contract only: no YAML production training launcher is implemented yet.

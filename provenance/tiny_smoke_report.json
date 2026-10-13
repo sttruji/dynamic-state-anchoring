@@ -1,0 +1,183 @@
+{
+  "purpose": "synthetic correctness smoke; not generalization evidence",
+  "seed": 7,
+  "training_steps_per_arm": 120,
+  "fixed_loop_budget": 4,
+  "workspace_size": 4,
+  "same_initialization": true,
+  "backbone": "random tiny GPT-2, 2 layers, width 32",
+  "model_revision": "random initialization; no downloaded checkpoint",
+  "dataset_revision": "inline synthetic records, v1",
+  "dataset_sha256": "85627fdc5b29fd5ada09a7765222071159ce12df69897ae9a619e97e9b2ca82b",
+  "runtime": {
+    "python": "3.12.14",
+    "device": "cpu",
+    "upstream_lotus_sha": "eb77e2f7909c5006f58ff0ad7cd6629b942caa9e",
+    "implementation_sha256": {
+      "dsa/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "dsa/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "dsa/data/adapters.py": "00c6989a56a8c8448dad3725f49d303ba02a601201dff27daf666e30d2560391",
+      "dsa/data/milestones.py": "546a1354cfd1a570ae57d9f0ee1737b0decc6f68fd0b259b6bcd6e08594b4f97",
+      "dsa/data/tokenize.py": "36a775331e92bb090965c79130d831c06ea37b8cad997180beabacc69a45a80a",
+      "dsa/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "dsa/evaluation/evaluate.py": "25d4cb728cb901e535e89031dc84a2298bd4ab994712996d2e06f0a940ce3d65",
+      "dsa/models/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "dsa/models/anchored_loop.py": "6e722a3903b1cb71a6e204a9ca94bf072461345d2b350a3abf2902bcc36d0151",
+      "dsa/models/backbone.py": "d90bf7054169ae3c10ae84ff44937ca12f6434f2b3e95dc31a9975d0bc7cc786",
+      "dsa/provenance.py": "ce958bcce668ae64fbbdafae26b98716cc05205266648bbaa7c0c4ea655db394",
+      "dsa/training/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "dsa/training/objectives.py": "7319ee4644b74bc9804a7c139e833542d52c0d7c90e95e6e77567c85ee3c76d3",
+      "dsa/training/trainer.py": "7acae6b89b4a1d1a5a8886cc6418b38350a78bbe78c2288fcee2451dfb082f1c",
+      "scripts/annotate_milestones.py": "a27de7c27dc58693c7ff32b652fc216a8a3bcd236c30915835f729a2b78743c6",
+      "scripts/prepare_dsa_data.py": "27357738f37e2f0a9f7e6b357b9ca0e41dc44089ba1b2e5c3374a5ed5d374aee",
+      "scripts/smoke_dsa.py": "e2b0c2fb78e0cd5424cd382fc48b75d0e0c68cdae3fade95986774dc346643e5",
+      "scripts/tokenize_dsa_data.py": "c3a2408895204c49f855dcc1226c36b738ecbdb5878f0435df0c23a3eece379d"
+    },
+    "environment_lock_sha256": "e33de6fc97d1c01ef978d4cc60e0da400fc4be447eca2b282da08f200599c2f6",
+    "packages": {
+      "torch": "2.7.1",
+      "transformers": "4.46.2",
+      "tokenizers": "0.20.3",
+      "numpy": "2.2.6"
+    },
+    "working_tree_dirty": true
+  },
+  "arms": {
+    "static": {
+      "parameters": 67841,
+      "first_loss": 11.295276641845703,
+      "last_loss": 0.33724290132522583,
+      "training_seconds": 1.312854999996489,
+      "inference_seconds": 0.004566959018120542,
+      "controller_supervised_records": 2,
+      "question_only_generation": "10",
+      "gate_probabilities": [
+        0.4526801109313965,
+        0.3504806160926819,
+        0.21375447511672974,
+        0.10843110084533691
+      ],
+      "writes": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "checkpoint_reload_identical": true,
+      "training_set_predictions": [
+        {
+          "question": "Start with 2, add 3, then double. What is the result?",
+          "generated_text": "10",
+          "prediction": "10",
+          "valid_numeric_answer": true,
+          "latency_seconds": 0.004319542000303045,
+          "recurrent_forwards": 4,
+          "gate_probabilities": [
+            0.4526801109313965,
+            0.3504806160926819,
+            0.21375447511672974,
+            0.10843110084533691
+          ],
+          "writes": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gold": "10",
+          "correct": true
+        },
+        {
+          "question": "Start with 3, add 4, then double. What is the result?",
+          "generated_text": "14",
+          "prediction": "14",
+          "valid_numeric_answer": true,
+          "latency_seconds": 0.004277874977560714,
+          "recurrent_forwards": 4,
+          "gate_probabilities": [
+            0.405067503452301,
+            0.2949064373970032,
+            0.1656683087348938,
+            0.07955517619848251
+          ],
+          "writes": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gold": "14",
+          "correct": true
+        }
+      ]
+    },
+    "learned": {
+      "parameters": 67841,
+      "first_loss": 11.295276641845703,
+      "last_loss": 0.2855193018913269,
+      "training_seconds": 1.128231834009057,
+      "inference_seconds": 0.00517637500888668,
+      "controller_supervised_records": 2,
+      "question_only_generation": "10",
+      "gate_probabilities": [
+        0.4306427836418152,
+        0.3096948266029358,
+        0.17564180493354797,
+        0.0865655317902565
+      ],
+      "writes": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "checkpoint_reload_identical": true,
+      "training_set_predictions": [
+        {
+          "question": "Start with 2, add 3, then double. What is the result?",
+          "generated_text": "10",
+          "prediction": "10",
+          "valid_numeric_answer": true,
+          "latency_seconds": 0.004879374988377094,
+          "recurrent_forwards": 4,
+          "gate_probabilities": [
+            0.4306427836418152,
+            0.3096948266029358,
+            0.17564180493354797,
+            0.0865655317902565
+          ],
+          "writes": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gold": "10",
+          "correct": true
+        },
+        {
+          "question": "Start with 3, add 4, then double. What is the result?",
+          "generated_text": "14",
+          "prediction": "14",
+          "valid_numeric_answer": true,
+          "latency_seconds": 0.005295540991937742,
+          "recurrent_forwards": 4,
+          "gate_probabilities": [
+            0.46335747838020325,
+            0.33651769161224365,
+            0.1886984407901764,
+            0.09063152223825455
+          ],
+          "writes": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gold": "14",
+          "correct": true
+        }
+      ]
+    }
+  }
+}

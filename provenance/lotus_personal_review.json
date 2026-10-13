@@ -1,0 +1,103 @@
+{
+  "schema_version": "dsa_lotus_personal_semantic_review_v1",
+  "review_status": "completed_for_all_identified_answer_format_duplicate_and_conflict_issues",
+  "reviewer": "assistant semantic review, authorized by the user; not represented as a human signature or certification",
+  "source_path": "/Users/stevotrujillo/Desktop/DSALT/dynamic-state-anchoring/data/gsm_train.json",
+  "source_sha256": "93a266b1f7425a00463bb775de2946f9b30f76514944b5456bbffceb50b5de30",
+  "source_unchanged": true,
+  "training_rows_total": 385620,
+  "unusual_answer_rows_reviewed": 194,
+  "unusual_answer_verdict_counts": {
+    "acceptable_approximation": 24,
+    "ambiguous": 17,
+    "correct": 123,
+    "incorrect": 16,
+    "malformed_or_nonanswer": 2,
+    "underdetermined": 12
+  },
+  "answer_format_counts": {
+    "clock_time": 20,
+    "currency": 27,
+    "duration": 1,
+    "feet_inches": 2,
+    "fraction": 87,
+    "fraction_as_ratio": 1,
+    "marked_approximation": 37,
+    "nonfinite": 1,
+    "percentage": 1,
+    "ratio": 8,
+    "scientific_notation": 1,
+    "symbolic_expression": 2,
+    "symbolic_nonanswer": 2,
+    "weekday": 4
+  },
+  "acceptable_format_or_approximation_rows": 147,
+  "flagged_for_clean_sensitivity_rows": 47,
+  "duplicate_review": {
+    "groups_reviewed": 52,
+    "source_occurrences": 112,
+    "extra_occurrences": 60,
+    "extra_occurrence_fraction": 0.00015559358954411078,
+    "correct_under_intended_word_problem_interpretation": 52,
+    "caveat": "Group12 uses an intended additive body-part model; the anatomical wording is awkward and noted in the ledger.",
+    "recommendation": "keep repeats in primary mirror; optional declared deduplicated sensitivity only"
+  },
+  "conflicting_question_review": {
+    "row_numbers": [
+      44776,
+      198445
+    ],
+    "verdict": "underdetermined",
+    "expected_answer": "14 + 12*w, where w is wheels per bus",
+    "source_answers": [
+      "62",
+      "86"
+    ],
+    "reasoning": "The wording never supplies a bus wheel count. Both chains are locally correct:7*2+12*4=62 and7*2+12*6=86. The source provides incompatible assumptions, not a numeric arithmetic dispute; neither answer can be uniquely adjudicated from the question alone.",
+    "confidence": "high",
+    "suggested_handling": "preserve both in primary baseline mirror with disclosure; exclude both from any explicitly cleaned sensitivity corpus rather than guess a replacement",
+    "source_records": [
+      {
+        "row_number": 44776,
+        "source_record_sha256": "44613481519072c18b0fd4d241e779b1fbb10ab5b6c0ff81170bd0512cc18f54",
+        "question": "There are 7 motorcycles and 12 buses in the parking lot. How many wheels are there in the parking lot?",
+        "steps": [
+          "<<7*2=14>>",
+          "<<12*4=48>>",
+          "<<14+48=62>>"
+        ],
+        "answer": "62"
+      },
+      {
+        "row_number": 198445,
+        "source_record_sha256": "4302c3125a8935582c00a91faf6b41e24aac3230d2f0d673c601128b1d5755fa",
+        "question": "There are 7 motorcycles and 12 buses in the parking lot. How many wheels are there in the parking lot?",
+        "steps": [
+          "<<7*2=14>>",
+          "<<12*6=72>>",
+          "<<14+72=86>>"
+        ],
+        "answer": "86"
+      }
+    ]
+  },
+  "proposed_clean_sensitivity_exclusion_count": 49,
+  "review_policy": {
+    "exact_answers": "Check exact arithmetic, units, requested quantity and premises. Fractions, ratios, clock times, currency and intentionally symbolic answers can be valid.",
+    "approximations": "Explicit approximation markers with a sound method and appropriate magnitude can be accepted when precision is not specified; early-rounding bias is noted. Wrong required whole-object rounding or unmarked unequal exact fractions are not accepted.",
+    "ordinary_conventions": "Use ordinary word-problem conventions such as divisible food and sequential daily counts; state any material alternative assumptions.",
+    "ambiguity": "Do not guess omitted durations, counts, rates, compounding, bus wheel counts or incompatible premises."
+  },
+  "next_step": "The user-authorized semantic source-issue review is complete. A small implementation pilot can use the unchanged primary mirror with documented noise; broad research conclusions still require controlled experiments and declared sensitivity analysis.",
+  "remaining_limits": [
+    "This is a census of the194 unusual-answer flags,52 exact-duplicate groups and1 conflicting-question group, not semantic verification of every385620 training row.",
+    "Targeted issue-review proportions are not a corpus-wide error-rate estimate.",
+    "The existing32-record milestone sample was already reviewed by the assistant; useful latent checkpoints and generalization remain empirical questions."
+  ],
+  "artifacts": {
+    "provenance/lotus_personal_review_rows.jsonl": "fd4274af9c8ed8bc1ea224bf677b553fc9b64d758a6880fa737ee63d93bf1d73",
+    "provenance/lotus_personal_review_duplicates.jsonl": "db9258a818189ec95b061910914d2c680bbd4f22da7f925db20b35136058779c",
+    "provenance/lotus_personal_review_sensitivity_proposal.json": "a4e28154b24a73293ccf9d7cf795e4e600b8ec78eab4d737a0226f32d99a190e"
+  },
+  "assembly_script_sha256": "ef66e4230d2b1c5d60d7a44aaaeadcd225f0bc540403438aba4cbf75e3f6ab07"
+}

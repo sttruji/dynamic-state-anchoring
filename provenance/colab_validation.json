@@ -1,0 +1,103 @@
+{
+  "schema_version": "dsa_colab_local_validation_v1",
+  "generated_at_utc": "2026-10-13T05:55:52.581462+00:00",
+  "future_repository": "https://github.com/sttruji/dynamic-state-anchoring",
+  "published_by_this_task": false,
+  "notebook": "notebooks/DSA_Colab.ipynb",
+  "notebook_cell_count": 17,
+  "tests": {
+    "command": ".venv/bin/python -m unittest discover -s tests -q",
+    "passed": 175,
+    "failed": 0,
+    "log": "artifacts/colab-validation-unittest.txt",
+    "log_sha256": "03913621adb073d6ba740935f61631f296386ea0b546374c467e01c00a09ac5d"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "device": "cpu",
+    "cuda_available": false,
+    "cuda": null,
+    "gpu": null,
+    "gpu_memory_bytes": null,
+    "packages": {
+      "torch": "2.7.1",
+      "transformers": "4.46.2",
+      "tokenizers": "0.20.3",
+      "huggingface_hub": "0.36.2",
+      "numpy": "2.2.6"
+    },
+    "tiny_gpt2_forward_passed": true
+  },
+  "cli_integration": {
+    "tokenizer": "TinyTokenizer",
+    "model": "random tiny GPT-2; no pretrained weights",
+    "source_regime": "lotus_mirror",
+    "prepared_records": {
+      "test": 1319,
+      "train": 32,
+      "valid": 500
+    },
+    "prepared_manifest_sha256": "f6aa0c493ba3697a29c0446231c3cbad061138180b9b9b60b47a5255255360ee",
+    "initial_training_steps": 3,
+    "resumed_from_step": 3,
+    "completed_training_steps": 5,
+    "initial_state_sha256": "9a60c9a6bdb8df4a278807305d60fec3be10f75deae162c08853375aa4fb16ea",
+    "validation_questions": 8,
+    "loop_budget": 16,
+    "question_only_inference": true,
+    "completed_evaluation_reuse_passed": true,
+    "predictions_sha256": "210ca33314ffcd14d52545f69ec48d124c8db61a5c9132804e0d91a60f9615cc",
+    "source_records_modified": false,
+    "benchmark_accuracy_claim": false
+  },
+  "verified": [
+    "notebook and nested subprocess syntax",
+    "first-cell intended GitHub clone",
+    "isolated dependencies reuse existing PyTorch",
+    "Drive and Hugging Face environment before model use",
+    "embedded CPU preflight and profiling summary execution",
+    "pinned source checksums and download reuse",
+    "matched policy initialization",
+    "exact CPU optimizer/model/RNG resume",
+    "interrupted evaluation recovery and cached hashes",
+    "full final-test denominator guard"
+  ],
+  "pending": [
+    "GitHub repository publication",
+    "hosted Colab runtime execution",
+    "Google Drive mount authorization",
+    "unmodified pretrained checkpoint inference",
+    "CUDA training/evaluation and memory profiling"
+  ],
+  "files_sha256": {
+    "docs/COLAB_ENVIRONMENT.md": "4aaa0acd007a6aad0d7151d28121c4ce461f50a73fd1d10c87e591193fd44455",
+    "docs/COLAB_QUICKSTART.md": "eccfee2a8712d3be4eb1501fb2eebefe135c7ec3807e7ba943edfc716a0111b7",
+    "dsa/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dsa/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dsa/data/adapters.py": "00c6989a56a8c8448dad3725f49d303ba02a601201dff27daf666e30d2560391",
+    "dsa/data/milestones.py": "546a1354cfd1a570ae57d9f0ee1737b0decc6f68fd0b259b6bcd6e08594b4f97",
+    "dsa/data/pilot_prepare.py": "33e9fee102172a1513d3392c17cf502b75d0876075bd0e0f37ccf9df94c4a6eb",
+    "dsa/data/tokenize.py": "36a775331e92bb090965c79130d831c06ea37b8cad997180beabacc69a45a80a",
+    "dsa/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dsa/evaluation/evaluate.py": "25d4cb728cb901e535e89031dc84a2298bd4ab994712996d2e06f0a940ce3d65",
+    "dsa/models/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dsa/models/anchored_loop.py": "6e722a3903b1cb71a6e204a9ca94bf072461345d2b350a3abf2902bcc36d0151",
+    "dsa/models/backbone.py": "d90bf7054169ae3c10ae84ff44937ca12f6434f2b3e95dc31a9975d0bc7cc786",
+    "dsa/provenance.py": "ce958bcce668ae64fbbdafae26b98716cc05205266648bbaa7c0c4ea655db394",
+    "dsa/training/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dsa/training/objectives.py": "7319ee4644b74bc9804a7c139e833542d52c0d7c90e95e6e77567c85ee3c76d3",
+    "dsa/training/pilot.py": "28c04900af9aab60f5d25865c88781d53ac508204a58ffcb2b29b36236dcdfde",
+    "dsa/training/trainer.py": "7acae6b89b4a1d1a5a8886cc6418b38350a78bbe78c2288fcee2451dfb082f1c",
+    "notebooks/DSA_Colab.ipynb": "39961506070e3d4ae1ec0a63b6f352ccfa3268a87e931e1dd61222858cb326c9",
+    "requirements-colab.txt": "b1a4d70c3c782a47baf539fa8d678130d33feb5a982406b882e5baa487e22ae0",
+    "scripts/evaluate_dsa.py": "6d6bdc90926fa8afae21ccc9e80f2fa03709921dc973d52bd2adf46471cf9972",
+    "scripts/prepare_dsa_pilot.py": "8bb74ebfd35f7ab9dfc4bb782e6620c1cfff98ed0cb9740d796c4af5514fd075",
+    "scripts/smoke_pretrained_dsa.py": "6ec299b6b125b0b999ec40e5609706781e75686ac9968c758059e83cb8144f27",
+    "scripts/train_dsa.py": "37556bbdd6f64342593b65276720c521204221114f9e71ff16c69393a2f3a8cc",
+    "tests/test_colab_contract.py": "1f0075fb8bc5118df942dd9e2c3d29ef81dcc7e9575c75a3ae4428c5d8141ddb",
+    "tests/test_pilot.py": "a21bbbadf56c385f1a72602a9af5eb8526256d59fb11b2f7839468401fdb682c",
+    "tests/test_pilot_evaluation.py": "5101e1a87027d7fee7973ac3591bb887adfcdcc7201c36071de7ff468634ea44",
+    "tests/test_pilot_prepare.py": "c18abb0fa51c78c47bf419aa74c2391ac2ca55d78a501d30365fab731d3475e5",
+    "tests/test_pretrained_smoke.py": "3f3c7e91e59ecd0aa01df5a13881dbe69875525585c314f45808872f9c89b0ff"
+  }
+}

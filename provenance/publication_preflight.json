@@ -1,0 +1,33 @@
+{
+  "schema_version": "dsa_publication_preflight_v1",
+  "checked_at_utc": "2026-10-13T14:14:37.027129+00:00",
+  "repository": "https://github.com/sttruji/dynamic-state-anchoring",
+  "repository_id": 1417195998,
+  "visibility": "public",
+  "default_branch": "main",
+  "upstream_repository": "https://github.com/yingfan-bot/lotus",
+  "upstream_base": "eb77e2f7909c5006f58ff0ad7cd6629b942caa9e",
+  "validation": {
+    "unit_tests_passed": 175,
+    "unit_tests_failed": 0,
+    "command": ".venv/bin/python -m unittest discover -s tests -q",
+    "log_sha256": "df11cc6e5c4dd8f29e0c3bb8b6efc935df03f65993cd738ac2d60ad2f7054feb",
+    "hosted_colab_tested": false,
+    "pretrained_cuda_tested": false
+  },
+  "publication_contents": "source, tests, notebook, documentation and compact provenance; generated corpora, weights, checkpoints and runtime are excluded",
+  "test_fixture_fix": "Collision fixture selects known ordinary token Q deterministically; 11 tokenizer tests passed under PYTHONHASHSEED 0,1,7,314159.",
+  "historical_validation_record": "provenance/colab_validation.json",
+  "historical_validation_note": "The previous record describes local checks before GitHub publication; its pending-publication field and file hashes are historical.",
+  "files_sha256": {
+    "README.md": "1e99aaa8893522636bb30100954c1e63d58cf247d57f9e2b073e811e2ea5eb7a",
+    "DSA_README.md": "7c212641a8cd59243ae06e0e9a351e7bc626bf5b89d89d1186ff2488d2fc2750",
+    "IMPLEMENTATION_STATUS.md": "40c9e84f22b47f2ae04773f736baf16641cb90f00d8aff9b89b737398acff837",
+    "notebooks/DSA_Colab.ipynb": "2346ad2c80434053b234711cfcc77fe887775cb30f7c5a887ebbf8fcb48c6588",
+    "docs/COLAB_QUICKSTART.md": "4044f6beca7f4e2f919ee2dcefcc998779202feac7919296ff6d02186f19b507",
+    "docs/COLAB_ENVIRONMENT.md": "62a1c23d4f7cce419b28daf0df3d02a877fefdbe4fdf655910c15a0835b2facc",
+    "requirements-colab.txt": "b1a4d70c3c782a47baf539fa8d678130d33feb5a982406b882e5baa487e22ae0",
+    "LICENSE": "9f1abe28a25b5f6f95c58a81a647de3fa72ff6388d228c59bddd079255709989",
+    "tests/test_tokenize.py": "b3fcdc8089e08848e244286e8efe3e915926eba98efc450e5b4704651f1c593a"
+  }
+}

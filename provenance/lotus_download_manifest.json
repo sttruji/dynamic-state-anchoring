@@ -1,0 +1,48 @@
+{
+  "schema_version": "dsa_lotus_download_v1",
+  "data_source_commit": "e06a32ee5e4cd117171daeb4755d2a97ece62761",
+  "lotus_sha": "eb77e2f7909c5006f58ff0ad7cd6629b942caa9e",
+  "preprocessing_sha256": {
+    "gsm_icot.bash": "4ba29ea6ca9028da4ddffe4cb74da0d520fa472e0d70471f5bd0572fa5d0902f",
+    "gsm_icot.py": "18c4d65ecb969648dcba6fe8823fa24a49d3457a236fd8eb31e8e884472882ad"
+  },
+  "raw_sources_preserved": true,
+  "splits": {
+    "train": {
+      "url": "https://media.githubusercontent.com/media/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/train.txt",
+      "raw_path": "data/gsm_train.txt",
+      "sha256": "0a3909a9e7d8d2f7ad6b8c7b5608aa744988d835f9bf874d4cf06ca77df6bf8c",
+      "bytes": 87805358,
+      "verification": "pinned_git_lfs_oid",
+      "downloaded": true,
+      "reused_verified_file": false,
+      "json_path": "data/gsm_train.json",
+      "json_sha256": "93a266b1f7425a00463bb775de2946f9b30f76514944b5456bbffceb50b5de30",
+      "json_bytes": 104324531
+    },
+    "valid": {
+      "url": "https://raw.githubusercontent.com/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/valid.txt",
+      "raw_path": "data/gsm_valid.txt",
+      "sha256": "04f9bddfe8ac4846571b1e2b612b289c95770b5012fdb34cc36a597b041afb87",
+      "bytes": 143419,
+      "verification": "pinned_git_blob",
+      "downloaded": true,
+      "reused_verified_file": false,
+      "json_path": "data/gsm_valid.json",
+      "json_sha256": "1833a3479186e4e6c0183aad32fb7ee343479c958f2a1b57631ec22f5ee3aa7f",
+      "json_bytes": 165759
+    },
+    "test": {
+      "url": "https://raw.githubusercontent.com/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/test.txt",
+      "raw_path": "data/gsm_test.txt",
+      "sha256": "e464efa2713fbcf423bdbfb482c543a6a086188c3d97c294b1d19a70c2a515e8",
+      "bytes": 388019,
+      "verification": "pinned_git_blob",
+      "downloaded": true,
+      "reused_verified_file": false,
+      "json_path": "data/gsm_test.json",
+      "json_sha256": "46ce5b0c44fde0bfc8cf1e7492aa640b96111d9dcb80a54340d9911141a9caa9",
+      "json_bytes": 447368
+    }
+  }
+}

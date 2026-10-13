@@ -1,0 +1,93 @@
+{
+  "schema_version": "dsa_split_manifest_summary_v1",
+  "regime": "lotus_mirror",
+  "lotus_sha": "eb77e2f7909c5006f58ff0ad7cd6629b942caa9e",
+  "data_source_commit": "e06a32ee5e4cd117171daeb4755d2a97ece62761",
+  "preprocessing_sha256": {
+    "gsm_icot.bash": "4ba29ea6ca9028da4ddffe4cb74da0d520fa472e0d70471f5bd0572fa5d0902f",
+    "gsm_icot.py": "18c4d65ecb969648dcba6fe8823fa24a49d3457a236fd8eb31e8e884472882ad"
+  },
+  "download_source": {
+    "commit": "e06a32ee5e4cd117171daeb4755d2a97ece62761",
+    "urls": {
+      "train": "https://media.githubusercontent.com/media/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/train.txt",
+      "valid": "https://raw.githubusercontent.com/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/valid.txt",
+      "test": "https://raw.githubusercontent.com/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/test.txt"
+    },
+    "source_code_verified": true,
+    "http_payload_verification": "not_performed_by_manifest_builder"
+  },
+  "steps_join": "space",
+  "grouping": {
+    "priority": [
+      "source_problem_id",
+      "problem_id",
+      "id",
+      "normalized question hash"
+    ],
+    "question_normalization": "NFKC, casefold, whitespace collapse",
+    "limitation": "Exact/format duplicates only; arbitrary paraphrases are not detected."
+  },
+  "split_overlap_audit": {
+    "status": "passed",
+    "overlaps": []
+  },
+  "ordered_evaluation_sha256": "8b15321a94ead03ee8fe0a32a9ab08281e911d201c0a728bdaa75f7652a4cac4",
+  "evaluation_format": {
+    "question": "strip question, append newline",
+    "answer_prefix": "### ",
+    "answer_normalization": "remove commas, strip whitespace",
+    "upstream_scoring": "float exact equality; fallback stripped string equality"
+  },
+  "official_test_comparison": {
+    "status": "compared",
+    "path": "/Users/stevotrujillo/Desktop/DSALT/dsa-sources/grade-school-math/grade_school_math/data/test.jsonl",
+    "sha256": "3730d312f6e3440559ace48831e51066acaca737f6eabec99bccb9e4b3c39d14",
+    "official_rows": 1319,
+    "supplied_rows": 1319,
+    "ordered_question_answer_match": true,
+    "question_membership_match": true,
+    "supplied_only_question_hashes": [],
+    "official_only_question_hashes": [],
+    "answer_mismatch_question_hashes": [],
+    "normalization": "question NFKC/casefold/whitespace; answer comma removal and strip"
+  },
+  "full_manifest": {
+    "path": "artifacts/lotus-corpus-audit/split_manifest.json",
+    "sha256": "311f5885ef1fde0641be41cdf6a0fed8877bc1f57fe9a5b953f4aaac3a38c68b",
+    "contains": [
+      "full problem groups and sample IDs",
+      "ordered evaluation IDs and records"
+    ]
+  },
+  "splits": {
+    "train": {
+      "path": "/Users/stevotrujillo/Desktop/DSALT/dynamic-state-anchoring/data/gsm_train.json",
+      "original_file_sha256": "93a266b1f7425a00463bb775de2946f9b30f76514944b5456bbffceb50b5de30",
+      "rows": 385620,
+      "unique_questions": 385533,
+      "unique_problem_groups": 385533,
+      "explicit_problem_id_rows": 0,
+      "question_hash_fallback_rows": 385620
+    },
+    "valid": {
+      "path": "/Users/stevotrujillo/Desktop/DSALT/dynamic-state-anchoring/data/gsm_valid.json",
+      "original_file_sha256": "1833a3479186e4e6c0183aad32fb7ee343479c958f2a1b57631ec22f5ee3aa7f",
+      "rows": 500,
+      "unique_questions": 500,
+      "unique_problem_groups": 500,
+      "explicit_problem_id_rows": 0,
+      "question_hash_fallback_rows": 500
+    },
+    "test": {
+      "path": "/Users/stevotrujillo/Desktop/DSALT/dynamic-state-anchoring/data/gsm_test.json",
+      "original_file_sha256": "46ce5b0c44fde0bfc8cf1e7492aa640b96111d9dcb80a54340d9911141a9caa9",
+      "rows": 1319,
+      "unique_questions": 1319,
+      "unique_problem_groups": 1319,
+      "explicit_problem_id_rows": 0,
+      "question_hash_fallback_rows": 1319
+    }
+  },
+  "ordered_evaluation_id_count": 1319
+}

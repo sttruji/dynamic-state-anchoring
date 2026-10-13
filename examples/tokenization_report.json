@@ -1,0 +1,23 @@
+{
+  "annotation_policy_sha256": "598b7f11efe91cffce6c9998047869539ebf54cc35360deb5a84e35265cf159d",
+  "cache_identity_sha256": "6f9c5baaf2f1285a7e2ef6263b9572ad248a51b297b3e1980d1554292ca11079",
+  "controller_label_overflow": 0,
+  "controller_mask_reasons": {
+    "no_events": 4
+  },
+  "controller_masked_count": 4,
+  "controller_supervised_count": 4,
+  "event_count": 6,
+  "input_sha256": "d94204a2ae32d3a26d96dcf4fd0f49008bc6d5ef9c27614edaf5bcbc2459d4f6",
+  "loop_budget": 4,
+  "max_explicit_length": 145,
+  "max_question_length": 69,
+  "no_event_count": 4,
+  "no_event_rate": 0.5,
+  "record_count": 8,
+  "schema_version": "dsa_tokenization_report_v1",
+  "tokenizer_config_sha256": "65641adc1fd8662c22c2dcb6e08d5eacb36299456a3a902c56356af22021791f",
+  "tokenizer_mapping_failures": 0,
+  "tokenizer_vocab_sha256": "6d213989904d624d975ae56088b7e3bb8318af60aa3e90cb3f11990faf351db0",
+  "truncation": false
+}

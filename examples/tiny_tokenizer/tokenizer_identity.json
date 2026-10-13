@@ -1,0 +1,25 @@
+{
+  "annotation_policy": {
+    "exclude_terminal": true,
+    "marker_token": "<SA>",
+    "mode": "conclusive",
+    "steps_join": "space"
+  },
+  "annotation_policy_sha256": "598b7f11efe91cffce6c9998047869539ebf54cc35360deb5a84e35265cf159d",
+  "cache_identity_sha256": "6f9c5baaf2f1285a7e2ef6263b9572ad248a51b297b3e1980d1554292ca11079",
+  "input_sha256": "d94204a2ae32d3a26d96dcf4fd0f49008bc6d5ef9c27614edaf5bcbc2459d4f6",
+  "latent_answer_boundary": "fixed_inference_prefix_then_answer_tokens",
+  "loop_budget": 4,
+  "marker_token": "<SA>",
+  "marker_token_id": 2,
+  "schema_version": "dsa_tokenization_identity_v1",
+  "tokenized_output_sha256": "7bf70f52bbd2980f91d2775781f782a3b2b55fbafd80ceb0122bbf282fff51c6",
+  "tokenizer_class": "TinyTokenizer",
+  "tokenizer_config_sha256": "65641adc1fd8662c22c2dcb6e08d5eacb36299456a3a902c56356af22021791f",
+  "tokenizer_file_sha256s": {
+    "tiny_tokenizer.json": "ae9598d8f3432ed52a8344f0ff31b21a84a70ccba57f46f7b67ffad14fd72341"
+  },
+  "tokenizer_source": "dsa_tiny_utf8_v1",
+  "tokenizer_vocab_sha256": "6d213989904d624d975ae56088b7e3bb8318af60aa3e90cb3f11990faf351db0",
+  "truncation": false
+}

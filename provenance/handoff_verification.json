@@ -1,0 +1,41 @@
+{
+  "schema_version": "dsa_handoff_verification_v1",
+  "verification_date": "2026-10-12",
+  "markdown": {
+    "source": "../DSA_IMPLEMENTATION_HANDOFF.md",
+    "sha256": "57095aac06b700f32a54a48cbd254e91a19061a4259dd7fb06d321d132003501",
+    "canonical_copy": "docs/DSA_IMPLEMENTATION_HANDOFF.md",
+    "copy_sha256": "57095aac06b700f32a54a48cbd254e91a19061a4259dd7fb06d321d132003501"
+  },
+  "pdf": {
+    "source": "../Dynamic_State_Anchoring_V4.pdf",
+    "sha256": "557678c10ba0269c9ae5505673dda9f2fc1ec2821e8714773422aa992490ebe2"
+  },
+  "comparison": {
+    "result": "No substantive differences: same Revision 4 specification, scope, model equations, losses, data/tokenizer contracts, stage order and acceptance criteria.",
+    "presentation_differences": [
+      "Markdown list/fence/table formatting",
+      "PDF headers and table reading order",
+      "Wrapped reference URL in PDF"
+    ],
+    "reference_package": "Neither document includes the separately named executable reference package; implementation remains explicitly reconstructed."
+  },
+  "validation": {
+    "test_command": ".venv/bin/python -m unittest discover -s tests -q",
+    "tests_passed": 108,
+    "smoke_command": ".venv/bin/python scripts/smoke_dsa.py --steps 120 --loops 4 --output artifacts/handoff-verification",
+    "smoke_report": "artifacts/handoff-verification/report.json",
+    "smoke_report_sha256": "a3a69b47923b56367e39b5cce93d1f5d66d4499a09ad423c4ab4ece2b256d2b4",
+    "results_match_prior_run": true,
+    "checkpoint_reload_identical": true,
+    "research_benefit_established": false,
+    "ignored_dsa_source_files": []
+  },
+  "correction": {
+    "file": ".gitignore",
+    "before": "data/",
+    "after": "/data/",
+    "reason": "Avoid ignoring dsa/data source modules while continuing to exclude root benchmark datasets."
+  },
+  "implementation_scope": "Initial data/tokenization and tiny-model correctness stage; primary corpus/pretrained checkpoint pilots and research comparisons remain pending."
+}

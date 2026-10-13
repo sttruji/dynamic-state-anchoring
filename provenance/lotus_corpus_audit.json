@@ -1,0 +1,195 @@
+{
+  "schema_version": "dsa_lotus_corpus_audit_v1",
+  "audit_status": "completed_with_data_quality_findings",
+  "audit_date_local": "2026-10-12",
+  "regime": "lotus_mirror",
+  "lotus_sha": "eb77e2f7909c5006f58ff0ad7cd6629b942caa9e",
+  "data_source_commit": "e06a32ee5e4cd117171daeb4755d2a97ece62761",
+  "source_files_preserved_and_reverified": true,
+  "records_dropped": 0,
+  "split_integrity": {
+    "exact_format_overlap": "passed_zero_overlap",
+    "semantic_overlap_not_established": true,
+    "original_problem_ids_available": false,
+    "official_test_ordered_question_answer_match": true,
+    "test_evaluation_denominator": 1319
+  },
+  "splits": {
+    "train": {
+      "rows": 385620,
+      "unique_normalized_questions": 385533,
+      "retained_events": 613547,
+      "no_event_rows": 63665,
+      "no_event_rate": 0.16509776463876355
+    },
+    "valid": {
+      "rows": 500,
+      "unique_normalized_questions": 500,
+      "retained_events": 1107,
+      "no_event_rows": 20,
+      "no_event_rate": 0.04
+    },
+    "test": {
+      "rows": 1319,
+      "unique_normalized_questions": 1319,
+      "retained_events": 3074,
+      "no_event_rows": 48,
+      "no_event_rate": 0.03639120545868082
+    }
+  },
+  "annotation_policies_identical_on_this_corpus": true,
+  "training_controller_coverage": {
+    "16": {
+      "eligible_row_rate": 0.8349022353612364,
+      "eligible_rows": 321955,
+      "masked_M0_rows": 63665,
+      "masked_MgtK_row_rate": 0.0,
+      "masked_MgtK_rows": 0,
+      "questions_with_all_rationales_eligible": 321919,
+      "questions_with_any_eligible_rationale": 321919
+    },
+    "32": {
+      "eligible_row_rate": 0.8349022353612364,
+      "eligible_rows": 321955,
+      "masked_M0_rows": 63665,
+      "masked_MgtK_row_rate": 0.0,
+      "masked_MgtK_rows": 0,
+      "questions_with_all_rationales_eligible": 321919,
+      "questions_with_any_eligible_rationale": 321919
+    },
+    "4": {
+      "eligible_row_rate": 0.8129350137441004,
+      "eligible_rows": 313484,
+      "masked_M0_rows": 63665,
+      "masked_MgtK_row_rate": 0.021967221617136042,
+      "masked_MgtK_rows": 8471,
+      "questions_with_all_rationales_eligible": 313448,
+      "questions_with_any_eligible_rationale": 313448
+    },
+    "8": {
+      "eligible_row_rate": 0.8347673875836316,
+      "eligible_rows": 321903,
+      "masked_M0_rows": 63665,
+      "masked_MgtK_row_rate": 0.000134847777604896,
+      "masked_MgtK_rows": 52,
+      "questions_with_all_rationales_eligible": 321867,
+      "questions_with_any_eligible_rationale": 321867
+    }
+  },
+  "training_gate_label_counts": {
+    "16": {
+      "negative_labels": 4537733,
+      "positive_fraction": 0.11910573682657515,
+      "positive_labels": 613547,
+      "scope": "training labels only; descriptive counts, no selected weight",
+      "supervised_rows": 321955,
+      "unclipped_negative_to_positive_ratio": 7.395901210502211
+    },
+    "32": {
+      "negative_labels": 9689013,
+      "positive_fraction": 0.05955286841328757,
+      "positive_labels": 613547,
+      "scope": "training labels only; descriptive counts, no selected weight",
+      "supervised_rows": 321955,
+      "unclipped_negative_to_positive_ratio": 15.791802421004421
+    },
+    "4": {
+      "negative_labels": 686703,
+      "positive_fraction": 0.4523620025264447,
+      "positive_labels": 567233,
+      "scope": "training labels only; descriptive counts, no selected weight",
+      "supervised_rows": 313484,
+      "unclipped_negative_to_positive_ratio": 1.210618916741445
+    },
+    "8": {
+      "negative_labels": 1962160,
+      "positive_fraction": 0.23806239767880386,
+      "positive_labels": 613064,
+      "scope": "training labels only; descriptive counts, no selected weight",
+      "supervised_rows": 321903,
+      "unclipped_negative_to_positive_ratio": 3.2005793848603084
+    }
+  },
+  "quality_findings": {
+    "exact_repeated_training_rows": 60,
+    "conflicting_training_question_groups": 1,
+    "training_answers_not_plain_numeric": 194,
+    "nonnumeric_does_not_imply_incorrect": true,
+    "empty_training_rationales": 89,
+    "literal_marker_or_latent_control_collisions": 0
+  },
+  "tokenizer": {
+    "repository": "yingfanbot/gsm-cot-gpt2",
+    "revision": "e0ef1887404adbf6c531d2cac7804694321f87bd",
+    "marker_token_id": 50257,
+    "vocabulary_size_after_registration": 50258,
+    "source_pad_token_id": null,
+    "context_limit": 1024,
+    "model_weights_downloaded": false,
+    "train_valid_rows_tokenized": 386120,
+    "mapping_failures": 0,
+    "explicit_roundtrip_failures": 0,
+    "max_explicit_train_length": 255,
+    "max_explicit_valid_length": 209,
+    "truncation": false,
+    "test_scope": "membership/format/control tokens only; frozen annotation report is separately descriptive"
+  },
+  "review": {
+    "AI_agent_reviewed_training_groups": 32,
+    "human_semantic_precision_review_performed": false,
+    "population_precision_estimated": false,
+    "source_issue_semantic_review_complete": true,
+    "additional_human_reviewer_required_by_this_workflow": false
+  },
+  "training_readiness": "source issues adjudicated; small unchanged-source implementation pilot can proceed with documented noise; cleaned sensitivity proposals are separate and unapplied",
+  "validation": {
+    "unit_tests_passed": 129,
+    "test_command": ".venv/bin/python -m unittest discover -s tests -q",
+    "source_hashes_reverified": true,
+    "independent_annotation_and_tokenizer_counts_agree": true
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "transformers": "4.46.2",
+    "tokenizers": "0.20.3"
+  },
+  "report_sha256": {
+    "provenance/lotus_download_manifest.json": "071c27eba5e175d367eb4dc513ffb32322e93d462dcc12b57a255337eea57edb",
+    "provenance/lotus_split_manifest.json": "febc7943527452b3138b383ed8aa9d7449a8b278c41cbd38bfb78dc0c3a72e37",
+    "provenance/lotus_membership_audit.json": "cdde1676b4f17cb53668239ea2a611c45ea9efade9b431917a1713f11202bea5",
+    "provenance/lotus_annotation_audit.json": "90b6059586c3b6b26a4e44ee919ecce9bb82480e874a52d2f8488fbcf77af0b7",
+    "provenance/lotus_annotation_review.json": "ad4d253016b77f34b21f9ce3decf12ece42b4146b74a2a4c434c8bd09fdf153b",
+    "provenance/lotus_data_quality_findings.json": "879564add249f408edef4c6a6b109e3d464f8919f340ef63e7507ef9279d0cc4",
+    "provenance/lotus_tokenizer_audit.json": "7ed475c8dc4c27a25f42a88ae0b2cee2337c124a350c8767e1af345dc119ee86"
+  },
+  "implementation_sha256": {
+    "scripts/download_lotus_corpus.py": "5b60598f5a01d3e7e5bdc60babca8af50b4ea8891511d63749c83c12daf78d6a",
+    "scripts/audit_lotus_splits.py": "62cb8e39e4cc9db700a41f74b5037b63fe6fda958c021cc650d40be37eb7f45d",
+    "scripts/audit_lotus_membership.py": "9db48204fa43cdf414b857e12f16fe52b1f210ce38bfadc1dad052f210d3ede6",
+    "scripts/audit_lotus_annotations.py": "9b254f297f0226adc0d51cf5e50ebe298bcd8d23f1b5ebe3ffc51c071115ccf5",
+    "scripts/audit_lotus_tokenizer.py": "42290e7c96f12664d56ae504e76d5e4b2e64c9611e1eb34644d5853a277b98ea"
+  },
+  "full_manifest": {
+    "path": "artifacts/lotus-corpus-audit/split_manifest.json",
+    "sha256": "311f5885ef1fde0641be41cdf6a0fed8877bc1f57fe9a5b953f4aaac3a38c68b",
+    "contains": [
+      "full problem groups and sample IDs",
+      "ordered evaluation IDs and records"
+    ]
+  },
+  "limitations": [
+    "Normalized question hashes cannot identify paraphrased duplicates without original provenance IDs.",
+    "Local exact arithmetic cannot establish semantic correctness or checkpoint sufficiency.",
+    "Stratified AI review is not a completed human precision audit.",
+    "No pretrained checkpoint weights or GPU training were run."
+  ],
+  "personal_semantic_review": {
+    "status": "completed_by_user_authorized_assistant",
+    "path": "provenance/lotus_personal_review.json",
+    "sha256": "5e21c1bead92b622d25329bd00527d58bcc56464fe0d1fe2cf6b78c401690575",
+    "unusual_answer_rows": 194,
+    "duplicate_groups": 52,
+    "conflicting_question_groups": 1,
+    "human_identity_claimed": false
+  }
+}

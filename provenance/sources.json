@@ -1,0 +1,149 @@
+{
+  "schema_version": "dsa_sources_v1",
+  "inspection_date": "2026-10-12",
+  "sources": [
+    {
+      "name": "lotus",
+      "url": "https://github.com/yingfan-bot/lotus.git",
+      "checkout_sha": "eb77e2f7909c5006f58ff0ad7cd6629b942caa9e",
+      "path": ".",
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "9f1abe28a25b5f6f95c58a81a647de3fa72ff6388d228c59bddd079255709989"
+      },
+      "inspected_files": {
+        "scripts/lotus.py": "a0d03ac726a4063e3e2d033fda7efb47b266ce3166f2bdc9149e077be46bbc5b",
+        "scripts/dataset.py": "8eeee5cc2f2639673c7c32fc24304f0246c147cd1dddae99fafe48a21ee79b84",
+        "scripts/run.py": "d3c8fb3293ab8a8f0c87fb708476ee9873558edb47b4b9b16fa75f288aadbdf2",
+        "scripts/eval.py": "e5c2db7ac48c8f8806842565ca01f2ea736ca585ec08c5f9af048540b6bb0fdc",
+        "preprocessing/gsm_icot.bash": "4ba29ea6ca9028da4ddffe4cb74da0d520fa472e0d70471f5bd0572fa5d0902f",
+        "preprocessing/gsm_icot.py": "18c4d65ecb969648dcba6fe8823fa24a49d3457a236fd8eb31e8e884472882ad",
+        "args/base/datasets/gsm8k.yaml": "a50e59cd3a4ceaff743f93735972846076e5c1ea542d0386813d188d63a14679",
+        "requirements.txt": "5c134f2a5f3cf484ed8eee43a7c79e9eeba1d96358ed9013f9d107507c4846f1",
+        "environment.yml": "f5b4795d39f4ea6098e53341c2134b311b90b938a7aa6a01837a54ca3096bd92"
+      },
+      "lfs_payloads_downloaded": null
+    },
+    {
+      "name": "looped-tf",
+      "url": "https://github.com/UW-Madison-Lee-Lab/looped-tf.git",
+      "checkout_sha": "33650c3c0cec3dd1d466b32489aaf30df4bda796",
+      "path": "../dsa-sources/looped-tf",
+      "license": {
+        "spdx": null,
+        "status": "No standalone license file located at this checkout; inspected only, no source copied."
+      },
+      "inspected_files": {
+        "src/train.py": "25fcf8185673a570c13b000c08c8846302e089832167e1961669dab72c04a572",
+        "src/models.py": "0497df481d30bc3d917a49842b2b796e1a05dd27b88ae86a94848793e7ad995f",
+        "src/generate_training_data.py": "79f8fc1f3adc8d56edf165237c4c4dbc7a3f1e25fca3699126bcaef0d68ba0d3",
+        "src/conf/addition.yaml": "9a6c0c4a46a656bccec8c215df98de4dd9e9c8c327a4c2b98204237ccadce209",
+        "src/conf/parity.yaml": "95e2708eeeea8565705efc0031e32ac3bd181288c4b7e83f3caa4889991989f0",
+        "src/conf/multi.yaml": "a51841b7412ef7838572f9b0d12e4660ea1bbbecfc80d89dc8a4a2e4d4f66fca",
+        "environment.yml": "661cd9cfb77b813b296caf7d25dd31fe3618cfa0de4109cba378a2eb0f4f9c7a"
+      },
+      "lfs_payloads_downloaded": null
+    },
+    {
+      "name": "codi",
+      "url": "https://github.com/zhenyi4/codi.git",
+      "checkout_sha": "2c2314662c63e9f482ebc46614ffe9af17a241e5",
+      "path": "../dsa-sources/codi",
+      "license": {
+        "spdx": null,
+        "status": "No standalone license file located at this checkout; inspected only, no source copied."
+      },
+      "inspected_files": {
+        "src/model.py": "818fa2f88d2ff348a6242fc62ce244e4d94e220de727a1688058348247440d00"
+      },
+      "lfs_payloads_downloaded": null
+    },
+    {
+      "name": "grade-school-math",
+      "url": "https://github.com/openai/grade-school-math.git",
+      "checkout_sha": "3101c7d5072418e28b9008a6636bde82a006892c",
+      "path": "../dsa-sources/grade-school-math",
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "86bbb73e855821d7c401912fd4bf82e34313e6e3b6fd6f909f2b6cc9e209a53b"
+      },
+      "inspected_files": {
+        "grade_school_math/data/train.jsonl": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465",
+        "grade_school_math/data/test.jsonl": "3730d312f6e3440559ace48831e51066acaca737f6eabec99bccb9e4b3c39d14"
+      },
+      "lfs_payloads_downloaded": null
+    },
+    {
+      "name": "internalize-cot",
+      "url": "https://github.com/da03/Internalize_CoT_Step_by_Step.git",
+      "checkout_sha": "e06a32ee5e4cd117171daeb4755d2a97ece62761",
+      "path": "../dsa-sources/internalize-cot",
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "fe3e4d2d64d526c7cf0baf1b08f474d8f4f9cad7f7f5570230c6534edbcadac7"
+      },
+      "inspected_files": {
+        "data/gsm8k/train.txt": "e7548a3a00751f4852b5dfc4660459e9ed5403cfe8eabf6ac1084d480ebd095a",
+        "data/gsm8k/valid.txt": "04f9bddfe8ac4846571b1e2b612b289c95770b5012fdb34cc36a597b041afb87",
+        "data/gsm8k/test.txt": "e464efa2713fbcf423bdbfb482c543a6a086188c3d97c294b1d19a70c2a515e8"
+      },
+      "lfs_payloads_downloaded": false
+    }
+  ],
+  "benchmark_corpus_audit": "completed_with_data_quality_findings; see provenance/lotus_corpus_audit.json and docs/LOTUS_CORPUS_AUDIT.md",
+  "checkpoint": {
+    "repository": "yingfanbot/gsm-cot-gpt2",
+    "resolved_revision": "e0ef1887404adbf6c531d2cac7804694321f87bd",
+    "status": "tokenizer/config audited; model weights not downloaded or smoke-tested"
+  },
+  "pinned_data_url_header_checks": {
+    "date": "2026-10-12",
+    "method": "HEAD",
+    "payloads_downloaded": false,
+    "results": [
+      {
+        "split": "train",
+        "url": "https://media.githubusercontent.com/media/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/train.txt",
+        "status": 200,
+        "content_length": 87805358,
+        "content_type": "text/plain",
+        "etag": "0a3909a9e7d8d2f7ad6b8c7b5608aa744988d835f9bf874d4cf06ca77df6bf8c"
+      },
+      {
+        "split": "valid",
+        "url": "https://raw.githubusercontent.com/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/valid.txt",
+        "status": 200,
+        "content_length": 143419,
+        "content_type": "text/plain; charset=utf-8",
+        "etag": "abcd1bf5899e3d0a6a7bf87096e099b5431ea90953da80ad32db3ae4f5227b44"
+      },
+      {
+        "split": "test",
+        "url": "https://raw.githubusercontent.com/da03/Internalize_CoT_Step_by_Step/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k/test.txt",
+        "status": 200,
+        "content_length": 388019,
+        "content_type": "text/plain; charset=utf-8",
+        "etag": "49ff2c740d5b385c4907b130a404eb7142020037ffc0450093ec2e8a7b373805"
+      }
+    ],
+    "limitation": "Response headers verify endpoint availability only; they are not a corpus-content checksum audit."
+  },
+  "internalize_train_lfs_pointer": {
+    "oid_sha256": "0a3909a9e7d8d2f7ad6b8c7b5608aa744988d835f9bf874d4cf06ca77df6bf8c",
+    "size": 87805358,
+    "checkout_status": "pointer only; git-lfs unavailable; checkout filters disabled",
+    "pointer_matches_http_size_and_etag": true
+  },
+  "benchmark_payloads_downloaded": true,
+  "benchmark_download_manifest": "provenance/lotus_download_manifest.json",
+  "benchmark_corpus_audit_manifest": "provenance/lotus_corpus_audit.json",
+  "personal_semantic_review": {
+    "status": "completed_for_identified_source_issues",
+    "manifest": "provenance/lotus_personal_review.json",
+    "report": "docs/LOTUS_PERSONAL_REVIEW.md",
+    "source_data_modified": false
+  }
+}

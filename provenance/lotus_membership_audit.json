@@ -1,0 +1,514 @@
+{
+  "schema_version": "dsa_lotus_membership_summary_v1",
+  "regime": "lotus_mirror",
+  "data_source_commit": "e06a32ee5e4cd117171daeb4755d2a97ece62761",
+  "script_sha256": "9db48204fa43cdf414b857e12f16fe52b1f210ce38bfadc1dad052f210d3ede6",
+  "normalization": {
+    "question": "NFKC, casefold, collapse whitespace",
+    "answer": "remove commas, strip whitespace (pinned LOTUS reference format)",
+    "numeric_diagnostic": "finite Decimal value, for distinguishing formatting-only conflicts",
+    "rationale": "join original steps with one space; no other rewrite"
+  },
+  "limitations": [
+    "Normalized question hashes detect formatting duplicates, not arbitrary semantic paraphrases.",
+    "Rows are source occurrences; identical rows retain identical canonical sample IDs and remain in all denominators.",
+    "Official corpus comparison is provenance validation, not test-driven model selection."
+  ],
+  "splits": {
+    "train": {
+      "split": "train",
+      "rows": 385620,
+      "valid_rows": 385620,
+      "malformed_rows": 0,
+      "malformed_examples": [],
+      "unique_normalized_questions": 385533,
+      "unique_problem_groups": 385533,
+      "explicit_problem_id_rows": 0,
+      "question_hash_fallback_rows": 385620,
+      "unique_sample_ids": 385560,
+      "repeated_sample_id_rows": 60,
+      "sample_ids_repeated": 52,
+      "unique_original_records": 385560,
+      "repeated_exact_original_record_rows": 60,
+      "original_record_hashes_repeated": 52,
+      "questions_with_multiple_rows": 76,
+      "rows_per_question_histogram": {
+        "1": 385457,
+        "2": 68,
+        "3": 6,
+        "4": 1,
+        "5": 1
+      },
+      "distinct_rationales_per_question_histogram": {
+        "1": 385509,
+        "2": 24
+      },
+      "questions_with_multiple_distinct_rationales": 24,
+      "distinct_question_rationale_pairs": 385557,
+      "questions_with_answer_normalization_conflicts": 1,
+      "questions_with_numeric_answer_conflicts": 1,
+      "answer_conflict_examples": [
+        {
+          "question_hash": "9d499638b17bfac1d16f1d8fd46c8d66d97d2ce4dd38c3df1425ab22cf148820",
+          "row_numbers": [
+            44776,
+            198445
+          ],
+          "answers_normalized": [
+            "62",
+            "86"
+          ]
+        }
+      ],
+      "groups_with_multiple_normalized_questions": 0,
+      "nonnumeric_answer_rows": 194,
+      "nonnumeric_answer_row_examples": [
+        2489,
+        4591,
+        5969,
+        6904,
+        8601,
+        9326,
+        11274,
+        16946,
+        20857,
+        21029
+      ],
+      "empty_field_rows": {
+        "question": 0,
+        "rationale": 89,
+        "answer": 0
+      },
+      "additional_key_rows": {},
+      "steps_fragment_count_histogram": {
+        "1": 62908,
+        "2": 143578,
+        "3": 104249,
+        "4": 48198,
+        "5": 17906,
+        "6": 5666,
+        "7": 2359,
+        "8": 577,
+        "9": 126,
+        "10": 43,
+        "11": 8,
+        "12": 1,
+        "13": 1
+      },
+      "control_token_collisions": {
+        "<SA>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|start-latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|end-latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        }
+      },
+      "duplicate_question_examples": [
+        {
+          "question_hash": "0148046165a341d2cae7fcab4d71dd6dec7324f9604242a374906937a70c889e",
+          "row_numbers": [
+            204295,
+            359058
+          ],
+          "distinct_rationales": 2
+        },
+        {
+          "question_hash": "03f95e3ac07fe4aca7a20162bff5952ac26dfdd11ef1c1a4764986ddbd54e6d4",
+          "row_numbers": [
+            146111,
+            222025
+          ],
+          "distinct_rationales": 1
+        },
+        {
+          "question_hash": "050842e35207fa71a1fd2220a5ebc6fc9eeedcc4e23ed49a08755c73186c913f",
+          "row_numbers": [
+            91929,
+            160109,
+            277385
+          ],
+          "distinct_rationales": 2
+        },
+        {
+          "question_hash": "050e5b5f9522294af841297a695eae69fc70c8f28cac684ae60b3bb9bdf76729",
+          "row_numbers": [
+            29197,
+            64329,
+            301949,
+            350549,
+            360428
+          ],
+          "distinct_rationales": 1
+        },
+        {
+          "question_hash": "07991ae7a2d11c9d2ec2c5ac39345ab6b2740fd44216239e9c5a493cec1e828c",
+          "row_numbers": [
+            60438,
+            69879
+          ],
+          "distinct_rationales": 2
+        },
+        {
+          "question_hash": "0b22080138c8514c1abe79dfeb9d43df86a04fa402c7f25de88b102cf3a56103",
+          "row_numbers": [
+            276336,
+            315335
+          ],
+          "distinct_rationales": 1
+        },
+        {
+          "question_hash": "1123cd119dc0090e077f4ec775096b8b0b4e56360e713c3cef68d82461bd6c40",
+          "row_numbers": [
+            132966,
+            376328
+          ],
+          "distinct_rationales": 1
+        },
+        {
+          "question_hash": "13e1a7b64ac3fb017ab4242d27fc1cc2e119400f45b98c5c03bc6a56350850bb",
+          "row_numbers": [
+            37970,
+            343227
+          ],
+          "distinct_rationales": 1
+        },
+        {
+          "question_hash": "15de9b3db5f7ac657012f99739d51c6a8e50d342c2001c20be7c0dc4994ca620",
+          "row_numbers": [
+            92848,
+            229431
+          ],
+          "distinct_rationales": 2
+        },
+        {
+          "question_hash": "1bc7f1ab3090a90ff380f7d922b77c7906430ef6205c2e0fa8361ac8b74bfdc1",
+          "row_numbers": [
+            78109,
+            93092
+          ],
+          "distinct_rationales": 1
+        }
+      ],
+      "path": "/Users/stevotrujillo/Desktop/DSALT/dynamic-state-anchoring/data/gsm_train.json",
+      "sha256": "93a266b1f7425a00463bb775de2946f9b30f76514944b5456bbffceb50b5de30"
+    },
+    "valid": {
+      "split": "valid",
+      "rows": 500,
+      "valid_rows": 500,
+      "malformed_rows": 0,
+      "malformed_examples": [],
+      "unique_normalized_questions": 500,
+      "unique_problem_groups": 500,
+      "explicit_problem_id_rows": 0,
+      "question_hash_fallback_rows": 500,
+      "unique_sample_ids": 500,
+      "repeated_sample_id_rows": 0,
+      "sample_ids_repeated": 0,
+      "unique_original_records": 500,
+      "repeated_exact_original_record_rows": 0,
+      "original_record_hashes_repeated": 0,
+      "questions_with_multiple_rows": 0,
+      "rows_per_question_histogram": {
+        "1": 500
+      },
+      "distinct_rationales_per_question_histogram": {
+        "1": 500
+      },
+      "questions_with_multiple_distinct_rationales": 0,
+      "distinct_question_rationale_pairs": 500,
+      "questions_with_answer_normalization_conflicts": 0,
+      "questions_with_numeric_answer_conflicts": 0,
+      "answer_conflict_examples": [],
+      "groups_with_multiple_normalized_questions": 0,
+      "nonnumeric_answer_rows": 0,
+      "nonnumeric_answer_row_examples": [],
+      "empty_field_rows": {
+        "question": 0,
+        "rationale": 6,
+        "answer": 0
+      },
+      "additional_key_rows": {},
+      "steps_fragment_count_histogram": {
+        "1": 32,
+        "2": 155,
+        "3": 140,
+        "4": 91,
+        "5": 53,
+        "6": 18,
+        "7": 8,
+        "8": 3
+      },
+      "control_token_collisions": {
+        "<SA>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|start-latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|end-latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        }
+      },
+      "duplicate_question_examples": [],
+      "path": "/Users/stevotrujillo/Desktop/DSALT/dynamic-state-anchoring/data/gsm_valid.json",
+      "sha256": "1833a3479186e4e6c0183aad32fb7ee343479c958f2a1b57631ec22f5ee3aa7f"
+    },
+    "test": {
+      "split": "test",
+      "rows": 1319,
+      "valid_rows": 1319,
+      "malformed_rows": 0,
+      "malformed_examples": [],
+      "unique_normalized_questions": 1319,
+      "unique_problem_groups": 1319,
+      "explicit_problem_id_rows": 0,
+      "question_hash_fallback_rows": 1319,
+      "unique_sample_ids": 1319,
+      "repeated_sample_id_rows": 0,
+      "sample_ids_repeated": 0,
+      "unique_original_records": 1319,
+      "repeated_exact_original_record_rows": 0,
+      "original_record_hashes_repeated": 0,
+      "questions_with_multiple_rows": 0,
+      "rows_per_question_histogram": {
+        "1": 1319
+      },
+      "distinct_rationales_per_question_histogram": {
+        "1": 1319
+      },
+      "questions_with_multiple_distinct_rationales": 0,
+      "distinct_question_rationale_pairs": 1319,
+      "questions_with_answer_normalization_conflicts": 0,
+      "questions_with_numeric_answer_conflicts": 0,
+      "answer_conflict_examples": [],
+      "groups_with_multiple_normalized_questions": 0,
+      "nonnumeric_answer_rows": 0,
+      "nonnumeric_answer_row_examples": [],
+      "empty_field_rows": {
+        "question": 0,
+        "rationale": 18,
+        "answer": 0
+      },
+      "additional_key_rows": {},
+      "steps_fragment_count_histogram": {
+        "1": 83,
+        "2": 357,
+        "3": 364,
+        "4": 290,
+        "5": 138,
+        "6": 57,
+        "7": 21,
+        "8": 9
+      },
+      "control_token_collisions": {
+        "<SA>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|start-latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|end-latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        },
+        "<|latent|>": {
+          "rows": 0,
+          "occurrences": 0,
+          "fields": {},
+          "examples": []
+        }
+      },
+      "duplicate_question_examples": [],
+      "path": "/Users/stevotrujillo/Desktop/DSALT/dynamic-state-anchoring/data/gsm_test.json",
+      "sha256": "46ce5b0c44fde0bfc8cf1e7492aa640b96111d9dcb80a54340d9911141a9caa9"
+    }
+  },
+  "split_overlap_audit": {
+    "passed": true,
+    "pairs": [
+      {
+        "splits": [
+          "train",
+          "valid"
+        ],
+        "overlapping_questions": 0,
+        "overlapping_problem_groups": 0,
+        "rows_from_overlapping_questions": {
+          "train": 0,
+          "valid": 0
+        },
+        "question_hashes": [],
+        "source_problem_ids": [],
+        "examples": []
+      },
+      {
+        "splits": [
+          "train",
+          "test"
+        ],
+        "overlapping_questions": 0,
+        "overlapping_problem_groups": 0,
+        "rows_from_overlapping_questions": {
+          "train": 0,
+          "test": 0
+        },
+        "question_hashes": [],
+        "source_problem_ids": [],
+        "examples": []
+      },
+      {
+        "splits": [
+          "valid",
+          "test"
+        ],
+        "overlapping_questions": 0,
+        "overlapping_problem_groups": 0,
+        "rows_from_overlapping_questions": {
+          "valid": 0,
+          "test": 0
+        },
+        "question_hashes": [],
+        "source_problem_ids": [],
+        "examples": []
+      }
+    ]
+  },
+  "official_sources": {
+    "train": {
+      "path": "/Users/stevotrujillo/Desktop/DSALT/dsa-sources/grade-school-math/grade_school_math/data/train.jsonl",
+      "sha256": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465"
+    },
+    "test": {
+      "path": "/Users/stevotrujillo/Desktop/DSALT/dsa-sources/grade-school-math/grade_school_math/data/test.jsonl",
+      "sha256": "3730d312f6e3440559ace48831e51066acaca737f6eabec99bccb9e4b3c39d14"
+    }
+  },
+  "official_membership_comparisons": {
+    "train_vs_official_train": {
+      "supplied_rows": 385620,
+      "official_rows": 7473,
+      "supplied_unique_questions": 385533,
+      "official_unique_questions": 7473,
+      "matched_unique_questions": 6973,
+      "all_supplied_questions_in_official": false,
+      "question_membership_match": false,
+      "ordered_question_answer_match": false,
+      "supplied_only_question_hashes_count": 378560,
+      "supplied_only_question_hashes_details": "See full audit artifact",
+      "official_only_question_hashes_count": 500,
+      "official_only_question_hashes_details": "See full audit artifact",
+      "answer_mismatch_question_hashes": [],
+      "answer_mismatch_examples": [],
+      "ordered_question_answer_sha256": "b1d2cb46a5c1c5a4961d283a19c643eb9aa73c41e51055db432ca7a476730c1c",
+      "official_ordered_question_answer_sha256": "c865cf10a2c55799d4dce331044f1acf6d36b7271bb00e16bfec5ef7363951f2"
+    },
+    "valid_vs_official_train": {
+      "supplied_rows": 500,
+      "official_rows": 7473,
+      "supplied_unique_questions": 500,
+      "official_unique_questions": 7473,
+      "matched_unique_questions": 500,
+      "all_supplied_questions_in_official": true,
+      "question_membership_match": false,
+      "ordered_question_answer_match": false,
+      "supplied_only_question_hashes": [],
+      "official_only_question_hashes_count": 6973,
+      "official_only_question_hashes_details": "See full audit artifact",
+      "answer_mismatch_question_hashes": [],
+      "answer_mismatch_examples": [],
+      "ordered_question_answer_sha256": "b23acc76190928d9746268713da7e0d7285007ff20067e64b15e9487b1bde9f8",
+      "official_ordered_question_answer_sha256": "c865cf10a2c55799d4dce331044f1acf6d36b7271bb00e16bfec5ef7363951f2"
+    },
+    "train_valid_union_vs_official_train": {
+      "supplied_rows": 386120,
+      "official_rows": 7473,
+      "supplied_unique_questions": 386033,
+      "official_unique_questions": 7473,
+      "matched_unique_questions": 7473,
+      "all_supplied_questions_in_official": false,
+      "question_membership_match": false,
+      "ordered_question_answer_match": false,
+      "supplied_only_question_hashes_count": 378560,
+      "supplied_only_question_hashes_details": "See full audit artifact",
+      "official_only_question_hashes": [],
+      "answer_mismatch_question_hashes": [],
+      "answer_mismatch_examples": [],
+      "ordered_question_answer_sha256": "dfb717a16d7275004e34a49f1093bd64c73ea5dfd2088381425bc1d6eb4edb94",
+      "official_ordered_question_answer_sha256": "c865cf10a2c55799d4dce331044f1acf6d36b7271bb00e16bfec5ef7363951f2"
+    },
+    "test_vs_official_test": {
+      "supplied_rows": 1319,
+      "official_rows": 1319,
+      "supplied_unique_questions": 1319,
+      "official_unique_questions": 1319,
+      "matched_unique_questions": 1319,
+      "all_supplied_questions_in_official": true,
+      "question_membership_match": true,
+      "ordered_question_answer_match": true,
+      "supplied_only_question_hashes": [],
+      "official_only_question_hashes": [],
+      "answer_mismatch_question_hashes": [],
+      "answer_mismatch_examples": [],
+      "ordered_question_answer_sha256": "e77bb5ddeef1ea6b01b0f07bdeef4544f989455ad24fb3cb6a064f194c81c268",
+      "official_ordered_question_answer_sha256": "e77bb5ddeef1ea6b01b0f07bdeef4544f989455ad24fb3cb6a064f194c81c268"
+    }
+  },
+  "primary_comparison_eligibility": {
+    "eligible": false,
+    "stop_reasons": [
+      "conflicting answers for a normalized original problem"
+    ]
+  },
+  "source_files_unchanged": true,
+  "evaluation_denominator": {
+    "supplied_test_rows": 1319,
+    "supplied_test_unique_questions": 1319,
+    "annotation_filtering_applied": false
+  },
+  "full_audit": {
+    "path": "artifacts/lotus-corpus-audit/membership_audit.full.json",
+    "sha256": "aa517eeb2185af993fea4602875e03e5a7900ee7f83b15dfe960673c1d3f3fa0"
+  }
+}
