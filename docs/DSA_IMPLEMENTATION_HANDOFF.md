@@ -501,3 +501,8 @@ https://arxiv.org/abs/2606.29983
 [12] Internalize_CoT_Step_by_Step: pinned augmented GSM8K data used by LOTUS preprocessing.
 https://github.com/da03/Internalize_CoT_Step_by_Step/tree/e06a32ee5e4cd117171daeb4755d2a97ece62761/data/gsm8k
 LOTUS download/conversion script: https://github.com/yingfan-bot/lotus/blob/main/preprocessing/gsm_icot.bash
+
+[13] Fu, Yang, Zhang, Ma, Chen, Li and Chang. Simply Stabilizing the Loop via Fully Looped Transformer, 2026 preprint (v1).
+Paper: https://arxiv.org/html/2605.18797v1
+Code: https://github.com/FuRuF-11/FullyLoopedTransformer
+Relevance: supplies recurrent information to every layer through attention queries while current-layer states supply keys/values, addressing loop gradient and residual instability. The project's FLT-inspired GPT-2 memory adaptation is documented in `K8_FLT_PILOT.md`; it is not a full reproduction of the paper.

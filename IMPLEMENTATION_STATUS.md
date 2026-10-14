@@ -178,3 +178,38 @@ The primary model/training implementation is unchanged, preserving historical
 checkpoint contracts. The older standalone diagnostic notebook is no longer
 the recommended entry point. Hosted execution of the expanded review is pending.
 See `docs/COLAB_QUICKSTART.md` for the protocol and export contents.
+
+## FLT data-scale notebook — 13 October 2026
+
+The uploaded K=8 four-condition T4 pilot is complete and reviewed. FLT/static
+and FLT/learned fit 29/32 and 31/32 training answers, compared with 6/32 and 4/32
+for standard recurrence, with substantially smaller gradient norms. Their
+validation scores remain 3/128 and 2/128; learned write-event discrimination is
+near chance. These observations supersede earlier pending-hosted-pilot notes
+above and do not establish a benchmark or learned anchoring advantage.
+
+`notebooks/DSA_FLT_DataScale.ipynb` is a separate next experiment: 512 selected
+training records, 1,024 updates per arm, K=8 FLT, and static/every-loop/periodic/
+learned write policies. It evaluates all 500 validation records and caps expensive
+training diagnostics at 64 records, with two gradient probes and eight paired
+intervention records. Existing losses, model parameters and primary source-data
+policy remain unchanged. The completed 32-record notebook remains separate.
+
+`scripts/diagnose_dsa_pilot.py --training-limit` verifies the full training identity
+before selecting a fixed seeded sample; reports distinguish sampled and full
+denominators. The exporter includes all six paired write-policy comparisons,
+controller AUC, source and artifact hashes, failure logs and notebook/protocol.
+The old 80% training memorization heuristic is not a blocker for data-scale runs.
+Finished compatible arms restore/reuse their verified backups; partial arms
+restart. Full checkpoint ZIPs remain separate from the final small review ZIP.
+
+**230 CPU tests passed**, including a real tiny-model four-policy prepare/screen/
+train/evaluate/diagnose/control/export workflow, completed-backup restoration,
+sampled diagnostic identity and export hashing. Log:
+`artifacts/data-scale-validation-unittest.txt`. See
+`provenance/data_scale_validation.json` and `docs/FLT_DATA_SCALE.md`. The new
+512-record pretrained T4 experiment has not been executed locally.
+
+Fu et al., *Simply Stabilizing the Loop via Fully Looped Transformer* (v1), is
+added as reference [13] in the handoff, with its official paper/code links and
+the distinction between the paper and this fixed-memory GPT-2 adaptation.

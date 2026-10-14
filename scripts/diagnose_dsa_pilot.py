@@ -14,6 +14,7 @@ import json
 import math
 from pathlib import Path
 import platform
+import random
 import sys
 import time
 
@@ -384,11 +385,14 @@ def prediction_journal(model, tokenizer, records, rows, path, prefix, budget, ca
 
 
 def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit=2,
-             probe_limit=4, depth_grid=(1, 2, 4, 8, 16), max_new_tokens=64, comprehensive=False):
+             probe_limit=4, depth_grid=(1, 2, 4, 8, 16), max_new_tokens=64, comprehensive=False,
+             training_limit=0):
     if gradient_limit < 1 or probe_limit < 1 or max_new_tokens < 1 or not depth_grid or any(k < 1 for k in depth_grid):
         raise ValueError("Positive diagnostic limits and depth budgets required")
     if len(set(depth_grid)) != len(depth_grid):
         raise ValueError("Depth budgets must be unique")
+    if training_limit < 0:
+        raise ValueError("Training diagnostic limit must be nonnegative")
     prepared_dir, run_dir, output_dir = (Path(p).resolve() for p in (prepared_dir, run_dir, output_dir))
     if any(output_dir == p or output_dir.is_relative_to(p) or p.is_relative_to(output_dir)
            for p in (prepared_dir, run_dir)):
@@ -414,8 +418,14 @@ def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit
         raise ValueError("Training denominator differs from manifest")
     if stable_json_hash([r["sample_id"] for r in records]) != train["ordered_sample_ids_sha256"]:
         raise ValueError("Ordered training identities differ from manifest")
+    full_training_examples = len(records)
+    selected_indices = list(range(len(records)))
+    if training_limit and training_limit < len(records):
+        selected_indices = sorted(random.Random(contract["settings"]["seed"]).sample(
+            selected_indices, training_limit))
+        records = [records[i] for i in selected_indices]
     if len(records) > 512:
-        raise ValueError("This diagnostic is for small pilots (at most 512 training records)")
+        raise ValueError("Limit expensive diagnostics to at most 512 records with --training-limit")
     rows = [{"sample_id": r["sample_id"], "question_hash": r["question_hash"],
              "question": decode(tokenizer, r["question_input_ids"]),
              "final_answer": decode(tokenizer, r["answer_input_ids"][:-1]).replace(",", "").strip()}
@@ -434,6 +444,9 @@ def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit
                 "diagnostic_helpers_sha256": {name: file_sha256(ROOT / name) for name in
                     ("scripts/evaluate_dsa.py", "scripts/smoke_pretrained_dsa.py")},
                 "gradient_limit": min(gradient_limit, len(rows)), "probe_limit": min(probe_limit, len(rows)),
+                "training_limit": training_limit, "full_training_examples": full_training_examples,
+                "selected_training_indices": selected_indices,
+                "selected_training_sample_ids": [r["sample_id"] for r in records],
                 "depth_grid": list(depth_grid), "max_new_tokens": max_new_tokens,
                 "comprehensive": comprehensive,
                 "runtime": {"device": str(device), "gpu": torch.cuda.get_device_name(device) if device.type == "cuda" else None,
@@ -523,8 +536,10 @@ def diagnose(prepared_dir, run_dir, output_dir, *, device="cuda", gradient_limit
                       for p in sorted(output_dir.rglob("*")) if p.is_file() and p != report_path}
     report = {"identity": identity, "complete": True, "split": "train_diagnostic",
               "training_examples": len(records), "question_only_generation": True,
+              "full_training_examples": full_training_examples,
+              "all_training_examples_profiled": len(records) == full_training_examples,
               "gold_used_only_for_scoring_and_teacher_forced_gradient_probe": True,
-              "training_subset_order": "prepared source order; first rows for probes",
+              "training_subset_order": "seeded sample without replacement, restored source order; first selected rows for probes" if training_limit else "prepared source order; first rows for probes",
               "test_or_validation_answers_read": False, "optimizer_updates": 0,
               "model_state_unchanged": True, "model_state_sha256": before,
               "prediction_reports": prediction_reports, "gradient_reports": gradient_reports, "forward_reports": forward_reports,
@@ -547,6 +562,8 @@ def main():
     parser.add_argument("--depth-grid", type=int, nargs="+", default=[1, 2, 4, 8, 16])
     parser.add_argument("--max-new-tokens", type=int, default=64)
     parser.add_argument("--comprehensive", action="store_true")
+    parser.add_argument("--training-limit", type=int, default=0,
+                        help="0 profiles all training rows (up to 512); positive caps generation and forward profiles using a fixed seeded sample")
     args = parser.parse_args()
     report = diagnose(**vars(args))
     print(json.dumps({"complete": report["complete"], "optimizer_updates": report["optimizer_updates"],

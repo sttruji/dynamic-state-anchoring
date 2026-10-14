@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-13",
+  "validation": "CPU correctness only; new 512-record pretrained T4 run remains unexecuted",
+  "command": ".venv/bin/python -m unittest discover -s tests -q",
+  "tests_passed": 230,
+  "log": "artifacts/data-scale-validation-unittest.txt",
+  "coverage": [
+    "four FLT write policies trained from matched initial parameters",
+    "bounded diagnostics with full-data identity verification",
+    "same selected diagnostic sample across policies",
+    "finished checkpoint archive restore without retraining",
+    "all validation fixture rows retained",
+    "six paired policy comparisons and hashed small ZIP",
+    "held-out test excluded; no weights in review archive",
+    "notebook code cells compile and outputs are cleared"
+  ],
+  "defaults": {
+    "backbone": "yingfanbot/gsm-cot-gpt2",
+    "training_records": 512,
+    "updates_per_arm": 1024,
+    "loops": 8,
+    "policies": [
+      "static",
+      "every_loop",
+      "periodic",
+      "learned"
+    ],
+    "validation_records": 500,
+    "diagnostic_training_records": 64,
+    "gradient_records": 2,
+    "intervention_records": 8,
+    "seeds": [
+      7
+    ]
+  },
+  "sha256": {
+    "notebooks/DSA_FLT_DataScale.ipynb": "33a5c4177eae8dde19acf664800271dabc62d1194636bcbc06e1ab5ac077f7cc",
+    "scripts/diagnose_dsa_pilot.py": "9c7dbbed0db1eb09a8a8b291d7aacf07eee31ee3eb7ad23aa0881e091c8fa857",
+    "scripts/package_pilot_review.py": "8e31b858f9d05e3033c03fe90608cb54beb30ce4a2652a8bb536de872c90ac76",
+    "tests/test_data_scale_workflow.py": "479d0144360895851956c16f2616e894f6708956fa1d48193333e20f9e65a44c",
+    "docs/FLT_DATA_SCALE.md": "061f388e5b0d127abf4c88f0812c9cc0bb3c3f1625f7e99bc2df83cea2446f2f"
+  }
+}

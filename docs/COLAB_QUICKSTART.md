@@ -1,5 +1,9 @@
 # Colab quickstart
 
+For the **next test**, open [DSA_FLT_DataScale.ipynb](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_FLT_DataScale.ipynb), select **T4 GPU**, and **Run all**. It trains four FLT write-policy controls on 512 selected records for 1,024 updates each, evaluates all 500 validation questions, caps training diagnostics, and exports one small review ZIP. See [FLT_DATA_SCALE.md](FLT_DATA_SCALE.md) for the frozen settings, approximate budget and backup behavior.
+
+The instructions below describe the earlier **32-record optimization pilot**.
+
 Open [DSA_Colab.ipynb](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb), choose **T4 GPU**, and **Run all**. Use the current GitHub notebook, because an older Drive copy does not update automatically.
 
 The default is a fresh **K=8, 32-question, 200-update** comparison of four conditions: standard/static, standard/learned, FLT-inspired/static and FLT-inspired/learned. It starts a separate experiment, reuses cached data/model downloads, checks matched initialization and saves a full backup after each arm. Partial arms restart; verified finished arms can be reused.

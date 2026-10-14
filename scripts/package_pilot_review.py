@@ -2,6 +2,7 @@
 """Build one bounded review ZIP and a transparent pre-scale evidence summary."""
 import argparse
 import hashlib
+import itertools
 import json
 import math
 from pathlib import Path
@@ -44,6 +45,8 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
     reports = project_dir / "reports" / run_name
     review = reports / review_name
     review.mkdir(parents=True, exist_ok=True)
+    protocol = load(review / "protocol.json") if (review / "protocol.json").is_file() else {}
+    experiment_kind = protocol.get("EXPERIMENT_KIND", "memorization_pilot")
     output = Path(output).resolve() if output else project_dir / "bundles" / f"{run_name}-{review_name}.zip"
     evidence = {"purpose": "pilot engineering evidence; not an automatic approval to scale or a benchmark claim",
                 "run_name": run_name, "review_name": review_name, "arms": {}, "blocking": [], "questions_remaining": []}
@@ -79,6 +82,18 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
             report = load(diag)
             diagnostics[arm] = report
             arm_evidence["training_generation"] = report["prediction_reports"]["normal_training_set"]
+            arm_evidence["training_diagnostic_scope"] = {
+                "profiled_records": report["training_examples"],
+                "full_training_records": report.get("full_training_examples", report["training_examples"]),
+                "all_training_examples_profiled": report.get("all_training_examples_profiled", True)}
+            supervised_profiles = [p for p in report.get("forward_reports", []) if p["controller_supervised"]]
+            pairs = [(state["gate_probability"], target) for p in supervised_profiles
+                     for state, target in zip(p["states"], p["gate_targets"])]
+            positive = [p for p,y in pairs if y]; negative = [p for p,y in pairs if not y]
+            arm_evidence["controller_event_discrimination"] = {
+                "scope": "deterministic teacher-forced profiles of selected training records",
+                "positive_decisions": len(positive), "negative_decisions": len(negative),
+                "auc": sum((a>b)+.5*(a==b) for a in positive for b in negative) / (len(positive)*len(negative)) if positive and negative else None}
             arm_evidence["interventions"] = {k: v for k, v in report["prediction_reports"].items() if k != "normal_training_set"}
             arm_evidence["model_state_unchanged"] = report["model_state_unchanged"]
             nonfinite = sum(loss["parameter_gradients"]["nonfinite_parameter_gradients"]
@@ -97,7 +112,7 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
             if arm_evidence["nonfinite_raw_residual_observations"]:
                 evidence["blocking"].append(f"{arm}: nonfinite raw residual observations")
             # This is an explicit engineering heuristic, not a statistical threshold.
-            if arm_evidence["training_generation"]["accuracy"] < .8:
+            if experiment_kind == "memorization_pilot" and arm_evidence["training_generation"]["accuracy"] < .8:
                 evidence["blocking"].append(f"{arm}: training accuracy below the declared 80% memorization diagnostic heuristic")
         if control.exists(): arm_evidence["explicit_control"] = load(control)["splits"]
         valid_reports = sorted((review / arm).glob("validation-*/report.json"))
@@ -112,7 +127,7 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
             arm_evidence["validation"] = {key: r[key] for key in ("total", "correct", "accuracy", "invalid_answer_rate", "average_latency_seconds")}
         evidence["arms"][arm] = arm_evidence
     required += [review / "original-explicit-control" / "report.json", review / "protocol.json", review / "session_status.json"]
-    protocol = load(review / "protocol.json") if (review / "protocol.json").is_file() else {}
+    evidence["experiment_kind"] = experiment_kind
     if any(v.get("recurrence_mode") == "flt_memory" for v in protocol.get("CONDITIONS", {}).values()):
         required.append(review / "initialization-screen" / "report.json")
         screen_path = review / "initialization-screen" / "report.json"
@@ -162,6 +177,22 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
         ga, gb = [evidence["arms"][x].get("answer_gradient_norm_medians_by_depth", {}) for x in (left, right)]
         comparison["right_to_left_gradient_norm_ratio_by_depth"] = {k: gb[k]/ga[k] if ga[k] and gb[k] is not None else None for k in ga if k in gb}
         evidence["factorial_comparisons"][f"{left}_vs_{right}"] = comparison
+    evidence["write_policy_validation_comparisons"] = {}
+    for left,right in itertools.combinations(arms, 2):
+        a,b = validation_rows.get(left, []),validation_rows.get(right, [])
+        if not a or [r["sample_id"] for r in a] != [r["sample_id"] for r in b]: continue
+        if left not in manifests or right not in manifests: continue
+        ls,rs = [manifests[x]["contract"]["settings"] for x in (left,right)]
+        differences = {k for k in ls if ls[k] != rs[k]}
+        if differences != {"write_mode"} or ls.get("recurrence_mode", "standard") != rs.get("recurrence_mode", "standard"): continue
+        lo = sum(x["correct"] and not y["correct"] for x,y in zip(a,b))
+        ro = sum(not x["correct"] and y["correct"] for x,y in zip(a,b)); discordant = lo+ro
+        evidence["write_policy_validation_comparisons"][f"{left}_vs_{right}"] = {
+            "n":len(a), "left_correct":sum(r["correct"] for r in a), "right_correct":sum(r["correct"] for r in b),
+            "both_correct":sum(x["correct"] and y["correct"] for x,y in zip(a,b)),
+            "left_only_correct":lo, "right_only_correct":ro,
+            "exact_mcnemar_two_sided_unadjusted_p": min(1., 2*sum(math.comb(discordant,i) for i in range(min(lo,ro)+1))/2**discordant) if discordant else 1.,
+            "interpretation":"exploratory paired validation comparison; single seed and multiple comparisons"}
     if all((review / arm).is_dir() for arm in ("static", "learned")):
         paired = {}
         for arm in ("static", "learned"):
@@ -181,6 +212,9 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
         "One small training subset and one seed cannot establish an anchoring advantage; a larger run needs predeclared data, updates, controls and repeated seeds.",
         "The held-out test remains reserved until the larger protocol is frozen."]
     evidence["next_action"] = "resolve pilot blockers before increasing training scale" if evidence["blocking"] else "review evidence and freeze a larger exploratory protocol; no automatic scale-up"
+    if experiment_kind == "data_scale":
+        evidence["purpose"] = "fixed-budget data-scale validation and write-policy comparison; one exploratory seed"
+        evidence["next_action"] = "inspect missing/inconsistent engineering evidence before interpreting results" if evidence["blocking"] else "review validation and write-policy comparisons before choosing repeated seeds or a larger budget"
     atomic_json(review / "scale_readiness.json", evidence)
     entries = {}
     def add(path, name):
@@ -214,6 +248,9 @@ def package_review(project_dir, run_name, review_name, prepared_dir, output=None
     for name in ("notebooks/DSA_Colab.ipynb", "scripts/ensure_pilot_arm.py", "scripts/screen_recurrence.py", "scripts/diagnose_dsa_pilot.py", "scripts/pilot_explicit_controls.py", "scripts/package_pilot_review.py",
                  "dsa/models/flt_memory.py", "dsa/models/backbone.py", "dsa/models/anchored_loop.py", "dsa/training/objectives.py"):
         add(ROOT / name, f"source/{name}")
+    if experiment_kind == "data_scale":
+        for name in ("notebooks/DSA_FLT_DataScale.ipynb", "docs/FLT_DATA_SCALE.md"):
+            add(ROOT / name, f"source/{name}")
     inventory = {name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for name, path in entries.items()}
     if sum(v["bytes"] for v in inventory.values()) > 150_000_000: raise ValueError("Review bundle exceeds 150 MB")
     status = load(review / "session_status.json") if (review / "session_status.json").exists() else {}

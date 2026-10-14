@@ -2,20 +2,25 @@
 
 This repository develops Dynamic State Anchoring on the pinned LOTUS codebase.
 Start with the [DSA overview](DSA_README.md),
-[Colab notebook](notebooks/DSA_Colab.ipynb), and
+[data-scale Colab notebook](notebooks/DSA_FLT_DataScale.ipynb), and
 [Colab quickstart](docs/COLAB_QUICKSTART.md). The GitHub repository is
 [`sttruji/dynamic-state-anchoring`](https://github.com/sttruji/dynamic-state-anchoring).
 Source audits and CPU correctness checks are complete. Saved GPU pilots can be
 inspected with the checkpoint diagnostics below; no comparative benchmark result
 is claimed.
 
-[Open the pilot and review notebook in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb).
+[Open the next FLT data-scale test in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_FLT_DataScale.ipynb).
 
-The notebook now runs a fresh K=8 pilot: standard and FLT-inspired memory
-recurrence, each with static and learned writes. Four conditions share the same
-initialization, 32 training questions and 200-update budgets. It screens gradients
-before training, downloads each completed checkpoint backup, and exports one
-small review ZIP. See the [experiment specification](docs/K8_FLT_PILOT.md).
+The next experiment uses FLT-inspired recurrence at K=8 with 512 selected
+training records and 1,024 updates per arm. No-write, every-loop, periodic and
+learned-write policies share initialization, losses and data order. All 500
+validation questions are evaluated, expensive diagnostics are capped, and the
+last cell exports one small review ZIP. See the [protocol](docs/FLT_DATA_SCALE.md)
+and [paper references](docs/DSA_IMPLEMENTATION_HANDOFF.md#11-references-and-provenance).
+
+The completed 32-record comparison remains reproducible in the
+[original pilot notebook](notebooks/DSA_Colab.ipynb), described in
+[K8_FLT_PILOT.md](docs/K8_FLT_PILOT.md).
 
 The original LOTUS documentation and attribution follow.
 

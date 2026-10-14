@@ -13,12 +13,13 @@ implementations of the written contracts**, not recovered reference files.
 
 ## Run locally
 
-The [Colab notebook](notebooks/DSA_Colab.ipynb) provides GitHub checkout, dependency
-installation, Drive-backed corpus/model caches, a pretrained inference smoke,
-resumable training, saved-run review and one final evidence ZIP. It defaults to
-reviewing the existing pilot without retraining. It clones
-`sttruji/dynamic-state-anchoring`. See the [Colab quickstart](docs/COLAB_QUICKSTART.md)
-or [open the notebook in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb).
+The [next Colab notebook](notebooks/DSA_FLT_DataScale.ipynb) provides GitHub
+checkout, dependency installation, Drive caches, matched training, evaluation
+and one final evidence ZIP. It defaults to 512 training records, 1,024 updates
+per arm and K=8 FLT-inspired recurrence with four write policies. Finished arms
+can be reused; partial arms restart. See the [protocol](docs/FLT_DATA_SCALE.md)
+or [open it in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_FLT_DataScale.ipynb).
+The [original 32-record pilot](notebooks/DSA_Colab.ipynb) remains separate.
 
 From this repository root, the prepared `.venv` can run:
 
@@ -107,10 +108,12 @@ annotation derivatives and group/evaluation manifests are stored under ignored
 The personal semantic review is complete; source-data noise is documented and
 proposed clean sensitivity exclusions remain separate from the unchanged primary
 benchmark. A small T4 pilot has supplied training and validation artifacts.
-The next step is the unified saved-checkpoint review in the original Colab
-notebook: verify training-question generation, latent/gradient behavior and
-explicit-route controls, then review the exported ZIP before freezing a larger
-exploratory protocol. No comparative benchmark improvement is claimed.
+The K=8 comparison showed substantially better gradient conditioning and
+training fitting with FLT-inspired recurrence, while validation and learned
+write timing remain unresolved. The next step is the [bounded data-scale
+experiment](docs/FLT_DATA_SCALE.md), with fixed write-policy controls and capped
+diagnostics. No comparative benchmark improvement is claimed. The FLT paper is
+included in the [research references](docs/DSA_IMPLEMENTATION_HANDOFF.md#11-references-and-provenance).
 
 See [implementation status](IMPLEMENTATION_STATUS.md),
 [upstream inspection](docs/UPSTREAM_INSPECTION.md), and
