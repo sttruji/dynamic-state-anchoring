@@ -1,0 +1,1061 @@
+{
+  "schema_version": "dsa_findings_summary_v1",
+  "compiled_date": "2026-10-14",
+  "decision": "Park the current DSA implementation; do not scale unchanged.",
+  "conclusion": "FLT-inspired recurrence improved conditioning and small-set fitting. Learned anchoring demonstrated no validation advantage, the controller failed to learn event timing, and local follow-up showed no consistent depth benefit and lower explicit-route performance after fine-tuning. This does not establish that every latent anchoring design is ineffective.",
+  "seed": 7,
+  "shared_training_settings": {
+    "anchor_weight": 0.1,
+    "backbone": "yingfanbot/gsm-cot-gpt2",
+    "cot_weight": 1.0,
+    "gate_positive_weight": 1.0,
+    "gate_threshold": 0.5,
+    "gate_weight": 0.1,
+    "gradient_accumulation": 1,
+    "gradient_checkpointing": true,
+    "learning_rate": 3e-05,
+    "max_grad_norm": 1.0,
+    "periodic_interval": 4,
+    "revision": "e0ef1887404adbf6c531d2cac7804694321f87bd",
+    "seed": 7,
+    "tiny": false,
+    "weight_decay": 0.01,
+    "workspace": 4
+  },
+  "data_source_revision": "e06a32ee5e4cd117171daeb4755d2a97ece62761",
+  "inference_and_analysis_commits": {
+    "k16_training": "ba4e69315086",
+    "k16_review": "847e61bcbb79",
+    "k8_recurrence": "eb4d7b20a33f",
+    "data_scale": "a980b68bad7fb443ae36c4bc5c2e1558b655ef97"
+  },
+  "experiments": {
+    "k16_standard": {
+      "source": {
+        "run_name": "gpt2-pilot-v1-ba4e69315086",
+        "review_name": "pilot-review-v3-847e61bcbb79-e899dc38-8413303fcae8",
+        "audit_sha256": "731f7541eb9702f55f4d6145e4b6dc315518c16c5f0661d08a78eb4281a3210e",
+        "bundle_manifest_sha256": "67764051b9b386971cbd10257da7912ff42d5cd88dbfb44ae37d75f1e5331419",
+        "evidence_complete": true,
+        "review_zip_sha256": "6fc08416be8e54ffa489c83360626ee839e3f4b42d61fa322e2394c1e2b809b9"
+      },
+      "loops": 16,
+      "training_records": 32,
+      "updates_per_arm": 200,
+      "diagnostic_training_records": 32,
+      "validation_records": 128,
+      "independent_checks": {
+        "nested_artifact_hashes": 185,
+        "raw_token_generations_checked": 256,
+        "prediction_scores_checked": 512
+      },
+      "arms": {
+        "static": {
+          "training": {
+            "n": 32,
+            "correct": 6,
+            "invalid": 2,
+            "accuracy": 0.1875,
+            "wilson_95": [
+              0.08889544689565954,
+              0.3530915520137596
+            ]
+          },
+          "validation": {
+            "n": 128,
+            "correct": 3,
+            "invalid": 7,
+            "accuracy": 0.0234375,
+            "wilson_95": [
+              0.008002416396755481,
+              0.06664374505143222
+            ]
+          },
+          "gradient_norm_median": 243570.4296875,
+          "gradient_norm_max": 146447171584.0,
+          "clipped_updates": 200,
+          "training_seconds": 415.19942730500014,
+          "alignment": {
+            "events": 62,
+            "mean_cosine": 0.089931471498623,
+            "median_cosine": 0.07916394993662834,
+            "mean_normalized_mse": 1.8201231956481934
+          },
+          "recurrence_mode": "standard",
+          "write_mode": "static",
+          "gate_probability_auc": 0.5706146685925213,
+          "target_write_rate_supervised": 0.1336206896551724,
+          "executed_write_rate_supervised": 0.0,
+          "inference_write_rate_all_diagnostic_questions": 0.0
+        },
+        "learned": {
+          "training": {
+            "n": 32,
+            "correct": 4,
+            "invalid": 3,
+            "accuracy": 0.125,
+            "wilson_95": [
+              0.04970134387480073,
+              0.2806830548165022
+            ]
+          },
+          "validation": {
+            "n": 128,
+            "correct": 3,
+            "invalid": 17,
+            "accuracy": 0.0234375,
+            "wilson_95": [
+              0.008002416396755481,
+              0.06664374505143222
+            ]
+          },
+          "gradient_norm_median": 654291.40625,
+          "gradient_norm_max": 66170281984.0,
+          "clipped_updates": 200,
+          "training_seconds": 485.35502535400065,
+          "alignment": {
+            "events": 62,
+            "mean_cosine": -0.011274466163388664,
+            "median_cosine": -0.01565360650420189,
+            "mean_normalized_mse": 2.0245219622888873
+          },
+          "recurrence_mode": "standard",
+          "write_mode": "learned",
+          "gate_probability_auc": 0.5095089070775156,
+          "target_write_rate_supervised": 0.1336206896551724,
+          "executed_write_rate_supervised": 0.5862068965517241,
+          "inference_write_rate_all_diagnostic_questions": 0.61328125
+        }
+      },
+      "paired_validation": {
+        "both_correct": 1,
+        "static_only": 2,
+        "learned_only": 2,
+        "both_wrong": 123
+      }
+    },
+    "k8_recurrence": {
+      "source": {
+        "run_name": "gpt2-k8-flt-v1-eb4d7b20a33f",
+        "review_name": "pilot-review-v4-eb4d7b20a33f-2e6c24d9-ff893aa0e775",
+        "audit_sha256": "ea7e655ca0e76c8e76e4ad6903dcca684bc781eb10f9c81a8793aafabdc91b04",
+        "bundle_manifest_sha256": "ffa5c76ba3e875a52c21eb4409f6520c262efc2f1c9ff3b5036e6e0fb16f877c",
+        "evidence_complete": true,
+        "review_zip_sha256": "302d70b9345fd01f74955ae377d40663d3b3293c779091a4d91c6f0ebf258624"
+      },
+      "loops": 8,
+      "training_records": 32,
+      "updates_per_arm": 200,
+      "diagnostic_training_records": 32,
+      "validation_records": 128,
+      "independent_checks": {
+        "inventoried_files": 464,
+        "passed_stages": 33,
+        "nested_artifact_hashes": 365,
+        "raw_token_generations_checked": 496,
+        "prediction_scores_checked": 1008
+      },
+      "arms": {
+        "static": {
+          "training": {
+            "n": 32,
+            "correct": 6,
+            "accuracy": 0.1875,
+            "invalid": 0,
+            "wilson_95": [
+              0.08889544689565954,
+              0.3530915520137596
+            ]
+          },
+          "validation": {
+            "n": 128,
+            "correct": 1,
+            "accuracy": 0.0078125,
+            "invalid": 0,
+            "wilson_95": [
+              0.0013804318928742412,
+              0.04292625943886061
+            ]
+          },
+          "gradient_norm_median": 7111.054443359375,
+          "gradient_norm_max": 4968160.0,
+          "clipped_updates": 200,
+          "training_seconds": 204.20321211399892,
+          "alignment": {
+            "events": 62,
+            "mean_cosine": 0.15158898040892615,
+            "mean_normalized_mse": 1.6939594457226415
+          },
+          "recurrence_mode": "standard",
+          "write_mode": "static",
+          "gate_probability_auc": 0.49468690702087287,
+          "target_write_rate_supervised": 0.2672413793103448,
+          "executed_write_rate_supervised": 0.0,
+          "inference_write_rate_all_diagnostic_questions": 0.0
+        },
+        "learned": {
+          "training": {
+            "n": 32,
+            "correct": 4,
+            "accuracy": 0.125,
+            "invalid": 3,
+            "wilson_95": [
+              0.04970134387480073,
+              0.2806830548165022
+            ]
+          },
+          "validation": {
+            "n": 128,
+            "correct": 6,
+            "accuracy": 0.046875,
+            "invalid": 13,
+            "wilson_95": [
+              0.021657844171923776,
+              0.09849752245094322
+            ]
+          },
+          "gradient_norm_median": 19193.3681640625,
+          "gradient_norm_max": 25607620.0,
+          "clipped_updates": 200,
+          "training_seconds": 253.0575385390016,
+          "alignment": {
+            "events": 62,
+            "mean_cosine": 0.01936562057404268,
+            "mean_normalized_mse": 1.96047576204423
+          },
+          "recurrence_mode": "standard",
+          "write_mode": "learned",
+          "gate_probability_auc": 0.5345351043643264,
+          "target_write_rate_supervised": 0.2672413793103448,
+          "executed_write_rate_supervised": 1.0,
+          "inference_write_rate_all_diagnostic_questions": 1.0
+        },
+        "flt_static": {
+          "training": {
+            "n": 32,
+            "correct": 29,
+            "accuracy": 0.90625,
+            "invalid": 0,
+            "wilson_95": [
+              0.7578184527161212,
+              0.9675984487016337
+            ]
+          },
+          "validation": {
+            "n": 128,
+            "correct": 3,
+            "accuracy": 0.0234375,
+            "invalid": 1,
+            "wilson_95": [
+              0.008002416396755481,
+              0.06664374505143222
+            ]
+          },
+          "gradient_norm_median": 80.66290283203125,
+          "gradient_norm_max": 4173.85595703125,
+          "clipped_updates": 200,
+          "training_seconds": 317.24240833100157,
+          "alignment": {
+            "events": 62,
+            "mean_cosine": 0.17221933759508595,
+            "mean_normalized_mse": 1.653490787552249
+          },
+          "recurrence_mode": "flt_memory",
+          "write_mode": "static",
+          "gate_probability_auc": 0.6053130929791272,
+          "target_write_rate_supervised": 0.2672413793103448,
+          "executed_write_rate_supervised": 0.0,
+          "inference_write_rate_all_diagnostic_questions": 0.0
+        },
+        "flt_learned": {
+          "training": {
+            "n": 32,
+            "correct": 31,
+            "accuracy": 0.96875,
+            "invalid": 0,
+            "wilson_95": [
+              0.8425573617998744,
+              0.9944621398359969
+            ]
+          },
+          "validation": {
+            "n": 128,
+            "correct": 2,
+            "accuracy": 0.015625,
+            "invalid": 0,
+            "wilson_95": [
+              0.004295449710144082,
+              0.055180976679817195
+            ]
+          },
+          "gradient_norm_median": 68.72590255737305,
+          "gradient_norm_max": 8405.8310546875,
+          "clipped_updates": 199,
+          "training_seconds": 330.56449361199793,
+          "alignment": {
+            "events": 62,
+            "mean_cosine": 0.04239908761284765,
+            "mean_normalized_mse": 1.9128884576982068
+          },
+          "recurrence_mode": "flt_memory",
+          "write_mode": "learned",
+          "gate_probability_auc": 0.5074003795066414,
+          "target_write_rate_supervised": 0.2672413793103448,
+          "executed_write_rate_supervised": 0.43103448275862066,
+          "inference_write_rate_all_diagnostic_questions": 0.41796875
+        }
+      },
+      "paired_validation": {
+        "static:learned": {
+          "both_correct": 1,
+          "left_only": 0,
+          "right_only": 5,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.0625
+        },
+        "static:flt_static": {
+          "both_correct": 0,
+          "left_only": 1,
+          "right_only": 3,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.625
+        },
+        "static:flt_learned": {
+          "both_correct": 0,
+          "left_only": 1,
+          "right_only": 2,
+          "exact_mcnemar_two_sided_unadjusted_p": 1
+        },
+        "learned:flt_static": {
+          "both_correct": 2,
+          "left_only": 4,
+          "right_only": 1,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.375
+        },
+        "learned:flt_learned": {
+          "both_correct": 1,
+          "left_only": 5,
+          "right_only": 1,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.21875
+        },
+        "flt_static:flt_learned": {
+          "both_correct": 1,
+          "left_only": 2,
+          "right_only": 1,
+          "exact_mcnemar_two_sided_unadjusted_p": 1
+        }
+      }
+    },
+    "flt_data_scale": {
+      "source": {
+        "run_name": "gpt2-flt-data-v1-a980b68bad7f-df4e456c",
+        "review_name": "data-review-v1-a980b68bad7f-6d127591-6a9b7aed00da",
+        "audit_sha256": "1029cdd1596d8951593f25de4fd71cd7336e35ab9512e1e5eae3f8a93d9721ba",
+        "bundle_manifest_sha256": "bbb2c8c17e77abc710b45b7a5012d36b574800fa6e9d0e85501c8d8c96501321",
+        "evidence_complete": true,
+        "review_zip_sha256": "e184c75ab8d1875fcb8926b3fb6bf831db87f7967397eca2aa8d530caf74e6be"
+      },
+      "loops": 8,
+      "training_records": 512,
+      "updates_per_arm": 1024,
+      "diagnostic_training_records": 64,
+      "validation_records": 500,
+      "independent_checks": {
+        "inventoried_files": 518,
+        "passed_stages": 32,
+        "nested_artifact_hashes": 417,
+        "raw_token_generations_checked": 560,
+        "prediction_scores_checked": 2560
+      },
+      "arms": {
+        "static": {
+          "training": {
+            "n": 64,
+            "correct": 20,
+            "accuracy": 0.3125,
+            "invalid": 0,
+            "wilson_95": [
+              0.21231066539482046,
+              0.4339233570274815
+            ]
+          },
+          "validation": {
+            "n": 500,
+            "correct": 23,
+            "accuracy": 0.046,
+            "invalid": 0,
+            "wilson_95": [
+              0.030845108370816204,
+              0.06807779276827323
+            ]
+          },
+          "gradient_norm_median": 30.41815185546875,
+          "gradient_norm_max": 1938.2049560546875,
+          "clipped_updates": 1024,
+          "training_seconds": 1174.8811196650008,
+          "alignment": {
+            "events": 108,
+            "mean_cosine": 0.7329474229503561,
+            "mean_normalized_mse": 0.2915928354141889
+          },
+          "recurrence_mode": "flt_memory",
+          "write_mode": "static",
+          "gate_probability_auc": 0.5321913580246913,
+          "target_write_rate_supervised": 0.2647058823529412,
+          "executed_write_rate_supervised": 0.0,
+          "inference_write_rate_all_diagnostic_questions": 0.0,
+          "validation_write_rate": 0.0,
+          "validation_writes_per_question": {
+            "0.0": 500
+          }
+        },
+        "every_loop": {
+          "training": {
+            "n": 64,
+            "correct": 24,
+            "accuracy": 0.375,
+            "invalid": 0,
+            "wilson_95": [
+              0.2666598017882464,
+              0.497496213159955
+            ]
+          },
+          "validation": {
+            "n": 500,
+            "correct": 20,
+            "accuracy": 0.04,
+            "invalid": 0,
+            "wilson_95": [
+              0.026040797389777257,
+              0.060973595834850805
+            ]
+          },
+          "gradient_norm_median": 27.800857543945312,
+          "gradient_norm_max": 862.352294921875,
+          "clipped_updates": 1024,
+          "training_seconds": 1372.6660464559986,
+          "alignment": {
+            "events": 108,
+            "mean_cosine": 0.4047771439784103,
+            "mean_normalized_mse": 1.18477904189516
+          },
+          "recurrence_mode": "flt_memory",
+          "write_mode": "every_loop",
+          "gate_probability_auc": 0.5473148148148148,
+          "target_write_rate_supervised": 0.2647058823529412,
+          "executed_write_rate_supervised": 1.0,
+          "inference_write_rate_all_diagnostic_questions": 1.0,
+          "validation_write_rate": 1.0,
+          "validation_writes_per_question": {
+            "8.0": 500
+          }
+        },
+        "periodic": {
+          "training": {
+            "n": 64,
+            "correct": 20,
+            "accuracy": 0.3125,
+            "invalid": 0,
+            "wilson_95": [
+              0.21231066539482046,
+              0.4339233570274815
+            ]
+          },
+          "validation": {
+            "n": 500,
+            "correct": 17,
+            "accuracy": 0.034,
+            "invalid": 0,
+            "wilson_95": [
+              0.02133451980853219,
+              0.053771365501634506
+            ]
+          },
+          "gradient_norm_median": 29.243112564086914,
+          "gradient_norm_max": 1348.5546875,
+          "clipped_updates": 1024,
+          "training_seconds": 1459.0630778079994,
+          "alignment": {
+            "events": 108,
+            "mean_cosine": 0.3024003457415987,
+            "mean_normalized_mse": 1.3910562528504267
+          },
+          "recurrence_mode": "flt_memory",
+          "write_mode": "periodic",
+          "gate_probability_auc": 0.5342283950617284,
+          "target_write_rate_supervised": 0.2647058823529412,
+          "executed_write_rate_supervised": 0.25,
+          "inference_write_rate_all_diagnostic_questions": 0.25,
+          "validation_write_rate": 0.25,
+          "validation_writes_per_question": {
+            "2.0": 500
+          }
+        },
+        "learned": {
+          "training": {
+            "n": 64,
+            "correct": 19,
+            "accuracy": 0.296875,
+            "invalid": 0,
+            "wilson_95": [
+              0.19905151325539794,
+              0.41770201103542925
+            ]
+          },
+          "validation": {
+            "n": 500,
+            "correct": 14,
+            "accuracy": 0.028,
+            "invalid": 0,
+            "wilson_95": [
+              0.01675097472075645,
+              0.04644640267494888
+            ]
+          },
+          "gradient_norm_median": 29.656567573547363,
+          "gradient_norm_max": 821.7954711914062,
+          "clipped_updates": 1024,
+          "training_seconds": 1579.9472294240104,
+          "alignment": {
+            "events": 108,
+            "mean_cosine": 0.369236648634628,
+            "mean_normalized_mse": 1.256618618965149
+          },
+          "recurrence_mode": "flt_memory",
+          "write_mode": "learned",
+          "gate_probability_auc": 0.5134876543209876,
+          "target_write_rate_supervised": 0.2647058823529412,
+          "executed_write_rate_supervised": 0.0,
+          "inference_write_rate_all_diagnostic_questions": 0.0,
+          "validation_write_rate": 0.002,
+          "validation_writes_per_question": {
+            "0.0": 492,
+            "1.0": 8
+          }
+        }
+      },
+      "paired_validation": {
+        "static:every_loop": {
+          "both_correct": 10,
+          "left_only": 13,
+          "right_only": 10,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.6776394844055176
+        },
+        "static:periodic": {
+          "both_correct": 9,
+          "left_only": 14,
+          "right_only": 8,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.28627872467041016
+        },
+        "static:learned": {
+          "both_correct": 8,
+          "left_only": 15,
+          "right_only": 6,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.0783538818359375
+        },
+        "every_loop:periodic": {
+          "both_correct": 9,
+          "left_only": 11,
+          "right_only": 8,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.6476058959960938
+        },
+        "every_loop:learned": {
+          "both_correct": 10,
+          "left_only": 10,
+          "right_only": 4,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.1795654296875
+        },
+        "periodic:learned": {
+          "both_correct": 6,
+          "left_only": 11,
+          "right_only": 8,
+          "exact_mcnemar_two_sided_unadjusted_p": 0.6476058959960938
+        }
+      }
+    }
+  },
+  "local_inference": {
+    "arms": {
+      "static": {
+        "conditions": {
+          "k1": {
+            "n": 64,
+            "correct": 3,
+            "accuracy": 0.046875,
+            "invalid": 0,
+            "mean_seconds": 0.17502223249630333,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.5262017025315799,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_anchor": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.5270821145904847,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_workspace": {
+            "n": 64,
+            "correct": 3,
+            "accuracy": 0.046875,
+            "invalid": 0,
+            "mean_seconds": 0.5645964707364328,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_memory": {
+            "n": 64,
+            "correct": 3,
+            "accuracy": 0.046875,
+            "invalid": 0,
+            "mean_seconds": 0.5698175385186914,
+            "stop_reasons": {
+              "eos": 64
+            }
+          }
+        },
+        "paired": {
+          "k1": {
+            "answer_changes": 23,
+            "correct_lost": 0,
+            "correct_gained": 1,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_anchor": {
+            "answer_changes": 1,
+            "correct_lost": 0,
+            "correct_gained": 0,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_workspace": {
+            "answer_changes": 26,
+            "correct_lost": 0,
+            "correct_gained": 1,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_memory": {
+            "answer_changes": 25,
+            "correct_lost": 0,
+            "correct_gained": 1,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          }
+        },
+        "k8_vs_colab": {
+          "same_extracted_answers": 64,
+          "same_generated_text": 64,
+          "n": 64,
+          "colab_correct": 2
+        },
+        "weights_unchanged": true
+      },
+      "every_loop": {
+        "conditions": {
+          "k1": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.1685332226970786,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8": {
+            "n": 64,
+            "correct": 4,
+            "accuracy": 0.0625,
+            "invalid": 0,
+            "mean_seconds": 0.508087542285466,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_anchor": {
+            "n": 64,
+            "correct": 3,
+            "accuracy": 0.046875,
+            "invalid": 0,
+            "mean_seconds": 0.5109200599063115,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_workspace": {
+            "n": 64,
+            "correct": 3,
+            "accuracy": 0.046875,
+            "invalid": 0,
+            "mean_seconds": 0.5167193600318569,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_memory": {
+            "n": 64,
+            "correct": 3,
+            "accuracy": 0.046875,
+            "invalid": 0,
+            "mean_seconds": 0.5152354036554243,
+            "stop_reasons": {
+              "eos": 64
+            }
+          }
+        },
+        "paired": {
+          "k1": {
+            "answer_changes": 25,
+            "correct_lost": 2,
+            "correct_gained": 0,
+            "exact_mcnemar_two_sided_unadjusted_p": 0.5
+          },
+          "k8_zero_anchor": {
+            "answer_changes": 4,
+            "correct_lost": 1,
+            "correct_gained": 0,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_workspace": {
+            "answer_changes": 25,
+            "correct_lost": 2,
+            "correct_gained": 1,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_memory": {
+            "answer_changes": 28,
+            "correct_lost": 2,
+            "correct_gained": 1,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          }
+        },
+        "k8_vs_colab": {
+          "same_extracted_answers": 64,
+          "same_generated_text": 64,
+          "n": 64,
+          "colab_correct": 4
+        },
+        "weights_unchanged": true
+      },
+      "periodic": {
+        "conditions": {
+          "k1": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.16291967377037508,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8": {
+            "n": 64,
+            "correct": 3,
+            "accuracy": 0.046875,
+            "invalid": 0,
+            "mean_seconds": 0.48856066859207203,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_anchor": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.48755865942348464,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_workspace": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.4880097336617837,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_memory": {
+            "n": 64,
+            "correct": 3,
+            "accuracy": 0.046875,
+            "invalid": 0,
+            "mean_seconds": 0.4912704126909375,
+            "stop_reasons": {
+              "eos": 64
+            }
+          }
+        },
+        "paired": {
+          "k1": {
+            "answer_changes": 19,
+            "correct_lost": 1,
+            "correct_gained": 0,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_anchor": {
+            "answer_changes": 16,
+            "correct_lost": 2,
+            "correct_gained": 1,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_workspace": {
+            "answer_changes": 22,
+            "correct_lost": 1,
+            "correct_gained": 0,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_memory": {
+            "answer_changes": 29,
+            "correct_lost": 1,
+            "correct_gained": 1,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          }
+        },
+        "k8_vs_colab": {
+          "same_extracted_answers": 64,
+          "same_generated_text": 64,
+          "n": 64,
+          "colab_correct": 3
+        },
+        "weights_unchanged": true
+      },
+      "learned": {
+        "conditions": {
+          "k1": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.1592292043615089,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.4844232715649923,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_anchor": {
+            "n": 64,
+            "correct": 2,
+            "accuracy": 0.03125,
+            "invalid": 0,
+            "mean_seconds": 0.48676212761074567,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_workspace": {
+            "n": 64,
+            "correct": 4,
+            "accuracy": 0.0625,
+            "invalid": 0,
+            "mean_seconds": 0.49294933068904356,
+            "stop_reasons": {
+              "eos": 64
+            }
+          },
+          "k8_zero_memory": {
+            "n": 64,
+            "correct": 4,
+            "accuracy": 0.0625,
+            "invalid": 0,
+            "mean_seconds": 0.4942003809228481,
+            "stop_reasons": {
+              "eos": 64
+            }
+          }
+        },
+        "paired": {
+          "k1": {
+            "answer_changes": 27,
+            "correct_lost": 1,
+            "correct_gained": 1,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_anchor": {
+            "answer_changes": 1,
+            "correct_lost": 0,
+            "correct_gained": 0,
+            "exact_mcnemar_two_sided_unadjusted_p": 1.0
+          },
+          "k8_zero_workspace": {
+            "answer_changes": 20,
+            "correct_lost": 0,
+            "correct_gained": 2,
+            "exact_mcnemar_two_sided_unadjusted_p": 0.5
+          },
+          "k8_zero_memory": {
+            "answer_changes": 21,
+            "correct_lost": 0,
+            "correct_gained": 2,
+            "exact_mcnemar_two_sided_unadjusted_p": 0.5
+          }
+        },
+        "k8_vs_colab": {
+          "same_extracted_answers": 64,
+          "same_generated_text": 64,
+          "n": 64,
+          "colab_correct": 2
+        },
+        "weights_unchanged": true
+      }
+    },
+    "explicit": {
+      "static": {
+        "n": 64,
+        "correct": 17,
+        "accuracy": 0.265625,
+        "invalid": 0,
+        "mean_seconds": 1.909562314483992,
+        "stop_reasons": {
+          "eos": 64
+        }
+      },
+      "every_loop": {
+        "n": 64,
+        "correct": 15,
+        "accuracy": 0.234375,
+        "invalid": 1,
+        "mean_seconds": 1.9175648802174692,
+        "stop_reasons": {
+          "eos": 64
+        }
+      },
+      "periodic": {
+        "n": 64,
+        "correct": 13,
+        "accuracy": 0.203125,
+        "invalid": 1,
+        "mean_seconds": 1.9698333052929229,
+        "stop_reasons": {
+          "eos": 64
+        }
+      },
+      "learned": {
+        "n": 64,
+        "correct": 16,
+        "accuracy": 0.25,
+        "invalid": 1,
+        "mean_seconds": 1.974162738245468,
+        "stop_reasons": {
+          "eos": 64
+        }
+      },
+      "original": {
+        "n": 64,
+        "correct": 25,
+        "accuracy": 0.390625,
+        "invalid": 0,
+        "mean_seconds": 2.195452653684697,
+        "stop_reasons": {
+          "eos": 64
+        }
+      }
+    },
+    "explicit_paired_vs_original": {
+      "static": {
+        "correct_lost": 10,
+        "correct_gained": 2,
+        "exact_mcnemar_two_sided_unadjusted_p": 0.03857421875
+      },
+      "every_loop": {
+        "correct_lost": 11,
+        "correct_gained": 1,
+        "exact_mcnemar_two_sided_unadjusted_p": 0.00634765625
+      },
+      "periodic": {
+        "correct_lost": 13,
+        "correct_gained": 1,
+        "exact_mcnemar_two_sided_unadjusted_p": 0.0018310546875
+      },
+      "learned": {
+        "correct_lost": 10,
+        "correct_gained": 1,
+        "exact_mcnemar_two_sided_unadjusted_p": 0.01171875
+      }
+    },
+    "explicit_first8_colab_parity": {
+      "original": {
+        "n": 8,
+        "same_generated_text": 8,
+        "same_token_ids": 8
+      },
+      "static": {
+        "n": 8,
+        "same_generated_text": 8,
+        "same_token_ids": 8
+      },
+      "every_loop": {
+        "n": 8,
+        "same_generated_text": 8,
+        "same_token_ids": 8
+      },
+      "periodic": {
+        "n": 8,
+        "same_generated_text": 8,
+        "same_token_ids": 8
+      },
+      "learned": {
+        "n": 8,
+        "same_generated_text": 8,
+        "same_token_ids": 8
+      }
+    },
+    "independent_prediction_records_checked": 1600,
+    "optimizer_updates": 0,
+    "weights_unchanged": true,
+    "current_session_seconds": 928.694316499983,
+    "source_summary_sha256": "b3ddff27dde9bfa31b68317157f985bff7fdb0ad02698505ae038b99ddb95e46",
+    "inference_script_sha256": "ff8d7d6fdc8dcc7200e95930fd22e601ca050dff0d29e18eb91a002fb9344b01",
+    "validation_file_sha256": "a2eb1d0d634534d53610a0ab24b0fe91219ef116fe13c8d7120474f5fe29de3e",
+    "ordered_sample_ids_sha256": "dbd5e0992c5f5b25a6722e0ba35c36c38e6b19006a7dcef80d761dae4fc27fbf",
+    "selection": "first 64 original validation records in source order",
+    "runtime": {
+      "device": "cpu",
+      "threads": 4,
+      "python": "3.12.14",
+      "packages": {
+        "torch": "2.7.1",
+        "transformers": "4.46.2",
+        "tokenizers": "0.20.3"
+      }
+    },
+    "latent_max_new_tokens": 64,
+    "explicit_max_new_tokens": 192,
+    "test_evaluated": false,
+    "checkpoint_source_run": "gpt2-flt-data-v1-a980b68bad7f-df4e456c"
+  },
+  "limitations": [
+    "One seed; no held-out test evaluation.",
+    "Training subsets and exposures differ across experiments.",
+    "Sampled training diagnostics are not full-training accuracy.",
+    "Explicit and latent routes use different token budgets.",
+    "All paired p-values are exploratory, two-sided and unadjusted.",
+    "Original LOTUS numeric extraction is retained, including incidental matches.",
+    "Review ZIPs exclude weights; hashes and local checkpoint parity do not establish cloud durability."
+  ],
+  "public_scope": "Aggregate results and provenance only; no model weights, dataset question text, local filesystem paths, or private run logs."
+}

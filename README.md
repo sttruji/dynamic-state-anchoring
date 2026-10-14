@@ -5,22 +5,22 @@ Start with the [DSA overview](DSA_README.md),
 [data-scale Colab notebook](notebooks/DSA_FLT_DataScale.ipynb), and
 [Colab quickstart](docs/COLAB_QUICKSTART.md). The GitHub repository is
 [`sttruji/dynamic-state-anchoring`](https://github.com/sttruji/dynamic-state-anchoring).
-Source audits and CPU correctness checks are complete. Saved GPU pilots can be
-inspected with the checkpoint diagnostics below; no comparative benchmark result
-is claimed.
 
-[Open the next FLT data-scale test in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_FLT_DataScale.ipynb).
+**Status — 14 October 2026:** the current implementation is parked after
+exploratory GPT-2 ablations. FLT-inspired recurrence improved conditioning and
+tiny-set fitting, but learned anchoring showed no validation advantage, the
+controller nearly stopped writing, and local follow-up found reduced explicit
+performance after fine-tuning. Scaling this version unchanged is not justified.
+This is a negative result for the tested design and budgets, rather than a claim
+that every latent anchoring approach is ineffective.
 
-The next experiment uses FLT-inspired recurrence at K=8 with 512 selected
-training records and 1,024 updates per arm. No-write, every-loop, periodic and
-learned-write policies share initialization, losses and data order. All 500
-validation questions are evaluated, expensive diagnostics are capped, and the
-last cell exports one small review ZIP. See the [protocol](docs/FLT_DATA_SCALE.md)
-and [paper references](docs/DSA_IMPLEMENTATION_HANDOFF.md#11-references-and-provenance).
-
-The completed 32-record comparison remains reproducible in the
-[original pilot notebook](notebooks/DSA_Colab.ipynb), described in
-[K8_FLT_PILOT.md](docs/K8_FLT_PILOT.md).
+See the [findings document](docs/FINDINGS.md) for the K=16/K=8 ablations,
+512-question experiment, local inference checks and limitations, with an
+[aggregate results JSON](provenance/findings_summary.json).
+The [pilot notebook](notebooks/DSA_Colab.ipynb) and
+[data-scale notebook](notebooks/DSA_FLT_DataScale.ipynb) remain available for
+reproduction; pin the implementation references listed in the findings.
+Related papers are listed in the [research references](docs/DSA_IMPLEMENTATION_HANDOFF.md#11-references-and-provenance).
 
 The original LOTUS documentation and attribution follow.
 
