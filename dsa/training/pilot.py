@@ -27,6 +27,7 @@ import numpy as np
 import torch
 
 from dsa.data.tokenize import TinyTokenizer, register_marker_token
+from dsa.devices import mps_memory_snapshot, resolve_device, synchronize
 from dsa.models.anchored_loop import AnchorConfig, AnchoredLoop
 from dsa.models.backbone import BackboneAdapter
 from dsa.training.objectives import LossConfig, joint_objective
@@ -106,15 +107,7 @@ def _resolve_under(directory: Path, relative: str) -> Path:
 
 
 def _device(name: str) -> torch.device:
-    if name == "auto":
-        name = "cuda" if torch.cuda.is_available() else "cpu"
-    if name not in {"cpu", "cuda", "mps"}:
-        raise ValueError("Device must be auto, cpu, cuda, or mps")
-    if name == "cuda" and not torch.cuda.is_available():
-        raise ValueError("CUDA requested but unavailable")
-    if name == "mps" and not torch.backends.mps.is_available():
-        raise ValueError("MPS requested but unavailable")
-    return torch.device(name)
+    return resolve_device(name)
 
 
 def _seed(seed: int, device: torch.device) -> None:
@@ -484,6 +477,7 @@ def train_pilot(config: PilotConfig) -> dict:
         initial_digest, device, config.keep_checkpoints)
     with metrics_path.open("a", encoding="utf-8") as journal:
         for next_step in range(step + 1, config.steps + 1):
+            synchronize(device)
             started = time.monotonic()
             optimizer.zero_grad(set_to_none=True)
             if device.type == "cuda":
@@ -515,8 +509,7 @@ def train_pilot(config: PilotConfig) -> dict:
                                                          error_if_nonfinite=True).item()
             optimizer.step()
             scheduler.step()
-            if device.type == "cuda":
-                torch.cuda.synchronize(device)
+            synchronize(device)
             rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
             row = {"step": next_step, **totals, "write_rate": totals["writes"] / config.loops,
                    "sample_ids": sample_ids, "gradient_norm": gradient_norm,
@@ -524,7 +517,8 @@ def train_pilot(config: PilotConfig) -> dict:
                    "seconds": time.monotonic() - started,
                    "peak_process_rss_bytes": rss if platform.system() == "Darwin" else rss * 1024,
                    "peak_cuda_allocated_bytes": torch.cuda.max_memory_allocated(device)
-                   if device.type == "cuda" else None}
+                   if device.type == "cuda" else None,
+                   **mps_memory_snapshot(device)}
             journal.write(json.dumps(row, sort_keys=True) + "\n")
             journal.flush()
             if next_step % config.save_every == 0 or next_step == config.steps:

@@ -13,7 +13,11 @@ implementations of the written contracts**, not recovered reference files.
 
 ## Run locally
 
-The [next Colab notebook](notebooks/DSA_FLT_DataScale.ipynb) provides GitHub
+For native Apple GPU training and matched local checks, see the
+[MPS workflow](docs/LOCAL_MPS.md). The trainer, checkpoint smoke and answer
+evaluator automatically select MPS when CUDA is unavailable and MPS is available.
+
+The [Colab data-scale notebook](notebooks/DSA_FLT_DataScale.ipynb) provides GitHub
 checkout, dependency installation, Drive caches, matched training, evaluation
 and one final evidence ZIP. It defaults to 512 training records, 1,024 updates
 per arm and K=8 FLT-inspired recurrence with four write policies. Finished arms

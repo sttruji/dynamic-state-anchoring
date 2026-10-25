@@ -35,16 +35,17 @@ def smoke_checkpoint(backbone,revision,output,device='auto',tiny=False,max_new_t
     from transformers import AutoModelForCausalLM,AutoTokenizer
     from dsa.models.backbone import BackboneAdapter
     from dsa.data.tokenize import TinyTokenizer
+    from dsa.devices import mps_memory_snapshot, resolve_device, synchronize
     if max_new_tokens < 1:
         raise ValueError('max_new_tokens must be positive')
     if not tiny and (len(revision)!=40 or any(c not in '0123456789abcdef' for c in revision)):
         raise ValueError('Resolve and pin an immutable checkpoint revision before inference')
-    device='cuda' if device=='auto' and torch.cuda.is_available() else 'cpu' if device=='auto' else device
-    if device.startswith('cuda') and not torch.cuda.is_available():raise ValueError('CUDA requested but unavailable')
+    device=str(resolve_device(device))
     requested={'backbone':backbone,'revision':revision,'tiny':tiny,
                'max_new_tokens':max_new_tokens,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                'torch':torch.__version__,'transformers':importlib.metadata.version('transformers'),
-               'device':device,'device_name':torch.cuda.get_device_name(device) if device.startswith('cuda') else 'cpu',
+               'device':device,'device_name':torch.cuda.get_device_name(device) if device=='cuda' else device,
+               'device_helpers_sha256':hashlib.sha256((ROOT/'dsa/devices.py').read_bytes()).hexdigest(),
                'cuda':torch.version.cuda}
     output=Path(output)
     if output.exists():
@@ -64,18 +65,21 @@ def smoke_checkpoint(backbone,revision,output,device='auto',tiny=False,max_new_t
     text='What is 2 plus 3?\n'
     inputs=torch.tensor([tokenizer.encode(text,add_special_tokens=False)],device=device)
     mask=torch.ones_like(inputs)
+    synchronize(device)
     start=time.perf_counter()
     with torch.no_grad():
         logits=model(input_ids=inputs,attention_mask=mask,use_cache=False,return_dict=True).logits
         if not bool(torch.isfinite(logits).all()):raise FloatingPointError('Unmodified checkpoint produced nonfinite logits')
         generated=model.generate(inputs,attention_mask=mask,max_new_tokens=max_new_tokens,do_sample=False,
                                  use_cache=False,pad_token_id=tokenizer.eos_token_id,eos_token_id=tokenizer.eos_token_id)
+    synchronize(device)
     if model.get_input_embeddings().num_embeddings!=original_vocab:raise AssertionError('Smoke test changed model vocabulary')
     continuation=tokenizer.decode(generated[0,inputs.shape[1]:].tolist(),skip_special_tokens=True)
     report={'schema_version':'dsa_unmodified_checkpoint_smoke_v1','passed':True,'backbone':backbone,'revision':revision,
             'tiny':tiny,'identity':requested,'device':device,'input_question':text,'generated_continuation':continuation,
             'original_vocab_size':original_vocab,'vocabulary_changed':False,'anchor_wrapper_used':False,
             'finite_logits':True,'elapsed_seconds':time.perf_counter()-start,
+            **mps_memory_snapshot(device),
             'accuracy_claim':'Inference plumbing only; this single question is not a benchmark result.',
             'model_weights_downloaded':not tiny,'hf_home':os.environ.get('HF_HOME')}
     atomic_json(output,report)

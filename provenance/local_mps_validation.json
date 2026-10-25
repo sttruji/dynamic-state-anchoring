@@ -1,0 +1,119 @@
+{
+  "artifact_sha256": {
+    "cpu_suite_log": "96453379802858b3fff3fb9f08b14ed766e3f9204676bce009679f1cc415d0b1",
+    "optimizer_check_report": "80ffa634c452db2b3b3839bb23b6f96b70732927693e660a11ac2912aed53075"
+  },
+  "date": "2026-10-18",
+  "hardware": {
+    "chip": "Apple M1",
+    "model": "MacBookPro17,1",
+    "mps_recommended_max_bytes": 12713115648,
+    "unified_memory_bytes": 17179869184
+  },
+  "implementation_sha256": {
+    "dsa/devices.py": "6674d01c6b8b0f4453ac8f996d34d662bb76b3f059c20171b67028583849e33b",
+    "dsa/training/pilot.py": "ac25f0279e4a0da179718e944fcaaf502afa6f529825bd2e4e024285da5dfd37",
+    "scripts/check_local_dsa.py": "8a5f41cf895ff79f486dfdc66edd708649fa5fbddd4c367962d24ff708da9db8",
+    "scripts/evaluate_dsa.py": "5bf7ba6ec77d6ca9522518de9c48c436e1eee2fddd87ec2810aa2db9c8d6de5e",
+    "scripts/smoke_pretrained_dsa.py": "56408eac178b2388e2cfebf2388fb04430ef69cc4e10dcbc801f1645edc4a975",
+    "tests/test_devices.py": "75fe3b8e0492a5d09405f3c1691574fde16ae7ba6a13bfcdeb0d4bb49cd3a5ea",
+    "tests/test_local_check.py": "5fb680ec6f27c0a80b24b186e6404b67bd5ec8b35bd8f1bba63c2950d22905b3"
+  },
+  "limits": [
+    "Four updates per policy establish device feasibility only.",
+    "No validation or held-out test answers were evaluated by the pretrained optimizer check.",
+    "All sixteen updates exceeded the gradient clipping threshold.",
+    "MPS memory observations are snapshots, not measured peaks.",
+    "Prior controller-collapse and explicit-capability findings remain unresolved."
+  ],
+  "optimizer_check": {
+    "backbone": "yingfanbot/gsm-cot-gpt2",
+    "cases": {
+      "every_loop": {
+        "clipped_update_fraction": 1.0,
+        "final_state_sha256": "53211762f33d88e002471f9242fe93940f9148dc472f1128fbfe4a286e855ebe",
+        "finite": true,
+        "initial_state_sha256": "d5153023a967804731172347e9bd37be3e40a227ffd11c5791bb2fe38676f3f6",
+        "max_observed_mps_driver_bytes": 5431279616,
+        "median_gradient_norm_before_clipping": 671.53955078125,
+        "median_update_seconds": 4.117190562945325,
+        "median_warm_update_seconds": 4.1430872089695185,
+        "metrics_sha256": "8ede4c98b8ec5c6ef1b939764fa3b420b6b87f335bd00b3484347a89c0ec1636",
+        "optimizer_updates": 4,
+        "parameter_count": 125037313,
+        "parameters_updated": true
+      },
+      "learned": {
+        "clipped_update_fraction": 1.0,
+        "final_state_sha256": "aae4135ea5024855e07752db44a394b1ff5ed9e48d9b5c78bb88da76d438ef00",
+        "finite": true,
+        "initial_state_sha256": "d5153023a967804731172347e9bd37be3e40a227ffd11c5791bb2fe38676f3f6",
+        "max_observed_mps_driver_bytes": 5431279616,
+        "median_gradient_norm_before_clipping": 628.5458374023438,
+        "median_update_seconds": 3.908870437531732,
+        "median_warm_update_seconds": 3.8648910829797387,
+        "metrics_sha256": "44d36c250ae2bda84cf3030cf1300725b53d104318534e4cef19bd80df3f3611",
+        "optimizer_updates": 4,
+        "parameter_count": 125037313,
+        "parameters_updated": true
+      },
+      "periodic": {
+        "clipped_update_fraction": 1.0,
+        "final_state_sha256": "b444808a3c17471bb529482c6e38f475f757e1baf0f4af40b20089b964391554",
+        "finite": true,
+        "initial_state_sha256": "d5153023a967804731172347e9bd37be3e40a227ffd11c5791bb2fe38676f3f6",
+        "max_observed_mps_driver_bytes": 5431279616,
+        "median_gradient_norm_before_clipping": 925.5063781738281,
+        "median_update_seconds": 4.776118436944671,
+        "median_warm_update_seconds": 5.000014957971871,
+        "metrics_sha256": "c80aa73f0d2f4691e32dcfe6b308bb23c9332d3320b05aa3507c0bc52cc09d6a",
+        "optimizer_updates": 4,
+        "parameter_count": 125037313,
+        "parameters_updated": true
+      },
+      "static": {
+        "clipped_update_fraction": 1.0,
+        "final_state_sha256": "f7e964db66bcf3ac898a12488c9f589a00569a122e594c7a15d3e3f7713dc5bd",
+        "finite": true,
+        "initial_state_sha256": "d5153023a967804731172347e9bd37be3e40a227ffd11c5791bb2fe38676f3f6",
+        "max_observed_mps_driver_bytes": 5245239296,
+        "median_gradient_norm_before_clipping": 667.6291198730469,
+        "median_update_seconds": 6.285298958478961,
+        "median_warm_update_seconds": 5.779794125002809,
+        "metrics_sha256": "22251626e36fba9c899e7cd10461310f7c5bb1cddfbe70fbdb19e486699f07de",
+        "optimizer_updates": 4,
+        "parameter_count": 125037313,
+        "parameters_updated": true
+      }
+    },
+    "elapsed_seconds": 95.83981583407149,
+    "identical_initial_parameters": true,
+    "interpretation": "Training-device feasibility only; no reasoning, generalization, or scaling-readiness claim.",
+    "loop_budget": 8,
+    "recurrence_mode": "flt_memory",
+    "revision": "e0ef1887404adbf6c531d2cac7804694321f87bd",
+    "seed": 7,
+    "steps_per_policy": 4,
+    "tiny": false,
+    "validation_or_test_evaluated": false
+  },
+  "runtime": {
+    "device": "mps",
+    "packages": {
+      "numpy": "2.2.6",
+      "tokenizers": "0.20.3",
+      "torch": "2.7.1",
+      "transformers": "4.46.2"
+    }
+  },
+  "schema_version": "dsa_local_mps_validation_v1",
+  "verification": {
+    "cpu_suite_skipped": 1,
+    "cpu_suite_success": true,
+    "cpu_suite_tests_run": 236,
+    "native_device_tests_run": 5,
+    "native_device_tests_success": true,
+    "native_training_resume_scope": "tiny FLT model, parameter agreement rtol=1e-5 and atol=1e-6; not cross-backend or pretrained bitwise reproducibility",
+    "unmodified_pretrained_smoke": true
+  }
+}

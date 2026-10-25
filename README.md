@@ -6,7 +6,14 @@ Start with the [DSA overview](DSA_README.md),
 [Colab quickstart](docs/COLAB_QUICKSTART.md). The GitHub repository is
 [`sttruji/dynamic-state-anchoring`](https://github.com/sttruji/dynamic-state-anchoring).
 
-**Status — 14 October 2026:** the current implementation is parked after
+**Local development — 18 October 2026:** native MPS training, checkpoint
+resume and answer evaluation have been checked on Apple M1. A bounded GPT-2
+optimizer check completed four updates for each write policy with matched
+initialization. See the [local MPS workflow](docs/LOCAL_MPS.md) and
+[validation record](provenance/local_mps_validation.json). These checks establish
+local feasibility; the earlier scientific limitations remain unresolved.
+
+**Prior findings — 14 October 2026:** the implementation was parked after
 exploratory GPT-2 ablations. FLT-inspired recurrence improved conditioning and
 tiny-set fitting, but learned anchoring showed no validation advantage, the
 controller nearly stopped writing, and local follow-up found reduced explicit

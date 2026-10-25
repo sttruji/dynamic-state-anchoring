@@ -33,3 +33,8 @@ condaenv.*.requirements.txt
 # Local DSA runtime and generated research artifacts
 .venv/
 artifacts/
+
+# Text-only label audit evidence is covered by the broad checkpoint_* rule above.
+!docs/CHECKPOINT_LABEL_AUDIT_20261019.md
+!provenance/checkpoint_label_personal_review.jsonl
+!provenance/checkpoint_label_audit_20261019.json

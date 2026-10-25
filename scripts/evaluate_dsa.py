@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from dsa.data.adapters import canonical_record, stable_json_hash
+from dsa.devices import mps_memory_snapshot, resolve_device, synchronize
 from dsa.provenance import file_sha256
 from dsa.training.pilot import tokenizer_directory_sha256
 from scripts.smoke_pretrained_dsa import atomic_json
@@ -243,13 +244,7 @@ def evaluate_run(prepared_dir, run_dir, output_dir, *, split="valid", loop_budge
         raise ValueError("Final test requires --final-test and the complete test denominator (--limit 0)")
     if limit < 0 or max_new_tokens < 1 or (loop_budget is not None and loop_budget < 1):
         raise ValueError("Invalid evaluation limits or loop budget")
-    if device not in {"auto", "cpu", "cuda", "mps"}:
-        raise ValueError("Device must be auto, cpu, cuda, or mps")
-    device = "cuda" if device == "auto" and torch.cuda.is_available() else "cpu" if device == "auto" else device
-    if device == "cuda" and not torch.cuda.is_available():
-        raise ValueError("CUDA requested but unavailable")
-    if device == "mps" and not torch.backends.mps.is_available():
-        raise ValueError("MPS requested but unavailable")
+    device = str(resolve_device(device))
     manifest_path = prepared_dir / "manifest.json"
     manifest = _json(manifest_path)
     info = manifest["splits"][split]
@@ -288,6 +283,7 @@ def evaluate_run(prepared_dir, run_dir, output_dir, *, split="valid", loop_budge
                             else platform.processor() or platform.machine()},
                 "scoring": "LOTUS eb77e2f extraction/float equality/string fallback",
                 "evaluator_sha256": file_sha256(Path(__file__)),
+                "device_helpers_sha256": file_sha256(ROOT / "dsa/devices.py"),
                 "evaluation_helpers_sha256": file_sha256(ROOT / "dsa/evaluation/evaluate.py")}
     output_dir.mkdir(parents=True, exist_ok=True)
     identity_path = output_dir / "identity.json"
@@ -317,13 +313,11 @@ def evaluate_run(prepared_dir, run_dir, output_dir, *, split="valid", loop_budge
     with predictions_path.open("a", encoding="utf-8") as handle:
         for index in range(len(predictions), len(rows)):
             row = rows[index]
-            if device == "cuda":
-                torch.cuda.synchronize()
+            synchronize(device)
             tick = time.perf_counter()
             prediction = predict_question(model, tokenizer, row["question"],
                                           loop_budget=budget, max_new_tokens=max_new_tokens)
-            if device == "cuda":
-                torch.cuda.synchronize()
+            synchronize(device)
             prediction["latency_seconds"] = time.perf_counter() - tick
             gold = row["final_answer"].replace(",", "").strip()
             result = {"index": index, "sample_id": row["sample_id"],
@@ -351,6 +345,7 @@ def evaluate_run(prepared_dir, run_dir, output_dir, *, split="valid", loop_budge
               "total_measured_prediction_seconds": sum(row["latency_seconds"] for row in predictions),
               "current_session_seconds": time.perf_counter() - started,
               "peak_cuda_memory_bytes": torch.cuda.max_memory_allocated() if device == "cuda" else None,
+              **mps_memory_snapshot(device),
               "all_source_examples_retained": len(rows) == len(all_rows),
               "purpose": "final held-out test" if split == "test" else "implementation-pilot validation",
               "question_only_inference": True, "annotation_filtering": False,

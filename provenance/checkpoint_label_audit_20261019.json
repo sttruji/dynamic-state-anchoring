@@ -1,0 +1,434 @@
+{
+  "schema_version": "dsa_checkpoint_label_personal_review_v1",
+  "date": "2026-10-19",
+  "reviewer": "Primary assistant; individually written semantic judgments, not human or independent second-reviewer labels",
+  "mechanical_audit": {
+    "schema_version": "dsa_checkpoint_label_audit_v1",
+    "date": "2026-10-19",
+    "scope": "TRAIN-only reconstruction and independent arithmetic checks; semantic review is separate",
+    "source_sha256": "93a266b1f7425a00463bb775de2946f9b30f76514944b5456bbffceb50b5de30",
+    "inputs_sha256": {
+      "artifacts/flt-data-scale-audit/bundle/prepared/train.tokenized.jsonl": "63a2b505a54bea52a248662799107e7ac66af50084505eac1bbf9360c016981d",
+      "artifacts/local-mps-20261018/prepared/train.tokenized.jsonl": "ae690ea46be83dca9e4df131a19c2882e3560e51719e4e894761891b75f4db4e"
+    },
+    "script_sha256": "e8d9380af732bffea720aea970e11cbc53ec4385734d22743a63495c0d31710c",
+    "groups": {
+      "historical_512": {
+        "counts": {
+          "records": 512,
+          "controller_supervised_records": 426,
+          "no_event_records": 86,
+          "masked_records": 86,
+          "rejected_arithmetic_candidates": 24,
+          "terminal_exclusions": 482,
+          "accepted_equations_independently_verified": 821,
+          "schedule_adjusted_events": 0,
+          "accepted_value_equals_final_answer": 16,
+          "checkpoint_target_token:>>": 821
+        },
+        "flagged_records": {
+          "no_events": 86,
+          "rejected_arithmetic": 24,
+          "accepted_final_value": 15,
+          "write_on_final_loop": 13,
+          "dense_events": 9,
+          "accepted_after_rejected_arithmetic": 5
+        },
+        "positive_negative_labels": {
+          "0": 2587,
+          "1": 821
+        },
+        "accepted_events_by_loop": {
+          "2": 107,
+          "4": 254,
+          "6": 170,
+          "7": 45,
+          "5": 90,
+          "3": 140,
+          "8": 13,
+          "1": 2
+        },
+        "unique_questions": 512,
+        "all_reconstructed_fields_equal": true
+      },
+      "local_32": {
+        "counts": {
+          "accepted_equations_independently_verified": 62,
+          "schedule_adjusted_events": 0,
+          "accepted_value_equals_final_answer": 0,
+          "checkpoint_target_token:>>": 62,
+          "records": 32,
+          "controller_supervised_records": 29,
+          "no_event_records": 3,
+          "masked_records": 3,
+          "rejected_arithmetic_candidates": 0,
+          "terminal_exclusions": 31
+        },
+        "flagged_records": {
+          "no_events": 3,
+          "dense_events": 1,
+          "write_on_final_loop": 1
+        },
+        "positive_negative_labels": {
+          "0": 170,
+          "1": 62
+        },
+        "accepted_events_by_loop": {
+          "3": 13,
+          "6": 12,
+          "5": 11,
+          "4": 12,
+          "2": 9,
+          "7": 4,
+          "8": 1
+        },
+        "unique_questions": 32,
+        "all_reconstructed_fields_equal": true
+      }
+    },
+    "unique_records_audited": 512,
+    "local_rows_also_in_historical": 32,
+    "manual_packet": {
+      "records": 64,
+      "all_local_32_included": true,
+      "selection": "all local 32; 32 historical additions, hash-ordered seed 19, four passes over eight risk strata then fill",
+      "review_source_rows": [
+        19659,
+        25316,
+        30409,
+        30991,
+        32434,
+        36625,
+        37978,
+        45062,
+        47560,
+        49352,
+        64908,
+        79089,
+        112564,
+        117042,
+        126177,
+        169782,
+        191727,
+        207002,
+        219243,
+        222571,
+        227356,
+        266043,
+        280957,
+        288908,
+        296461,
+        302569,
+        305549,
+        305659,
+        306993,
+        328956,
+        330630,
+        341278,
+        219217,
+        288474,
+        145668,
+        288065,
+        217735,
+        32378,
+        116808,
+        287176,
+        117290,
+        337074,
+        356818,
+        345253,
+        220871,
+        350567,
+        240476,
+        79307,
+        38379,
+        293220,
+        83287,
+        116939,
+        36866,
+        375454,
+        254261,
+        14677,
+        237160,
+        357739,
+        185485,
+        54935,
+        186418,
+        219649,
+        186366,
+        99935
+      ],
+      "sha256": "05d19c70635960265281fff76b79eddae1dcdfaafcf22b61470d96cd9c919672"
+    },
+    "supplemental_packet": {
+      "records": 12,
+      "scope": "all remaining accepted-final-value and accepted-after-rejected-arithmetic TRAIN cases",
+      "sha256": "63337b21d13e66b54464a596583bace57398daa268e675835d530708a4bb0229"
+    },
+    "loop_prior_baseline": {
+      "fit_records": 375,
+      "evaluation_records": 51,
+      "positive_decisions": 108,
+      "negative_decisions": 300,
+      "write_probabilities_by_loop": [
+        0.005305039787798408,
+        0.2440318302387268,
+        0.33421750663129973,
+        0.583554376657825,
+        0.21485411140583555,
+        0.3978779840848806,
+        0.10344827586206896,
+        0.029177718832891247
+      ],
+      "auc": 0.7817592592592593,
+      "threshold_0_5": {
+        "precision": 0.6862745098039216,
+        "recall": 0.32407407407407407,
+        "write_rate": 0.125
+      },
+      "scope": "TRAIN only; fit on other rows, score on the saved 64-question diagnostic subset (51 supervised); no question content used",
+      "fit_scoring_ids_disjoint": true,
+      "diagnostic_ids_match_saved_predictions": true,
+      "limitations": "Timing-label baseline, not answer accuracy, semantic grounding or inference evaluation."
+    },
+    "new_model_training_or_answer_evaluation": false,
+    "limitations": [
+      "Reconstruction parity verifies implementation, not semantic truth.",
+      "Independent arithmetic verifies local equations, not their suitability for the word problem.",
+      "The personal review packet is purposive; its verdict rates are not population estimates.",
+      "Token-position scheduling is a heuristic, not verified latent progress."
+    ]
+  },
+  "ledger_path": "provenance/checkpoint_label_personal_review.jsonl",
+  "ledger_sha256": "c0e301de7732ba976c4256633694bc4dc4a3726034b9b5d47c6abc5bddacf074",
+  "personal_review": {
+    "records": 76,
+    "accepted_checkpoints": 155,
+    "verdict_counts": {
+      "supported": 56,
+      "ambiguous": 3,
+      "inconsistent": 7,
+      "supported_rounding": 7,
+      "contradictory": 2,
+      "underdetermined": 1
+    },
+    "local_32_verdicts": {
+      "supported": 29,
+      "ambiguous": 1,
+      "inconsistent": 2
+    },
+    "checkpoint_tags": {
+      "given_restatement": 1,
+      "no_intermediate_event": 8,
+      "ambiguous_referent": 2,
+      "semantic_trace_error": 2,
+      "incorrect_gold": 8,
+      "unstated_rounding": 2,
+      "final_quantity_retained": 2,
+      "legitimate_equal_final_value": 12,
+      "rounded_ancestor": 5,
+      "rejected_wrong_terminal": 1,
+      "whole_item_or_day_conversion": 4,
+      "final_loop_write": 3,
+      "semantic_checkpoint_risk": 1,
+      "contradictory_premises": 2,
+      "incomplete_gold": 1,
+      "missing_boundary_convention": 1,
+      "answer_equivalent_before_identity": 1,
+      "omitted_intermediate": 1,
+      "ambiguous_quantity": 1,
+      "time_horizon_error": 1,
+      "final_answer_computation_retained": 1,
+      "redundant_terminal_identity": 1
+    },
+    "all_equal_final_value_cases_reviewed": true,
+    "all_after_rejected_arithmetic_cases_reviewed": true,
+    "selection_bias": "Purposive risk coverage, not a population semantic error-rate estimate"
+  },
+  "proposed_fixture": {
+    "status": "design only; source and prepared training data unchanged",
+    "purpose": "small curated mechanism-development fixture, not a GSM8K benchmark",
+    "expected_records": 32,
+    "expected_supervised_records": 29,
+    "expected_checkpoint_events": 58,
+    "training_rows": [
+      {
+        "source_row_number": 19659,
+        "sample_id": "afa240a77cf69d73db09d2bc1147acdee5ccadf0d6a64543c5b3f482e20c2ecf",
+        "question_hash": "e750a28ac54355a7535f2bf4da08b15404558cb82249a771d4335beab80de755"
+      },
+      {
+        "source_row_number": 25316,
+        "sample_id": "30a6f2ab49fc2a0834c2cba7f46d0786451fec29d02bc3590a20dcd2d50f3411",
+        "question_hash": "35290db030452f625403d1149e7453c1715362c1c1437ce055a687f1170f1e95"
+      },
+      {
+        "source_row_number": 30409,
+        "sample_id": "7e0abda10988de35baf761fc107eef4ae32e70f8fc542ff95413b953f79d7fd1",
+        "question_hash": "273f126bff509785946fb657fde83867b15838ae99b9ea24ba65734958a48c39"
+      },
+      {
+        "source_row_number": 30991,
+        "sample_id": "32519174712a1e8dd9090eb376518ef2a5832a6a12b0a7f21d3906ff2f1436cb",
+        "question_hash": "be1310816399f0d86967ba250cd446f75d40fae397dd2f66efcd25d27bb09bb3"
+      },
+      {
+        "source_row_number": 32434,
+        "sample_id": "c591d8d9e2a5644a56eb237a35401524ec55156a4ffb8cbe4a3f7116680c8d5e",
+        "question_hash": "eafff377219544d3fd5c8221774eb23bbe03641a9faf115e51b426688d72fbd9"
+      },
+      {
+        "source_row_number": 36625,
+        "sample_id": "7c915c5f1dc0db75d127ad61543107556bd3fe186de9a2e0eca394729172a4be",
+        "question_hash": "d8d7ecff45e444a1617959f2745196a874bc91e2d76f021a79be6c075fcf127e"
+      },
+      {
+        "source_row_number": 37978,
+        "sample_id": "80e12ec9d2b37df9dd5c85548d5ecc45732c06d061cc73b8eab5576839ccd032",
+        "question_hash": "34683881b9500f4630fbd317b538142f334a67edb78d4e6223cb536ce68ef74f"
+      },
+      {
+        "source_row_number": 45062,
+        "sample_id": "e7caa310582bdc72d59c222514090a0885466fd62be8d43bb9e791cc1142fd94",
+        "question_hash": "60941cfa7b4ede055d317893a2eab8dd6b34e1e4e375af599d46c46034b9e12d"
+      },
+      {
+        "source_row_number": 47560,
+        "sample_id": "751d7173607d9fa711126568ead09f153163ab5a40f5da60bd109a520af4f701",
+        "question_hash": "f479afeabfb4151cf124a1e0bdbee55e6ee05aedbbff830fd831280cb41436fa"
+      },
+      {
+        "source_row_number": 49352,
+        "sample_id": "c5f2eaef074355f392a2596e5758acb564929070390e89d7ab927a65b69f5e81",
+        "question_hash": "06d97aca85b9cfacdf082b98bd5f87a07c0a05f579e710ec6dc6be9cd6b62539"
+      },
+      {
+        "source_row_number": 64908,
+        "sample_id": "717b9a0e054f024a8c7881ef6bbcced890c36789ba6f63724335598ae8aeda53",
+        "question_hash": "c97bca2e0816ed585c1099d70e6b9b565634f43675d5336c4c177edd80bc458d"
+      },
+      {
+        "source_row_number": 79089,
+        "sample_id": "b3b81fc2bb83ec79ded9f839e350a132c62882f4c18348ee4e6377c60ffcbf74",
+        "question_hash": "c02677baf4105557e8cef7db502370255159473a7c53d2517ecdfd1e20b3523b"
+      },
+      {
+        "source_row_number": 99935,
+        "sample_id": "c5cfd2f864d0957ca210ab1c8aeb47d0c67e7d0582ca3eb5b7984a9f99bd017a",
+        "question_hash": "215fd4efb39ec20d5ac3df3d8c7fd162312cd55058b5c639cc6549f12f5b6b48"
+      },
+      {
+        "source_row_number": 112564,
+        "sample_id": "8c94300ef1d9055080cde9bbd89aa80ce5807d73d258800059a5d3d72e787217",
+        "question_hash": "730bccea8ce6662f9b247864e89e543dd958bd913b2c341dd1dc078287739178"
+      },
+      {
+        "source_row_number": 117042,
+        "sample_id": "2feb81f2457d9db1abb991a17fa805616bf97dc93ecfa11b053442d35afc3679",
+        "question_hash": "09a58f10ae57051a2e5285bb1585f316b73bb29c1833f42ebd82fa651094e028"
+      },
+      {
+        "source_row_number": 126177,
+        "sample_id": "f61e790c2da0d77b392ba7272d631818c02c1cb591cffe172a9239dd671dd4f7",
+        "question_hash": "66b5ab893073877e5debce41ce993e02e7370410b63191aa5f15670fe9581b26"
+      },
+      {
+        "source_row_number": 169782,
+        "sample_id": "ec0a638eaf40e75a2fca8f989960153a6e7db6a6024bafb826ef959ea3189c3e",
+        "question_hash": "13d10094fcd8ab07606b7ee3fc7643f7f17d4299fdf9168623a68c5c43d23107"
+      },
+      {
+        "source_row_number": 186418,
+        "sample_id": "934fccf9f70abf7cea7e96799c3a13b8b01a33f9733e2a44b0a2cabfb1404d2e",
+        "question_hash": "4d6a09639cdb80722df42282a8bf0b6d8da6acbaca220f817f2dad68d57d3a1f"
+      },
+      {
+        "source_row_number": 191727,
+        "sample_id": "f5a62b4cbc96340879a2f169ea8c9b6bbc4fe62e8f78595257fd77c1e2430dd0",
+        "question_hash": "f3d4e8421e77fb59e07ed03c1874f236c50d30093b26c4d57f0fbef9c852c7f5"
+      },
+      {
+        "source_row_number": 219243,
+        "sample_id": "55248e18b7b35c7bcb17dbf44712b5bd30bd4735d5ed54ec68857140fb0ab6a3",
+        "question_hash": "9b062b6c1f1ecff363c28bb43be63aed2fbd3a65f819c893922673aaf90c5734"
+      },
+      {
+        "source_row_number": 219649,
+        "sample_id": "a576b32f349fbf0510d3bb5b0e4ccab8298c437fb1fd8a8a0f24be325174cd9c",
+        "question_hash": "8052819528dc7b0ae4a9dfe5f20e9dc5f461373ea2242ac76e048a53d296b365"
+      },
+      {
+        "source_row_number": 222571,
+        "sample_id": "fe91c99e3196c929d6aed5f7ad0472f060d1a9d52ecde7b8385282ee091bb8a6",
+        "question_hash": "132840c0dd8aa8530a0c5a4699ad1d56063e89cef7c2e3a2adef8498aa67e10f"
+      },
+      {
+        "source_row_number": 227356,
+        "sample_id": "abbc5d6e87350f547e23507d08b026ce432d5d4fcc74b08d5ae770f0747e8550",
+        "question_hash": "49f8781aefed8ed7a5111d1a0b6697baf528b24406b67ab698ac3aac4226fed8"
+      },
+      {
+        "source_row_number": 266043,
+        "sample_id": "77a73c6a005c3c4d4022beb6a07f2f4bb4017355defe708bb1b266cf088a893a",
+        "question_hash": "9578eee602a79a4b1b1ce714d5f811e8f202827fd57d07ae566b7b14f64aad7a"
+      },
+      {
+        "source_row_number": 280957,
+        "sample_id": "2a6f8503fe20ff46d15a3bf85baa32df19653486125a29f5f32025868d0c1405",
+        "question_hash": "a3faf9c35cada4cd32fb6bad6a32318210682271a64cc6b1cd210a9d9ba45d67"
+      },
+      {
+        "source_row_number": 296461,
+        "sample_id": "a2e24408a0634adc708a5736d018c6a342516beaff1fc30223e80a5f8aab1816",
+        "question_hash": "8db047dabae55cfba890542c204069078815c85f678294eec35e107e0eee8462"
+      },
+      {
+        "source_row_number": 302569,
+        "sample_id": "7b8c037363f2661eccc213a8e42cdc121820eee493379428910e11112c23d6f4",
+        "question_hash": "323175eafa4f11dafde96c2d767bced7d4a3b8b1c74d5f971099ee44c1ae5af9"
+      },
+      {
+        "source_row_number": 305549,
+        "sample_id": "85d3c3776da6e4050d864c437658c99eb140f8ac6f969c5a21cc31192ec062f9",
+        "question_hash": "a8ab4177f4a94d8428ec435a2cdfd0c7c777d66a3f5dd0745601f30ac8f59028"
+      },
+      {
+        "source_row_number": 306993,
+        "sample_id": "c2345c96024c45e6353a85f25b9254ce1f222b685fe0821363043ae21de76f8c",
+        "question_hash": "ade4a55b2101d085da75146c8771e32fff2b70ba2c363771c15239b57a00ed17"
+      },
+      {
+        "source_row_number": 328956,
+        "sample_id": "4ed8a5e4b404d791b377b2d24b3ef10f01c8cbfbcdb63aa4fe509dfcef0cd099",
+        "question_hash": "3323866a27d3e4c93f46653f24fdd7e2c2be541c5e311c09e7bce5c6974d9e17"
+      },
+      {
+        "source_row_number": 330630,
+        "sample_id": "d2b3f9464f3fd24c496877694bb82c46b63ec026ac9c7a9d47fa6dfb21abbc76",
+        "question_hash": "e322304f352da7b81cfd81452f8659e7981cada4d24693df03a4cd93493e5799"
+      },
+      {
+        "source_row_number": 341278,
+        "sample_id": "493ea7f2fd6d813cc0d1c017c36500a86fcec01cd80cca9f8c94bcc71dd16be1",
+        "question_hash": "e4e3a92c81467273bf4697a294d2bef734624a4663d47bf85c3b36b43636f886"
+      }
+    ],
+    "replacement_rows": [
+      99935,
+      219649,
+      186418
+    ],
+    "omitted_local_rows": [
+      207002,
+      288908,
+      305659
+    ],
+    "proposed_event_change": {
+      "source_row_number": 112564,
+      "remove_equation": "<<120=120>>",
+      "reason": "given restatement; regenerate markers, teacher indices and loop labels in a separately named derivative"
+    }
+  },
+  "source_or_model_modified": false,
+  "new_model_training_or_answer_evaluation": false
+}
