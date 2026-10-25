@@ -1,0 +1,38 @@
+{
+  "accuracy": 0.390625,
+  "correct": 25,
+  "dataset": "dev64",
+  "finished_at": "2026-10-25T19:32:27+00:00",
+  "identity": {
+    "dataset": "dev64",
+    "dataset_sha256": "2fafa871809edaf35014f07216eefe7c2c6c42bce4c23ad375d07aaebd399842",
+    "model": "gpt2-sft",
+    "model_identity": {
+      "batch_size": 16,
+      "checkpoint_sha256": null,
+      "decoding": "greedy",
+      "max_new_tokens": 192,
+      "model_id": "yingfanbot/gsm-cot-gpt2",
+      "prompt": "{question}\n",
+      "revision": "e0ef1887404adbf6c531d2cac7804694321f87bd"
+    },
+    "model_spec": "gpt2-sft",
+    "rows": 64,
+    "scorer_version": "bench-v1"
+  },
+  "model": "gpt2-sft",
+  "n": 64,
+  "runtime": {
+    "device": "mps",
+    "git_commit": "6ff008f5aaee1e4cfed5ab58892a6e555f2b57d2-dirty",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.12.14",
+    "torch": "2.7.1",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 1.0216193502528768,
+  "session_seconds": 65.41705862502567,
+  "strict_accuracy": 0.390625,
+  "strict_correct": 25,
+  "valid_answer_rate": 1.0
+}

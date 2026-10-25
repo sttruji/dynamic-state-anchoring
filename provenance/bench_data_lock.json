@@ -1,0 +1,62 @@
+{
+  "files": {
+    "eval/csqa.jsonl": {
+      "rows": 1221,
+      "sha256": "b3842c5699b3cb001f1cec07144c240d1cc65f1c8aa5345c6d8c10f38b6bcc70"
+    },
+    "eval/dev64.jsonl": {
+      "rows": 64,
+      "sha256": "2fafa871809edaf35014f07216eefe7c2c6c42bce4c23ad375d07aaebd399842"
+    },
+    "eval/gsm8k_test.jsonl": {
+      "rows": 1319,
+      "sha256": "639eb8295e9a43b00237d746352e2e3e0d84d9789057cc4fdb0f372610d3aa27"
+    },
+    "eval/gsm8k_valid.jsonl": {
+      "rows": 500,
+      "sha256": "bb26957d13f53e3c8f576f5d68b4f494c5615ca838235b2dbc2c9ae52cb4d205"
+    },
+    "eval/gsm_hard.jsonl": {
+      "rows": 1319,
+      "sha256": "397349753207bde9b9597466d7340d8e8acdfd10b562533a503024485d794ad2"
+    },
+    "eval/multiarith.jsonl": {
+      "rows": 180,
+      "sha256": "000bb0eeb3b79f9c5de1944977b2ca1d90a4435f63ad6bf95d17812feab5ff0d"
+    },
+    "eval/overfit32.jsonl": {
+      "rows": 32,
+      "sha256": "0f3fd93f667a119b6f463df5bd14247630a927e138619bef734d9275718ccde0"
+    },
+    "eval/svamp.jsonl": {
+      "rows": 1000,
+      "sha256": "b7b70ec5e999ff8f58ea565b3807e660355b6615535accf750368f70b1f86bf2"
+    },
+    "train/csqa_cot.jsonl": {
+      "rows": 8196,
+      "sha256": "55ea20dc4d59db012f0aac2c13f3e0ccbb5a160efd29383ee17b6dd9ce4ff06b"
+    },
+    "train/gsm8k_aug.jsonl": {
+      "rows": 385620,
+      "sha256": "b183769672263fcfdc7a6db0a3385719a936a041687f036c5dd326ae69251b4a"
+    },
+    "train/gsm8k_aug_nl.jsonl": {
+      "rows": 384618,
+      "sha256": "44fa5ce56e867229409492f61246634029152cf8028aee58392b7b049a12b2de"
+    },
+    "train/overfit32.jsonl": {
+      "rows": 32,
+      "sha256": "306cb3981e10fa990050480646141d2bedd9b28d1c7b4b619ecdeade4f5506fd"
+    }
+  },
+  "schema": "dsa_bench_data_lock_v1",
+  "train_eval_overlap": {
+    "eval/csqa.jsonl": 0,
+    "eval/dev64.jsonl": 0,
+    "eval/gsm8k_test.jsonl": 0,
+    "eval/gsm8k_valid.jsonl": 0,
+    "eval/gsm_hard.jsonl": 0,
+    "eval/multiarith.jsonl": 0,
+    "eval/svamp.jsonl": 0
+  }
+}

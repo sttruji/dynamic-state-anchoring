@@ -1,0 +1,38 @@
+{
+  "accuracy": 0.78125,
+  "correct": 25,
+  "dataset": "overfit32",
+  "finished_at": "2026-10-25T20:04:57+00:00",
+  "identity": {
+    "dataset": "overfit32",
+    "dataset_sha256": "0f3fd93f667a119b6f463df5bd14247630a927e138619bef734d9275718ccde0",
+    "model": "codi",
+    "model_identity": {
+      "checkpoint": null,
+      "decoding": "greedy",
+      "dtype": "float32",
+      "latent_iterations": 6,
+      "lora_merged_fp32": true,
+      "max_new_tokens": 256,
+      "weights": "zen-E/CODI-gpt2@fd641b3d3edc59e4f534b55588e906588c9e36bb"
+    },
+    "model_spec": "codi",
+    "rows": 32,
+    "scorer_version": "bench-v1"
+  },
+  "model": "codi",
+  "n": 32,
+  "runtime": {
+    "device": "mps",
+    "git_commit": "6ff008f5aaee1e4cfed5ab58892a6e555f2b57d2-dirty",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.12.14",
+    "torch": "2.7.1",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 0.700208587149973,
+  "session_seconds": 22.46429674990941,
+  "strict_accuracy": 0.78125,
+  "strict_correct": 25,
+  "valid_answer_rate": 1.0
+}

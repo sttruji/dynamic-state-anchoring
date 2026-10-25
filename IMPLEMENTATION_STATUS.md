@@ -213,3 +213,14 @@ sampled diagnostic identity and export hashing. Log:
 Fu et al., *Simply Stabilizing the Loop via Fully Looped Transformer* (v1), is
 added as reference [13] in the handoff, with its official paper/code links and
 the distinction between the paper and this fixed-memory GPT-2 adaptation.
+
+## Benchmark data and evaluation harness — 25 October 2026
+
+`scripts/setup_data.py` now builds all proposal datasets from pinned sources with deterministic
+tags and hash-locked splits (GSM8K-Aug, GSM8K-Aug-NL, CommonsenseQA-CoT; dev64, overfit32,
+GSM8K validation/test; SVAMP, GSM-Hard, MultiArith). `scripts/evaluate.py` scores GPT-2
+vanilla/SFT, CODI, LOTUS and DSA checkpoints, or any `BenchModel` subclass, into
+`results/leaderboard.csv`. The reviewed overfit32 fixture can now be prepared for the existing
+trainer with `scripts/prepare_dsa_pilot.py --fixture overfit32`. See `docs/BENCHMARK.md`; the
+repository audit and its open findings (CoT format drift, missing LOTUS GPT-2 weights, untagged NL
+rationales) are in `docs/AUDIT_20261025.md`.

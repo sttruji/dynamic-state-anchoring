@@ -1,0 +1,38 @@
+{
+  "accuracy": 1.0,
+  "correct": 32,
+  "dataset": "overfit32",
+  "finished_at": "2026-10-25T20:41:17+00:00",
+  "identity": {
+    "dataset": "overfit32",
+    "dataset_sha256": "0f3fd93f667a119b6f463df5bd14247630a927e138619bef734d9275718ccde0",
+    "model": "sft-overfit32-200",
+    "model_identity": {
+      "batch_size": 16,
+      "checkpoint_sha256": "c635e5f7bfc5691306c80123a4ca85c97760177e75266b623fd222392bbc671f",
+      "decoding": "greedy",
+      "max_new_tokens": 192,
+      "model_id": null,
+      "prompt": "{question}\n",
+      "revision": null
+    },
+    "model_spec": "gpt2-sft",
+    "rows": 32,
+    "scorer_version": "bench-v1"
+  },
+  "model": "sft-overfit32-200",
+  "n": 32,
+  "runtime": {
+    "device": "mps",
+    "git_commit": "6ff008f5aaee1e4cfed5ab58892a6e555f2b57d2-dirty",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.12.14",
+    "torch": "2.7.1",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 0.5626584244710102,
+  "session_seconds": 18.009372041909955,
+  "strict_accuracy": 1.0,
+  "strict_correct": 32,
+  "valid_answer_rate": 1.0
+}

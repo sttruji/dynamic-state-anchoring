@@ -1,0 +1,47 @@
+{
+  "accuracy": 0.046875,
+  "correct": 3,
+  "dataset": "dev64",
+  "finished_at": "2026-10-25T20:48:53+00:00",
+  "identity": {
+    "dataset": "dev64",
+    "dataset_sha256": "2fafa871809edaf35014f07216eefe7c2c6c42bce4c23ad375d07aaebd399842",
+    "model": "dsa-data512-periodic-k8",
+    "model_identity": {
+      "checkpoint_sha256": "91504272be0ee6c51e51a8ca340066e9460378b71f0dedc49f06a6eb297f1525",
+      "decoding": "greedy",
+      "loops": 8,
+      "max_new_tokens": 64,
+      "trained_config": {
+        "eos_token_id": 50256,
+        "gate_threshold": 0.5,
+        "loop_budget": 8,
+        "marker_token_id": 50257,
+        "pad_token_id": 50256,
+        "periodic_interval": 4,
+        "recurrence_mode": "flt_memory",
+        "workspace_size": 4,
+        "write_mode": "periodic"
+      },
+      "write_mode": "periodic"
+    },
+    "model_spec": "dsa",
+    "rows": 64,
+    "scorer_version": "bench-v1"
+  },
+  "model": "dsa-data512-periodic-k8",
+  "n": 64,
+  "runtime": {
+    "device": "mps",
+    "git_commit": "6ff008f5aaee1e4cfed5ab58892a6e555f2b57d2-dirty",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.12.14",
+    "torch": "2.7.1",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 1.3593161822682305,
+  "session_seconds": 87.04226870799903,
+  "strict_accuracy": 0.046875,
+  "strict_correct": 3,
+  "valid_answer_rate": 1.0
+}

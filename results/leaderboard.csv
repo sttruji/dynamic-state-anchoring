@@ -1,0 +1,9 @@
+model,overfit32_acc,overfit32_strict_acc,overfit32_n,dev64_acc,dev64_strict_acc,dev64_n,gsm8k_valid_acc,gsm8k_valid_strict_acc,gsm8k_valid_n
+gpt2-vanilla,0.00,0.00,32,0.00,0.00,64,0.40,0.00,500
+gpt2-sft,100.00,100.00,32,39.06,39.06,64,42.40,42.40,500
+codi,78.12,78.12,32,39.06,39.06,64,41.20,41.20,500
+dsa-data512-every_loop-k8,,,,6.25,6.25,64,,,
+dsa-data512-learned-k8,,,,3.12,3.12,64,,,
+dsa-data512-periodic-k8,,,,4.69,4.69,64,,,
+dsa-data512-static-k8,,,,3.12,3.12,64,,,
+sft-overfit32-200,100.00,100.00,32,37.50,37.50,64,,,

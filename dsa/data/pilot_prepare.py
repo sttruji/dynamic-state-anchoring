@@ -130,6 +130,37 @@ def ensure_corpus(storage_dir: Path) -> dict[str, Path]:
     return paths
 
 
+FIXTURES = {"overfit32": "provenance/mps_experiment_plan_20261019.json"}
+
+
+def load_fixture(name: str) -> dict[str, Any]:
+    """Reviewed TRAIN membership plus its single annotation override."""
+    if name not in FIXTURES:
+        raise ValueError(f"unknown fixture {name!r}; choose from {', '.join(FIXTURES)}")
+    plan_path = REPOSITORY / FIXTURES[name]
+    fixture = json.loads(plan_path.read_text(encoding="utf-8"))["fixture"]
+    return {**fixture, "name": name, "plan_sha256": file_sha256(plan_path)}
+
+
+def drop_event(record: dict[str, Any], equation: str) -> dict[str, Any]:
+    """Remove one reviewed event and rebuild markers from the unchanged raw rationale."""
+    raw, marker = record["rationale_raw"], record["policy"]["marker_token"]
+    removed = [event for event in record["events"] if raw[event["start"]:event["end"]] == equation]
+    if len(removed) != 1:
+        raise ValueError(f"fixture override {equation!r} must match exactly one accepted event")
+    events = [{**event, "ordinal": ordinal} for ordinal, event in
+              enumerate(event for event in record["events"] if event is not removed[0])]
+    chunks, previous = [], 0
+    for event in events:
+        chunks.extend((raw[previous:event["end"]], marker))
+        previous = event["end"]
+    chunks.append(raw[previous:])
+    rejected = sorted(record["rejected_candidates"] + [{**removed[0], "reason": "reviewed_fixture_override"}],
+                      key=lambda item: (item["start"], item["end"], item["reason"]))
+    return {**record, "events": events, "event_count": len(events), "rationale_marked": "".join(chunks),
+            "rejected_candidates": rejected}
+
+
 def select_indices(count: int, limit: int, seed: int) -> list[int]:
     if count < 1 or limit < 0:
         raise ValueError("source split must be nonempty and limits must be nonnegative")
@@ -183,7 +214,11 @@ def _verify_reuse(output_dir: Path, request: dict[str, Any]) -> dict[str, Any]:
 def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Path | None = None,
                   train_limit: int = 32, valid_limit: int = 0, seed: int = 7, loops: int = 16,
                   policy: str = "conclusive", tokenizer_model: str = DEFAULT_BACKBONE,
-                  revision: str = DEFAULT_REVISION, tiny: bool = False) -> dict[str, Any]:
+                  revision: str = DEFAULT_REVISION, tiny: bool = False,
+                  fixture: str | None = None) -> dict[str, Any]:
+    fixture_plan = load_fixture(fixture) if fixture is not None else None
+    if fixture_plan is not None:
+        train_limit = fixture_plan["expected_records"]
     if loops < 1 or train_limit < 0 or valid_limit < 0:
         raise ValueError("loops must be positive and split limits nonnegative")
     if policy not in {"conclusive", "verified_only"}:
@@ -205,6 +240,8 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
                "code_sha256s": {name: file_sha256(REPOSITORY / name) for name in CODE_FILES},
                "pinned_download_manifest_sha256": file_sha256(REPOSITORY / "provenance/lotus_download_manifest.json"),
                "audit_provenance": provenance}
+    if fixture_plan is not None:
+        request["fixture"] = {"name": fixture_plan["name"], "plan_sha256": fixture_plan["plan_sha256"]}
     output_dir = Path(output_dir).resolve()
     if output_dir in [path.resolve() for path in paths.values()] or any(output_dir in path.resolve().parents for path in paths.values()):
         raise ValueError("output directory must not contain or replace the source arrays")
@@ -243,6 +280,8 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
                 if len(rows) != expected_count:
                     raise ValueError(f"pinned {split} record count differs from frozen audit")
             indices = select_indices(len(rows), train_limit if split == "train" else valid_limit if split == "valid" else 0, seed)
+            if fixture_plan is not None and split == "train":
+                indices = [item["source_row_number"] - 1 for item in fixture_plan["training_rows"]]
             filename = "train.tokenized.jsonl" if split == "train" else f"{split}.jsonl"
             chosen, annotated, tokens = [], [], []
             if not primary:
@@ -256,6 +295,13 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
                                    "source_problem_id": canonical["source_problem_id"], "question_hash": canonical["question_hash"]})
                     if split == "train":
                         record = annotate_record(canonical, mode=policy, steps_join="space")
+                        if fixture_plan is not None:
+                            reviewed = fixture_plan["training_rows"][len(annotated)]
+                            if canonical["sample_id"] != reviewed["sample_id"]:
+                                raise ValueError(f"fixture row {index + 1} differs from its reviewed identity")
+                            override = fixture_plan["annotation_override"]
+                            if index + 1 == override["source_row_number"]:
+                                record = drop_event(record, override["remove_equation"])
                         annotated.append(record)
                         tokenized = tokenize_record(record, tokenizer, loops)
                         tokens.append(tokenized)
@@ -268,10 +314,18 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
             selections[split] = {"source_sha256": sources[split]["sha256"], "source_records": len(rows),
                                  "selected_records": len(indices), "selection": chosen,
                                  "ordered_sample_ids_sha256": stable_json_hash([item["sample_id"] for item in chosen]),
-                                 "selection_method": "entire original split in source order" if len(indices) == len(rows) else "random.Random(seed).sample without replacement, restored source order"}
+                                 "selection_method": (f"reviewed fixture {fixture} from {FIXTURES[fixture]}" if fixture_plan is not None and split == "train"
+                                                      else "entire original split in source order" if len(indices) == len(rows)
+                                                      else "random.Random(seed).sample without replacement, restored source order")}
             splits[split] = {"path": filename, "sha256": file_sha256(staging / filename), "records": len(indices),
                              "source_sha256": sources[split]["sha256"],
                              "ordered_sample_ids_sha256": selections[split]["ordered_sample_ids_sha256"]}
+            if split == "train" and fixture_plan is not None:
+                counts = (len(annotated), sum(record["event_count"] for record in annotated),
+                          sum(record["event_count"] == 0 for record in annotated))
+                if counts != (fixture_plan["expected_records"], fixture_plan["expected_checkpoint_events"],
+                              fixture_plan["expected_no_event_controls"]):
+                    raise ValueError(f"fixture counts {counts} differ from the reviewed plan; nothing installed")
             if split == "train":
                 reasons = Counter(token["controller_mask_reason"] for token in tokens if not token["controller_supervised"])
                 reports[split] = {**annotation_report(annotated), "loop_budget": loops, "truncation": False,
@@ -289,7 +343,7 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
                     "model": {"id": tokenizer_model, "revision": revision}, "tokenizer": {"path": "tokenizer", **tokenizer_identity},
                     "metadata": {"loop_budget": loops, "policy": policy, "seed": seed,
                                  "training_regime": "implementation_pilot", "benchmark_result": False,
-                                 "train_limit": train_limit, "valid_limit": valid_limit,
+                                 "train_limit": train_limit, "valid_limit": valid_limit, "fixture": fixture,
                                  "test_used_for_selection": False, "source_rows_filtered": False,
                                  "all_no_event_and_overflow_records_retained": True},
                     "sources": sources, "source_provenance": provenance,

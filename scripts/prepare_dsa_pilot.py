@@ -24,6 +24,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--policy", choices=("conclusive", "verified_only"), default="conclusive")
     parser.add_argument("--tokenizer-model", default=DEFAULT_BACKBONE)
     parser.add_argument("--revision", default=DEFAULT_REVISION)
+    parser.add_argument("--fixture", choices=("overfit32",), help="reviewed TRAIN fixture instead of a seeded sample; overrides --train-limit")
     parser.add_argument("--tiny", action="store_true", help="use download-free TinyTokenizer for implementation checks; not the GPT-2 experiment")
     args = parser.parse_args(argv)
     if args.storage_dir is None and args.source_dir is None:

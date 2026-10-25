@@ -6,6 +6,13 @@ Start with the [DSA overview](DSA_README.md),
 [Colab quickstart](docs/COLAB_QUICKSTART.md). The GitHub repository is
 [`sttruji/dynamic-state-anchoring`](https://github.com/sttruji/dynamic-state-anchoring).
 
+**Benchmark — 25 October 2026:** clone, then `scripts/setup_data.py` builds every
+dataset (GSM8K-Aug, GSM8K-Aug-NL, CommonsenseQA-CoT, SVAMP, GSM-Hard, MultiArith and the
+reviewed overfit32 fixture) byte-identically from pinned sources, and `scripts/evaluate.py`
+scores GPT-2 vanilla/SFT, CODI, LOTUS, DSA or any new model against the shared
+[`results/leaderboard.csv`](results/leaderboard.csv). See the [benchmark guide](docs/BENCHMARK.md),
+the [Colab notebook](notebooks/Benchmark_Colab.ipynb) and the [25 October audit](docs/AUDIT_20261025.md).
+
 **Local development — 18 October 2026:** native MPS training, checkpoint
 resume and answer evaluation have been checked on Apple M1. A bounded GPT-2
 optimizer check completed four updates for each write policy with matched
