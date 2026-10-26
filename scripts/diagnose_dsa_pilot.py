@@ -80,16 +80,16 @@ def capture_recurrence(model, budget, *, teacher_first=False):
     original_memory = model.backbone.forward_memory_embeds
     states, workspaces, calls = [], [], [0]
 
-    def capture(call, inputs_embeds, *args):
+    def capture(call, inputs_embeds, *args, **kwargs):
         calls[0] += 1
         first = 2 if teacher_first else 1
         if first <= calls[0] < first + budget:
             inputs_embeds.retain_grad()
             states.append(inputs_embeds)
-        return call(inputs_embeds, *args)
+        return call(inputs_embeds, *args, **kwargs)
 
-    def forward(*args): return capture(original, *args)
-    def forward_memory(*args): return capture(original_memory, *args)
+    def forward(*args, **kwargs): return capture(original, *args, **kwargs)
+    def forward_memory(*args, **kwargs): return capture(original_memory, *args, **kwargs)
 
     def workspace_hook(module, inputs, output):
         output.retain_grad()
@@ -114,11 +114,11 @@ def capture_residuals(model, budget, question_width, *, teacher_first=False):
     saved, active, calls, handles = [], [None], [0], []
     originals = {name: getattr(model.backbone, name) for name in ("forward_embeds", "forward_memory_embeds")}
     def wrap(call):
-        def forward(*args):
+        def forward(*args, **kwargs):
             calls[0] += 1
             first = 2 if teacher_first else 1
             active[0] = calls[0] - first + 1 if first <= calls[0] < first + budget else None
-            try: return call(*args)
+            try: return call(*args, **kwargs)
             finally: active[0] = None
         return forward
     def hook(layer, location):

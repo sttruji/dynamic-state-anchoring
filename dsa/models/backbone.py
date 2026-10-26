@@ -19,17 +19,23 @@ class BackboneAdapter(nn.Module):
     def embeddings(self):
         return self.model.get_input_embeddings()
 
-    def forward_embeds(self, inputs_embeds, attention_mask, position_ids):
-        """Full recomputation, without KV caches or vocabulary-sized logits."""
+    def forward_embeds(self, inputs_embeds, attention_mask, position_ids, *, all_layers=False):
+        """Full recomputation, without KV caches or vocabulary-sized logits.
+
+        ``all_layers`` returns every hidden state, embeddings first and the
+        final normalized output last, instead of only the last.
+        """
         body = self.model.transformer if self.kind == "gpt2" else self.model.model
-        return body(
+        output = body(
             inputs_embeds=inputs_embeds,
             attention_mask=attention_mask,
             position_ids=position_ids,
             use_cache=False,
             past_key_values=None,
+            output_hidden_states=all_layers,
             return_dict=True,
-        ).last_hidden_state
+        )
+        return output.hidden_states if all_layers else output.last_hidden_state
 
     def logits(self, hidden):
         return self.model.get_output_embeddings()(hidden)

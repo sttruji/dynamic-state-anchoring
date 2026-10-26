@@ -13,6 +13,8 @@ import torch
 import torch.nn.functional as F
 from torch.utils.checkpoint import checkpoint
 
+from .lora import LoRAConv1D
+
 
 def memory_block(block, hidden, previous_memory, attention_mask, question_width):
     current = block.ln_1(hidden)
@@ -21,8 +23,12 @@ def memory_block(block, hidden, previous_memory, attention_mask, question_width)
     query, key, value = attention.c_attn(current).split(attention.split_size, dim=2)
     # GPT-2 Conv1D stores [input, output] weights. Reuse only its Q slice;
     # projecting unused previous-memory K/V would add unnecessary work.
-    memory_query = F.linear(previous, attention.c_attn.weight[:, :attention.split_size].T,
-                            attention.c_attn.bias[:attention.split_size])
+    adapter = attention.c_attn if isinstance(attention.c_attn, LoRAConv1D) else None
+    projection = attention.c_attn if adapter is None else adapter.base
+    memory_query = F.linear(previous, projection.weight[:, :attention.split_size].T,
+                            projection.bias[:attention.split_size])
+    if adapter is not None:
+        memory_query = memory_query + adapter.delta(previous, slice(0, attention.split_size))
     query = torch.cat((query[:, :question_width], memory_query), dim=1)
     query, key, value = [attention._split_heads(x, attention.num_heads, attention.head_dim)
                          for x in (query, key, value)]

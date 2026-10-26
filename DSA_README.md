@@ -24,6 +24,9 @@ per arm and K=8 FLT-inspired recurrence with four write policies. Finished arms
 can be reused; partial arms restart. See the [protocol](docs/FLT_DATA_SCALE.md)
 or [open it in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_FLT_DataScale.ipynb).
 The [original 32-record pilot](notebooks/DSA_Colab.ipynb) remains separate.
+[CODI-style options](docs/CODI_RECIPE.md) add padded batching, LoRA, a separate
+new-module learning rate, warmup/cosine schedules and CODI's answer-position
+distillation; all default to off.
 
 From this repository root, the prepared `.venv` can run:
 

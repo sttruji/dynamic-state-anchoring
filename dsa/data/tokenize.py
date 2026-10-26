@@ -265,6 +265,31 @@ def tokenize_record(annotated_record: dict[str, Any], tokenizer: Any, loop_budge
     }
 
 
+def answer_alignment(record: dict[str, Any], tokenizer: Any) -> list[int]:
+    """Explicit and latent-suffix indices for CODI's answer-position distillation.
+
+    CODI aligns the token just before the answer in both routes. The explicit
+    text is tokenized once, so BPE can merge the prefix's trailing space into
+    the answer (GPT-2: ``###`` then `` 18``), while the latent suffix keeps the
+    whole prefix (``###``, `` ``, ``18``). Use the explicit token just before
+    the answer and the last copy of that same token in the latent prefix.
+    """
+    explicit = record["explicit_input_ids"][:-1]  # without EOS
+    prefix = record["latent_answer_prefix_ids"]
+    options = {} if isinstance(tokenizer, TinyTokenizer) else {"clean_up_tokenization_spaces": False}
+    text = tokenizer.decode(explicit, **options)
+    answer = tokenizer.decode(record["answer_input_ids"][:-1], **options)
+    ids, offsets = _with_offsets(tokenizer, text)
+    if ids != explicit or not answer or not text.endswith(tokenizer.decode(prefix, **options) + answer):
+        raise ValueError("explicit sequence does not end with the latent answer prefix and answer")
+    start = len(text) - len(answer)
+    first = next(index for index, (_, end) in enumerate(offsets) if end > start)
+    shared = [index for index, token_id in enumerate(prefix) if first and token_id == explicit[first - 1]]
+    if not shared:
+        raise ValueError("no answer-prefix token is shared by the explicit and latent routes")
+    return [first - 1, shared[-1]]
+
+
 def collate_records(records: list[dict[str, Any]], pad_token_id: int) -> dict[str, Any]:
     """Pad dense model fields and retain ragged boundary metadata as lists."""
     if not records:

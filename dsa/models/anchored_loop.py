@@ -9,6 +9,7 @@ import torch
 from torch import nn
 
 from .backbone import BackboneAdapter, position_ids
+from .lora import has_lora, merged_state_dict
 
 
 @dataclass(frozen=True)
@@ -121,17 +122,22 @@ class AnchoredLoop(nn.Module):
             torch.stack(candidates, 1), torch.stack(anchors, 1), question, attention_mask,
         )
 
-    def answer_logits(self, loop, suffix_ids, suffix_mask):
-        """Rebuild from latest memory and a teacher-forced answer suffix."""
+    def answer_logits(self, loop, suffix_ids, suffix_mask, *, all_layers=False):
+        """Rebuild from latest memory and a teacher-forced answer suffix.
+
+        ``all_layers`` also returns every hidden state of this readout pass.
+        """
         if suffix_ids.shape != suffix_mask.shape or suffix_ids.ndim != 2:
             raise ValueError("Suffix IDs/mask must have matching batch shape")
         memory_mask = loop.question_mask.new_ones(suffix_ids.shape[0], 1 + self.config.workspace_size)
         mask = torch.cat((loop.question_mask, memory_mask, suffix_mask), 1)
         embeds = torch.cat((loop.question_embeds, loop.anchor, loop.workspace,
                             self.backbone.embeddings(suffix_ids)), 1)
-        hidden = self.backbone.forward_embeds(embeds, mask, position_ids(mask))
+        hidden = self.backbone.forward_embeds(embeds, mask, position_ids(mask), all_layers=all_layers)
+        last = hidden[-1] if all_layers else hidden
         # Only the suffix is vocabulary-projected, and no recurrent cache survives.
-        return self.backbone.logits(hidden[:, -suffix_ids.shape[1]:])
+        logits = self.backbone.logits(last[:, -suffix_ids.shape[1]:])
+        return (logits, hidden) if all_layers else logits
 
     @torch.no_grad()
     def generate(self, question_input_ids, attention_mask, *, answer_prefix_ids,
@@ -163,7 +169,10 @@ class AnchoredLoop(nn.Module):
     def save_pretrained(self, directory, tokenizer):
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
-        self.backbone.model.save_pretrained(directory / "backbone", safe_serialization=True)
+        backbone = self.backbone.model
+        # LoRA runs save merged weights, so the backbone reloads as plain GPT-2.
+        merged = {"state_dict": merged_state_dict(backbone)} if has_lora(backbone) else {}
+        backbone.save_pretrained(directory / "backbone", safe_serialization=True, **merged)
         tokenizer.save_pretrained(directory / "tokenizer")
         (directory / "anchor_config.json").write_text(json.dumps(asdict(self.config), indent=2) + "\n")
         torch.save({key: value for key, value in self.state_dict().items()
