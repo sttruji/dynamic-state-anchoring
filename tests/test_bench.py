@@ -103,6 +103,22 @@ class DataTests(unittest.TestCase):
         self.assertEqual(report["controller_mask_reasons"], {"no_events": 3})
         self.assertEqual(manifest["request_identity"]["fixture"]["name"], "overfit32")
 
+    @unittest.skipUnless((ROOT / "data/gsm_train.json").is_file(), "run scripts/setup_data.py first")
+    def test_newline_steps_change_only_the_training_text(self):
+        from dsa.data.pilot_prepare import prepare_pilot
+        manifests, reports, selections = {}, {}, {}
+        with tempfile.TemporaryDirectory() as tmp:
+            for join in ("space", "newline"):  # The fixture asserts its reviewed event counts for both.
+                manifests[join] = prepare_pilot(storage_dir=None, source_dir=ROOT / "data", output_dir=Path(tmp) / join,
+                                                fixture="overfit32", loops=8, tiny=True, steps_join=join)
+                reports[join] = json.loads((Path(tmp) / join / "preparation_report.json").read_text())["train"]
+                selections[join] = (Path(tmp) / join / "selections.json").read_bytes()
+        self.assertEqual(selections["space"], selections["newline"])
+        self.assertEqual(reports["space"]["controller_supervised_count"], reports["newline"]["controller_supervised_count"])
+        self.assertEqual(reports["newline"]["policy"]["steps_join"], "newline")
+        self.assertNotIn("steps_join", manifests["space"]["request_identity"])
+        self.assertEqual(manifests["newline"]["request_identity"]["steps_join"], "newline")
+
     def test_suites_only_name_known_datasets(self):
         for names in bench_data.SUITES.values():
             self.assertTrue(set(names) <= set(bench_data.EVAL_DATASETS))

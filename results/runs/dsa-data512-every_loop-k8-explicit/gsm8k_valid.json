@@ -1,0 +1,54 @@
+{
+  "accuracy": 0.304,
+  "correct": 152,
+  "dataset": "gsm8k_valid",
+  "finished_at": "2026-10-25T23:05:54+00:00",
+  "identity": {
+    "dataset": "gsm8k_valid",
+    "dataset_sha256": "bb26957d13f53e3c8f576f5d68b4f494c5615ca838235b2dbc2c9ae52cb4d205",
+    "model": "dsa-data512-every_loop-k8-explicit",
+    "model_identity": {
+      "checkpoint_sha256": "5ecfc6b6036b5dde5b2e066cc78a2a9b482d94af065e2f90bf870b39eb0c7f44",
+      "explicit": {
+        "batch_size": 16,
+        "checkpoint_sha256": "55be4263f6dc839e4fad10e42a121addf514648d2470b17bc396d5515a452464",
+        "decoding": "greedy",
+        "max_new_tokens": 192,
+        "model_id": null,
+        "prompt": "{question}\n",
+        "revision": null,
+        "tokenizer_sha256": "c8d6e3f861c13d0726b5f216d86da99388b135847b0a9c135e838a360e9c15a5"
+      },
+      "route": "explicit",
+      "trained_config": {
+        "eos_token_id": 50256,
+        "gate_threshold": 0.5,
+        "loop_budget": 8,
+        "marker_token_id": 50257,
+        "pad_token_id": 50256,
+        "periodic_interval": 4,
+        "recurrence_mode": "flt_memory",
+        "workspace_size": 4,
+        "write_mode": "every_loop"
+      }
+    },
+    "model_spec": "dsa",
+    "rows": 500,
+    "scorer_version": "bench-v1"
+  },
+  "model": "dsa-data512-every_loop-k8-explicit",
+  "n": 500,
+  "runtime": {
+    "device": null,
+    "git_commit": "41c81d444628551ba9f9bd0ff3b618e404c11f84-dirty",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.12.14",
+    "torch": "2.7.1",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 0.7119092045845464,
+  "session_seconds": 356.12236212496646,
+  "strict_accuracy": 0.304,
+  "strict_correct": 152,
+  "valid_answer_rate": 0.994
+}

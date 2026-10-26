@@ -215,7 +215,7 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
                   train_limit: int = 32, valid_limit: int = 0, seed: int = 7, loops: int = 16,
                   policy: str = "conclusive", tokenizer_model: str = DEFAULT_BACKBONE,
                   revision: str = DEFAULT_REVISION, tiny: bool = False,
-                  fixture: str | None = None) -> dict[str, Any]:
+                  fixture: str | None = None, steps_join: str = "space") -> dict[str, Any]:
     fixture_plan = load_fixture(fixture) if fixture is not None else None
     if fixture_plan is not None:
         train_limit = fixture_plan["expected_records"]
@@ -223,6 +223,8 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
         raise ValueError("loops must be positive and split limits nonnegative")
     if policy not in {"conclusive", "verified_only"}:
         raise ValueError("unsupported annotation policy")
+    if steps_join not in {"space", "newline"}:
+        raise ValueError("steps_join must be space or newline")
     if not re.fullmatch(r"[a-f0-9]{40}", revision):
         raise ValueError("--revision must be an immutable full 40-character commit SHA")
     pinned = load_pinned_manifest()
@@ -242,6 +244,8 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
                "audit_provenance": provenance}
     if fixture_plan is not None:
         request["fixture"] = {"name": fixture_plan["name"], "plan_sha256": fixture_plan["plan_sha256"]}
+    if steps_join != "space":
+        request["steps_join"] = steps_join
     output_dir = Path(output_dir).resolve()
     if output_dir in [path.resolve() for path in paths.values()] or any(output_dir in path.resolve().parents for path in paths.values()):
         raise ValueError("output directory must not contain or replace the source arrays")
@@ -294,7 +298,9 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
                     chosen.append({"source_row_number": index + 1, "sample_id": canonical["sample_id"],
                                    "source_problem_id": canonical["source_problem_id"], "question_hash": canonical["question_hash"]})
                     if split == "train":
-                        record = annotate_record(canonical, mode=policy, steps_join="space")
+                        # Row identity stays space-joined; only the training text takes the requested join.
+                        text_source = canonical if steps_join == "space" else canonical_record(rows[index], steps_join=steps_join)
+                        record = annotate_record(text_source, mode=policy, steps_join=steps_join)
                         if fixture_plan is not None:
                             reviewed = fixture_plan["training_rows"][len(annotated)]
                             if canonical["sample_id"] != reviewed["sample_id"]:
@@ -344,6 +350,7 @@ def prepare_pilot(*, storage_dir: Path | None, output_dir: Path, source_dir: Pat
                     "metadata": {"loop_budget": loops, "policy": policy, "seed": seed,
                                  "training_regime": "implementation_pilot", "benchmark_result": False,
                                  "train_limit": train_limit, "valid_limit": valid_limit, "fixture": fixture,
+                                 "steps_join": steps_join,
                                  "test_used_for_selection": False, "source_rows_filtered": False,
                                  "all_no_event_and_overflow_records_retained": True},
                     "sources": sources, "source_provenance": provenance,

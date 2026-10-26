@@ -3,7 +3,9 @@
 Accepts a saved model directory, a ``checkpoint-NNNNNNNN`` directory or a run
 directory with ``latest.json``. ``loops`` overrides the trained budget for the
 proposal's 2x/4x robustness checks; ``write_mode`` swaps the inference policy
-(static, every_loop, periodic, learned) without retraining.
+(static, every_loop, periodic, learned) without retraining. ``route="explicit"``
+decodes the trained backbone's ordinary CoT route instead (question + newline,
+greedy, 192 tokens), the explicit-retention check from docs/FINDINGS.md.
 """
 from __future__ import annotations
 
@@ -32,15 +34,33 @@ def resolve_model_directory(path: str | Path) -> Path:
 
 class DSAModel(BenchModel):
     def __init__(self, *, checkpoint: str, loops: int | None = None, write_mode: str | None = None,
-                 max_new_tokens: int = 64, device: str = "auto", name: str | None = None):
+                 max_new_tokens: int | None = None, device: str = "auto", name: str | None = None,
+                 route: str = "latent"):
         from transformers import AutoModelForCausalLM
 
         from dsa.models.anchored_loop import AnchorConfig, AnchoredLoop
         from dsa.models.backbone import BackboneAdapter
 
+        if route not in {"latent", "explicit"}:
+            raise ValueError("route must be latent or explicit")
         directory = resolve_model_directory(checkpoint)
         config = AnchorConfig(**json.loads((directory / "anchor_config.json").read_text(encoding="utf-8")))
         trained = asdict(config)
+        self.route = route
+        if route == "explicit":
+            if loops is not None or write_mode is not None:
+                raise ValueError("loops and write_mode apply to the latent route only")
+            if (directory / "tokenizer" / "tiny_tokenizer.json").is_file():
+                raise ValueError("the explicit route needs a Hugging Face tokenizer")
+            from dsa.bench.models.hf_causal import HFCausalLM
+            self.explicit = HFCausalLM(str(directory / "backbone"), tokenizer_id=str(directory / "tokenizer"),
+                                       device=device, max_new_tokens=192 if max_new_tokens is None else max_new_tokens)
+            self.name = name or f"dsa-{config.recurrence_mode}-{config.write_mode}-explicit"
+            self.batch_size = self.explicit.batch_size
+            self._identity = {"route": "explicit", "checkpoint_sha256": directory_identity(directory),
+                              "trained_config": trained, "explicit": self.explicit.identity()}
+            return
+        max_new_tokens = 64 if max_new_tokens is None else max_new_tokens
         if write_mode is not None:
             config = replace(config, write_mode=write_mode)
         self.loops = int(loops) if loops is not None else config.loop_budget
@@ -71,6 +91,8 @@ class DSAModel(BenchModel):
         return dict(self._identity)
 
     def generate(self, questions: list[str]) -> list[str]:
+        if self.route == "explicit":
+            return self.explicit.generate(questions)
         return [predict_question(self.model, self.tokenizer, question, loop_budget=self.loops,
                                  max_new_tokens=self.max_new_tokens)["generated_text"]
                 for question in questions]

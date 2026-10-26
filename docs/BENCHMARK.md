@@ -64,6 +64,10 @@ calculator spans and whole-line equations, not arithmetic written inline in pros
 `<<120=120>>` given-restatement event removed from row 112,564. Construction asserts its reviewed
 identities and its counts (32 records, 58 events, 3 no-event controls). To train DSA on it:
 `scripts/prepare_dsa_pilot.py --source-dir data --fixture overfit32 --loops 8 --output-dir ...`.
+`--steps-join newline` writes the explicit training text one step per line, the format the CoT
+checkpoint was trained on; the default `space` keeps the original DSA contract.
+[`notebooks/DSA_Format_Test_Colab.ipynb`](../notebooks/DSA_Format_Test_Colab.ipynb) runs that
+comparison on the data-scale learned arm.
 
 **Contamination.** Setup checks every evaluation question against every training corpus after
 normalization; the lock records zero overlaps for all sets.
@@ -74,6 +78,7 @@ normalization; the lock records zero overlaps for all sets.
 python scripts/evaluate.py --model gpt2-sft --suite overfit,dev,valid
 python scripts/evaluate.py --model codi --suite dev
 python scripts/evaluate.py --model dsa --arg checkpoint=runs/learned --arg loops=16 --name dsa-learned-k16 --suite dev
+python scripts/evaluate.py --model dsa --arg checkpoint=runs/learned --arg route=explicit --name dsa-learned-explicit --suite dev
 python scripts/evaluate.py --model gpt2-sft --suite test --test    # final numbers only
 python scripts/evaluate.py --model gpt2-sft --suite dev --limit 4  # smoke check, never saved
 python scripts/evaluate.py --table
@@ -103,14 +108,34 @@ scorer or dataset version are left out of the table and listed as stale.
 | `codi` | `zen-E/CODI-gpt2@fd641b3d`, LoRA merged in FP32 | question + `<bot>`, 6 latent steps, `<eot>`, greedy, 256 tokens | outputs identical to official CODI code (peft) on 32/32 questions |
 | `lotus` | **needs `checkpoint=`** (no public GPT-2 LOTUS weights) | question + `\n` + 78 latents, 6 loops, greedy, 64 tokens | runs on MPS through the upstream `Lotus` class |
 | `dsa` | `checkpoint=<model, checkpoint or run dir>`; optional `loops=`, `write_mode=` | question-only latent loop, 64 tokens | all four data-scale K=8 checkpoints reproduce their recorded dev64 scores |
+| `dsa`, `route=explicit` | same checkpoints | the trained backbone's ordinary CoT route: question + `\n`, greedy, 192 tokens | reproduces all 256 explicit-control outputs from FINDINGS (four arms × 64) |
 
 `gpt2-vanilla` and `gpt2-sft` share prompt and decoding, so the only difference is the weights.
 CODI ran in bf16 upstream; FP32 here can differ slightly from the paper.
 
 **LOTUS weights.** The `yingfanbot` hub account publishes only Llama-3B LOTUS models.
 `yingfanbot/gsm-lotus-gpt2`, named in the CoT model card, returns 401 (private or missing).
-Either ask the authors for it or train one with `scripts/run.py args/gsm8k_lotus_gpt2.yaml` on a
-CUDA machine (FSDP/NCCL), then pass `--arg checkpoint=<checkpoint_final>`.
+Either ask the authors for it or train one with `scripts/run.py args/gsm8k_lotus_gpt2.yaml`, then
+pass `--arg checkpoint=<checkpoint_final>`. The paper reports 44.1 ± 0.7 on GSM8K for GPT-2 LOTUS
+(three seeds), against 42.7 for explicit CoT and 42.0 for CODI.
+
+Retraining is not cheap. The recipe is 30 epochs over all 385,620 rows at global batch 128, with
+one curriculum stage per epoch up to stage 6 (78 latents, 6 loops), so a stage-6 sample pushes
+about 616 tokens through GPT-2 against 113 for plain CoT: about 4.7e18 training FLOP in fp32.
+
+- **This M1 (measured 25 Oct, MPS):** 2.4 samples/s at stage 0 (batch 16), 0.3–0.4 samples/s at
+  stage 6 (batch 4, the memory limit). About 44 h for the first epoch and 250–400 h per stage-6
+  epoch: the full recipe would take most of a year. Not an option.
+- **One CUDA GPU (estimated, not run):** `torchrun --nproc_per_node=1` should run unchanged, but
+  needs `datasets` and `wandb` installed (or `WANDB_MODE=disabled`), gradient accumulation to
+  reach batch 128 (the per-GPU batch of 64 needs about 80 GB at stage 6), and
+  `allow_resume_from_checkpoint: True` so a disconnect resumes from the last epoch. About 26–43 h
+  on an A100 with TF32 matmuls enabled, 110–165 h without; much longer on an L4 or T4.
+- The trainer picks its best epoch on `gsm_valid`, which is the leaderboard's `gsm8k_valid`;
+  LOTUS's validation column is then optimistic. Test sets are unaffected.
+
+A reduced budget (fewer rows or epochs) is a weaker baseline than the paper's and must not be
+reported as LOTUS.
 
 **Explicit-only control.** `scripts/train_sft.py --train overfit32 --output runs/sft-overfit32`
 fine-tunes the CoT checkpoint with the DSA pilot's sample order, optimizer and clipping, using

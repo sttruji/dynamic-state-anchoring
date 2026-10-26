@@ -14,7 +14,7 @@ class HFCausalLM(BenchModel):
 
     def __init__(self, model_id: str, *, revision: str | None = None, device: str = "auto",
                  prompt: str = "{question}\n", max_new_tokens: int = 192, batch_size: int = 16,
-                 name: str = "hf-causal-lm"):
+                 name: str = "hf-causal-lm", tokenizer_id: str | None = None):
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
         if "{question}" not in prompt:
@@ -22,7 +22,7 @@ class HFCausalLM(BenchModel):
         self.name, self.prompt = name, prompt
         self.max_new_tokens, self.batch_size = int(max_new_tokens), int(batch_size)
         self.device = resolve_device(device)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision, use_fast=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_id or model_id, revision=revision, use_fast=True)
         self.tokenizer.padding_side = "left"
         if self.tokenizer.pad_token_id is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
@@ -38,6 +38,8 @@ class HFCausalLM(BenchModel):
             "prompt": prompt, "max_new_tokens": self.max_new_tokens,
             "decoding": "greedy", "batch_size": self.batch_size,
         }
+        if tokenizer_id is not None:  # Absent otherwise, so earlier results keep their identity.
+            self._identity["tokenizer_sha256"] = directory_identity(tokenizer_id)
 
     def identity(self) -> dict:
         return dict(self._identity)
