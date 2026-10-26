@@ -38,6 +38,21 @@ Differences from CODI: the standard deviation is taken per record, not over the
 batch, so batching does not change the loss. Training stays FP32, where CODI
 used bf16.
 
+## Colab
+
+[`notebooks/DSA_CODI_Recipe_Colab.ipynb`](../notebooks/DSA_CODI_Recipe_Colab.ipynb)
+([open in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_CODI_Recipe_Colab.ipynb))
+runs one arm end to end through `scripts/run_codi_recipe.py`:
+1. Prepare a seeded training sample, cached on Drive (default 32,768 rows, one pass, 256 updates).
+2. Pick the largest batch whose worst case, the sample's longest records, fits in GPU memory.
+3. Train with CODI's settings, backing checkpoints up to Drive about every 20 minutes.
+4. Evaluate 8 loops, 1 loop and the explicit route, and print paired 8-versus-1 counts.
+
+`plan.json` in the run's Drive folder fixes the batch, steps and code commit, so a rerun after a
+disconnect resumes the same run. The driver also runs locally with `--tiny --device cpu`. That
+path was tested here, including a run killed mid-training whose local disk was wiped and which
+then resumed from its backup.
+
 ## Example: CODI's settings on a GPU
 
 ```bash
