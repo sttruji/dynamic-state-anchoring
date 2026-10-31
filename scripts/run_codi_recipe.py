@@ -6,8 +6,9 @@
    ``BACKUP/plan.json``. Reruns reuse the plan, so a resumed run is the same run.
 2. Train on fast local disk with ``train_dsa.py``. Print progress, and copy each
    new checkpoint to ``BACKUP/backup``. A rerun restores that backup and resumes.
-3. Evaluate the final model with the harness: 8 loops, 1 loop and the explicit
-   route. Print paired 8-versus-1 counts, the first check that the loop helps.
+3. Evaluate the final model with the harness: 8, 4 and 1 loops and the explicit
+   route. Print paired counts between the loop budgets, the first check that the
+   loop helps.
 
 Recipe and options: docs/CODI_RECIPE.md. Notebook: notebooks/DSA_CODI_Recipe_Colab.ipynb.
 """
@@ -16,6 +17,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+from itertools import combinations
 import json
 from math import comb
 import os
@@ -250,27 +252,16 @@ def train(args, prepared: Path, plan: dict) -> None:
         raise RuntimeError(f"Training stopped with status {status}")
 
 
-def _run_without_counters(command: list[str]) -> None:
-    """Run and echo output, keeping only the last carriage-return update of each line."""
-    process = subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                               env={**os.environ, "PYTHONUNBUFFERED": "1"})
-    for line in process.stdout:
-        sys.stdout.write(line.decode("utf-8", errors="replace").split("\r")[-1])
-        sys.stdout.flush()
-    if process.wait():
-        raise subprocess.CalledProcessError(process.returncode, command)
-
-
 def evaluate(args) -> dict[str, list[str]]:
-    rows = {f"{args.name}-k8": [], f"{args.name}-k1": ["--arg", "loops=1"]}
+    rows = {f"{args.name}-k8": [], f"{args.name}-k4": ["--arg", "loops=4"], f"{args.name}-k1": ["--arg", "loops=1"]}
     if not args.tiny:  # the explicit route needs the Hugging Face tokenizer
         rows[f"{args.name}-explicit"] = ["--arg", "route=explicit"]
     for name, extra in rows.items():
         print(f"Evaluating {name} on {args.suite}", flush=True)
-        _run_without_counters([sys.executable, str(ROOT / "scripts/evaluate.py"), "--model", "dsa",
-                               "--arg", f"checkpoint={args.work_dir}", "--name", name, *extra,
-                               "--suite", args.suite, "--device", args.device,
-                               "--results-dir", str(args.results_dir)])
+        subprocess.run([sys.executable, str(ROOT / "scripts/evaluate.py"), "--model", "dsa",
+                        "--arg", f"checkpoint={args.work_dir}", "--name", name, *extra,
+                        "--suite", args.suite, "--device", args.device,
+                        "--results-dir", str(args.results_dir)], cwd=ROOT, check=True)
     return rows
 
 
@@ -297,13 +288,15 @@ def summarize(args) -> None:
     leaderboard = args.results_dir / "leaderboard.csv"
     board = {row["model"]: row for row in csv.DictReader(leaderboard.open())} if leaderboard.exists() else {}
     for dataset in ("dev64", "gsm8k_valid"):
-        k8, k1 = (_correct(args.results_dir, f"{args.name}-{k}", dataset) for k in ("k8", "k1"))
-        if k8 is None or k1 is None:
+        runs = {loops: _correct(args.results_dir, f"{args.name}-k{loops}", dataset) for loops in (8, 4, 1)}
+        if None in runs.values():
             continue
-        counts = paired_counts(k8, k1)
-        print(f"\n{dataset}: 8 loops {100 * sum(k8.values()) / len(k8):.1f}%, 1 loop {100 * sum(k1.values()) / len(k1):.1f}% "
-              f"(only 8 loops right: {counts['only_left']}, only 1 loop: {counts['only_right']}, "
-              f"exact paired p = {counts['p']:.3f})")
+        print(f"\n{dataset}: " + ", ".join(f"k{loops} {100 * sum(run.values()) / len(run):.1f}%"
+                                           for loops, run in runs.items()))
+        for left, right in combinations(runs, 2):
+            counts = paired_counts(runs[left], runs[right])
+            print(f"  k{left} vs k{right}: only k{left} right {counts['only_left']}, only k{right} right "
+                  f"{counts['only_right']}, exact paired p = {counts['p']:.3f}")
         for model in (f"{args.name}-explicit", "gpt2-sft", "codi", "dsa-data512-static-k8"):
             if board.get(model, {}).get(f"{dataset}_acc"):
                 print(f"  {model}: {board[model][f'{dataset}_acc']}%")

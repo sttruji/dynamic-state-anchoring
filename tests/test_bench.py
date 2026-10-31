@@ -1,4 +1,6 @@
+import contextlib
 import csv
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -188,6 +190,22 @@ class HarnessTests(unittest.TestCase):
         summary = self.run_echo(EchoModel(), limit=2)[0]
         self.assertEqual(summary["n"], 2)
         self.assertFalse(self.results.exists())
+
+    def test_progress_is_a_counter_on_a_terminal_and_a_heartbeat_through_a_pipe(self):
+        class Terminal(io.StringIO):
+            def isatty(self):
+                return True
+
+        rows = [{"id": str(i), "question": "q", "answer": "1"} for i in range(3)]
+
+        def printed(stream, seconds):
+            with contextlib.redirect_stdout(stream), mock.patch.object(harness, "PIPED_PROGRESS_SECONDS", seconds):
+                harness._run_rows(EchoModel(batch_size=1), rows, progress="set")
+            return stream.getvalue()
+
+        self.assertEqual(printed(Terminal(), 60), "\r  set: 1/3\r  set: 2/3\r  set: 3/3\n")
+        self.assertEqual(printed(io.StringIO(), 60), "")
+        self.assertEqual(printed(io.StringIO(), 0), "  set: 1/3\n  set: 2/3\n  set: 3/3\n")
 
     def test_stale_scorer_results_are_excluded(self):
         self.run_echo(EchoModel())

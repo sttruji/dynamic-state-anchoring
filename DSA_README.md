@@ -27,7 +27,8 @@ The [original 32-record pilot](notebooks/DSA_Colab.ipynb) remains separate.
 [CODI-style options](docs/CODI_RECIPE.md) add padded batching, LoRA, a separate
 new-module learning rate, warmup/cosine schedules and CODI's answer-position
 distillation; all default to off. The [CODI-recipe notebook](notebooks/DSA_CODI_Recipe_Colab.ipynb)
-trains and evaluates one arm with them on a Colab GPU, resuming after disconnects.
+trains and evaluates one arm with them on a Colab GPU, resuming after disconnects, and fills in the
+baseline rows of the leaderboard.
 
 From this repository root, the prepared `.venv` can run:
 

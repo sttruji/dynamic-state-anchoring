@@ -91,7 +91,14 @@ Two accuracies are reported. `acc` keeps the pinned LOTUS extraction (text after
 otherwise the last number; float equality), so new rows compare directly with every earlier DSA
 number. `strict` also requires one clean scalar after the answer marker, which removes the
 incidental credit noted in FINDINGS (`iced.5` or `10*5` scored as 5). Non-integer gold answers
-(GSM-Hard) are compared with a 1e-4 tolerance.
+(GSM-Hard) are compared with a 1e-4 tolerance, relative or absolute, in both columns.
+
+That tolerance only touches the 303 non-integer answers among GSM-Hard's 1,319, and it is loose at
+both ends: on 232 large answers being off by 1 still passes, and on the 26 answers below 1e-4 a plain
+`0` passes. LOTUS's exact float comparison is stricter: written to four decimals, only 148 of the
+303 would pass it. So GSM-Hard numbers here can run higher than exact scoring would give. To tighten
+the tolerance, change it and bump `SCORER_VERSION`. That marks every saved result stale, so rescore
+the saved `predictions/` rather than rerunning models.
 
 **Why results stay comparable.** Each result is keyed by its row name and dataset, and stores the
 model's identity (checkpoint hash, loop budget, decoding settings), the dataset hash and the scorer
@@ -109,6 +116,15 @@ scorer or dataset version are left out of the table and listed as stale.
 | `lotus` | **needs `checkpoint=`** (no public GPT-2 LOTUS weights) | question + `\n` + 78 latents, 6 loops, greedy, 64 tokens | runs on MPS through the upstream `Lotus` class |
 | `dsa` | `checkpoint=<model, checkpoint or run dir>`; optional `loops=`, `write_mode=` | question-only latent loop, 64 tokens | all four data-scale K=8 checkpoints reproduce their recorded dev64 scores |
 | `dsa`, `route=explicit` | same checkpoints | the trained backbone's ordinary CoT route: question + `\n`, greedy, 192 tokens | reproduces all 256 explicit-control outputs from FINDINGS (four arms × 64) |
+
+`gpt2-vanilla`, `gpt2-sft` and `codi` have fixed weights, so evaluating them on the held-out sets tunes
+nothing. [`notebooks/DSA_CODI_Recipe_Colab.ipynb`](../notebooks/DSA_CODI_Recipe_Colab.ipynb) runs all
+three on all eight sets. Leave DSA checkpoints off the held-out sets until their final numbers.
+
+**`csqa` is a floor for these rows.** None of the three was trained on CommonsenseQA: `gpt2-sft` and
+`codi` were trained on GSM8K math, and `gpt2-vanilla` on no task at all. The only published CODI GPT-2
+weights (`zen-E/CODI-gpt2`) are the GSM8K ones. These numbers are not the CommonsenseQA results
+reported for CODI, which come from a model trained on that dataset.
 
 `gpt2-vanilla` and `gpt2-sft` share prompt and decoding, so the only difference is the weights.
 CODI ran in bf16 upstream; FP32 here can differ slightly from the paper.

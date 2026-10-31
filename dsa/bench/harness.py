@@ -20,6 +20,7 @@ from pathlib import Path
 import platform
 import re
 import subprocess
+import sys
 import tempfile
 import time
 from datetime import datetime, timezone
@@ -31,6 +32,7 @@ REPOSITORY = Path(__file__).resolve().parents[2]
 DEFAULT_RESULTS_DIR = REPOSITORY / "results"
 _NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9._+-]*\Z")
 BASELINE_ORDER = ("gpt2-vanilla", "gpt2-sft", "codi", "lotus")
+PIPED_PROGRESS_SECONDS = 60  # A pipe turns each carriage-return update into a line, so print fewer.
 
 
 def _atomic_json(path: Path, value) -> None:
@@ -113,6 +115,7 @@ def _summarize(predictions: list[dict]) -> dict:
 def _run_rows(model, rows: list[dict], handle=None, progress: str = "") -> list[dict]:
     results = []
     batch = max(1, int(getattr(model, "batch_size", 1)))
+    terminal, reported = sys.stdout.isatty(), time.monotonic()
     for start in range(0, len(rows), batch):
         chunk = rows[start:start + batch]
         started = time.perf_counter()
@@ -131,8 +134,12 @@ def _run_rows(model, rows: list[dict], handle=None, progress: str = "") -> list[
             os.fsync(handle.fileno())
         if progress:
             done = start + len(chunk)
-            print(f"\r  {progress}: {done}/{len(rows)}", end="", flush=True)
-    if progress:
+            if terminal:
+                print(f"\r  {progress}: {done}/{len(rows)}", end="", flush=True)
+            elif time.monotonic() - reported >= PIPED_PROGRESS_SECONDS:
+                reported = time.monotonic()
+                print(f"  {progress}: {done}/{len(rows)}", flush=True)
+    if progress and terminal:
         print()
     return results
 

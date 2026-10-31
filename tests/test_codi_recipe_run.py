@@ -1,13 +1,20 @@
 """The Colab CODI-recipe driver's helpers and its notebook's script calls."""
+import argparse
 import ast
+import contextlib
+import io
 import json
 from pathlib import Path
+import re
 import runpy
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
+from dsa.bench.data import EVAL_DATASETS, SUITES
+from dsa.bench.harness import BASELINE_ORDER
 from dsa.data.milestones import annotate_record
 from dsa.data.tokenize import TinyTokenizer, tokenize_record
 from dsa.training.pilot import sha256_file, tokenizer_directory_sha256
@@ -77,6 +84,33 @@ class DriverHelperTests(unittest.TestCase):
         self.assertAlmostEqual(counts["p"], 2 / 32)
         self.assertEqual(DRIVER["paired_counts"](right, right)["p"], 1.0)
 
+    def test_evaluate_runs_every_loop_budget(self):
+        args = argparse.Namespace(name="run", tiny=True, suite="dev", device="cpu", work_dir=self.root / "run",
+                                  results_dir=self.root / "results")
+        with mock.patch("subprocess.run") as run:
+            DRIVER["evaluate"](args)
+        commands = [call.args[0] for call in run.call_args_list]
+        self.assertEqual([command[command.index("--name") + 1] for command in commands],
+                         ["run-k8", "run-k4", "run-k1"])
+        self.assertNotIn("--arg", commands[0][commands[0].index("--name"):])
+        self.assertIn("loops=4", commands[1])
+        self.assertIn("loops=1", commands[2])
+
+    def test_summary_compares_every_pair_of_loop_budgets(self):
+        for loops, right in ((8, 3), (4, 2), (1, 1)):
+            path = self.root / "results/predictions" / f"run-k{loops}/dev64.jsonl"
+            path.parent.mkdir(parents=True)
+            rows = [{"_identity": {}}] + [{"id": str(i), "correct": i < right} for i in range(4)]
+            path.write_text("".join(json.dumps(row) + "\n" for row in rows))
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            DRIVER["summarize"](argparse.Namespace(name="run", results_dir=self.root / "results"))
+        text = output.getvalue()
+        self.assertIn("dev64: k8 75.0%, k4 50.0%, k1 25.0%", text)
+        self.assertIn("k8 vs k4: only k8 right 1, only k4 right 0", text)
+        self.assertIn("k8 vs k1: only k8 right 2, only k1 right 0", text)
+        self.assertIn("k4 vs k1: only k4 right 1, only k1 right 0", text)
+
 
 class NotebookTests(unittest.TestCase):
     def test_cells_parse_without_saved_outputs_and_call_real_flags(self):
@@ -100,6 +134,14 @@ class NotebookTests(unittest.TestCase):
                                    capture_output=True, text=True, check=True).stdout
             for flag in flags:
                 self.assertIn(flag, usage, f"{script} has no {flag}")
+
+    def test_baseline_cell_covers_every_baseline_and_evaluation_set(self):
+        notebook = json.loads(NOTEBOOK.read_text())
+        source = next("".join(cell["source"]) for cell in notebook["cells"] if "RUN_BASELINES:" in "".join(cell["source"]))
+        models = ast.literal_eval(re.search(r"for model in (\(.*\)):", source).group(1))
+        self.assertEqual(set(models), set(BASELINE_ORDER) - {"lotus"})  # LOTUS has no public GPT-2 weights
+        suites = re.search(r'"--suite", "([^"]+)", "--test"', source).group(1).split(",")
+        self.assertEqual({name for suite in suites for name in SUITES[suite]}, set(EVAL_DATASETS))
 
 
 if __name__ == "__main__":
