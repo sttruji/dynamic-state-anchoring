@@ -28,7 +28,8 @@ The [original 32-record pilot](notebooks/DSA_Colab.ipynb) remains separate.
 new-module learning rate, warmup/cosine schedules and CODI's answer-position
 distillation; all default to off. The [CODI-recipe notebook](notebooks/DSA_CODI_Recipe_Colab.ipynb)
 trains and evaluates one arm with them on a Colab GPU, resuming after disconnects, and fills in the
-baseline rows of the leaderboard.
+baseline rows of the leaderboard. The [anchor-write notebook](notebooks/DSA_CODI_Writes_Colab.ipynb)
+runs the next arm on the same recipe and skips the finished baselines.
 
 From this repository root, the prepared `.venv` can run:
 

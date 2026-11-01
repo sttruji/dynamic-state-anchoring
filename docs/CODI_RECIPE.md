@@ -54,6 +54,16 @@ disconnect resumes the same run. The driver also runs locally with `--tiny --dev
 path was tested here, including a run killed mid-training whose local disk was wiped and which
 then resumed from its backup.
 
+[`notebooks/DSA_CODI_Writes_Colab.ipynb`](../notebooks/DSA_CODI_Writes_Colab.ipynb)
+([open in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_CODI_Writes_Colab.ipynb))
+is the next arm: the same recipe and data with anchor writes on every loop, without rerunning the
+baselines. It ends by downloading the results straight from the session.
+
+**Keep Drive storage free.** When Drive fills up, the mounted folder keeps showing every file while
+uploads fail, so a run looks healthy and its later results and checkpoints never reach Drive. Colab's
+`df` does not show this, because it reports the machine's disk rather than the Drive quota. The
+DriveFS log does: search `/root/.config/Google/DriveFS/Logs/drive_fs.txt` for `QUOTA_EXCEEDED`.
+
 ## Example: CODI's settings on a GPU
 
 ```bash
@@ -67,9 +77,9 @@ python scripts/train_dsa.py --prepared-dir PREPARED --output-dir RUN \
   --answer-distill-weight 1
 ```
 
-`32 × 4` matches CODI's 128 records per update. The batch size that fits depends
-on the GPU and has not been measured here. Raise `--batch-size` and lower
-`--gradient-accumulation` while memory allows. The 512-record data-scale set is
+`32 × 4` matches CODI's 128 records per update. On an A100 that batch peaked at
+5.4 GiB and took 9.5 s per update with no anchor writes. Raise `--batch-size` and
+lower `--gradient-accumulation` while memory allows. The 512-record data-scale set is
 far too small for this recipe: CODI trains 40 epochs over 385,620 records.
 Prepare a larger set with `prepare_dsa_pilot.py --train-limit 0`, which selects
 the complete split.
