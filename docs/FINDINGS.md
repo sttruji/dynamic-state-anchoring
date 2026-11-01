@@ -106,6 +106,29 @@ The same 64 validation questions were generated through the original checkpoint 
 
 The original model answered more questions correctly than every fine-tuned explicit route on this subset. The learned arm's paired exploratory p-value was 0.0117; the other three were 0.0386, 0.00635 and 0.00183. These are unadjusted comparisons from one seed and one source-order subset. They strengthen the concern that fine-tuning reduced explicit capability, alongside weak transfer into latent answers. Different explicit/latent token budgets prevent an equal-compute superiority claim.
 
+## 5. CODI-recipe no-write arm
+
+Added 31 October 2026. One no-write arm was trained with the parts of CODI's GPT-2 recipe that DSA shares ([CODI_RECIPE.md](CODI_RECIPE.md)): LoRA rank 128, learning rate 3e-3 with warmup and cosine decay, 128 records per update, and answer-position distillation. It used FLT K=8, seed 7, 32,768 training records in one pass (256 updates), code `143f24a` and one A100. That is 0.21% of CODI's roughly 120,500 updates. Rows are `dsa-codi-static-n32k-*` in the [leaderboard](../results/leaderboard.csv), with per-update metrics in [results/training](../results/training/dsa-codi-static-n32k). The trained weights were lost when Drive ran out of storage mid-run.
+
+| Row | dev64 | Full validation | Within a factor of 2 of gold | Rank correlation with gold |
+|---|---:|---:|---:|---:|
+| K=8 | 3/64 | 37/500 (7.4%) | 58.9% | 0.77 |
+| K=4 | 3/64 | 35/500 (7.0%) | 58.1% | 0.76 |
+| K=1 | 4/64 | 45/500 (9.0%) | 58.8% | 0.75 |
+| Explicit route | 26/64 | 205/500 (41.0%) | 71.8% | 0.82 |
+| Original checkpoint (`gpt2-sft`) | 25/64 | 212/500 (42.4%) | 73.8% | 0.82 |
+| `codi` | 25/64 | 206/500 (41.2%) | 78.1% | 0.87 |
+
+The explicit route no longer lost accuracy after training. Against the original checkpoint on validation, 28 questions were correct only after training and 35 only before, exploratory paired p=0.45. The section 3 checkpoints' explicit routes scored 28.2–30.6% on these questions in the three arms measured.
+
+Latent answers depended on the question. Shuffling the K=8 answers across questions gave a mean of 6.0 correct and never more than 17 in 5,000 shuffles, against 37 observed. Their size tracked the gold answer far better than summing the question's numbers, which had rank correlation 0.40 and 27.1% within a factor of 2. They were estimates rather than calculations: the typical miss was a factor of 1.8, against 1.2 for the explicit route.
+
+There was no K=8 advantage. For K=8 versus K=1, 11 questions were correct only at K=8 and 19 only at K=1, exploratory paired p=0.20. K=4 and K=8 gave the same answer on 481 of 500 questions, so the loop had nearly settled by K=4. K=1 and K=8 differed on 181 answers; K=8 was closer to gold on 85 and K=1 on 95 (one tie), p=0.50. Because K=4 and K=1 reuse weights trained at K=8, these are not independently trained depth-matched models.
+
+Mean answer loss fell from 2.19 over updates 33–64 to 1.76 over updates 225–256, and flattened as the learning rate reached zero. The run is too short to show what more training would do.
+
+**Supported conclusion:** at this budget the recipe preserved explicit capability and produced question-dependent latent estimates, but extra loops added nothing. This arm made no anchor writes, so it does not test anchoring.
+
 ## Evidence quality, scoring and limits
 
 | Completed review | Inventoried files verified | Prediction scores independently checked | Raw-token records independently decoded |

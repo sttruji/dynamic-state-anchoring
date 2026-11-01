@@ -1,0 +1,38 @@
+{
+  "accuracy": 0.0,
+  "correct": 0,
+  "dataset": "multiarith",
+  "finished_at": "2026-10-31T21:56:35+00:00",
+  "identity": {
+    "dataset": "multiarith",
+    "dataset_sha256": "000bb0eeb3b79f9c5de1944977b2ca1d90a4435f63ad6bf95d17812feab5ff0d",
+    "model": "gpt2-vanilla",
+    "model_identity": {
+      "batch_size": 16,
+      "checkpoint_sha256": null,
+      "decoding": "greedy",
+      "max_new_tokens": 192,
+      "model_id": "gpt2",
+      "prompt": "{question}\n",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e"
+    },
+    "model_spec": "gpt2-vanilla",
+    "rows": 180,
+    "scorer_version": "bench-v1"
+  },
+  "model": "gpt2-vanilla",
+  "n": 180,
+  "runtime": {
+    "device": "cuda",
+    "git_commit": "143f24a48d1ff8a1302420eb4c39f6f3c1c440b8",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 0.1594029597277793,
+  "session_seconds": 28.71179628999971,
+  "strict_accuracy": 0.0,
+  "strict_correct": 0,
+  "valid_answer_rate": 0.32222222222222224
+}

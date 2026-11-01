@@ -1,0 +1,54 @@
+{
+  "accuracy": 0.40625,
+  "correct": 26,
+  "dataset": "dev64",
+  "finished_at": "2026-10-31T23:01:13+00:00",
+  "identity": {
+    "dataset": "dev64",
+    "dataset_sha256": "2fafa871809edaf35014f07216eefe7c2c6c42bce4c23ad375d07aaebd399842",
+    "model": "dsa-codi-static-n32k-explicit",
+    "model_identity": {
+      "checkpoint_sha256": "b3eed4812bd1317bcc26ee898357cb45c89d6a0cddf62319ba8b394a188ba3ba",
+      "explicit": {
+        "batch_size": 16,
+        "checkpoint_sha256": "f1caa79c2470199f48aa4bb72a0680b4918a51e1774ed83d23e1ab786bf53b1d",
+        "decoding": "greedy",
+        "max_new_tokens": 192,
+        "model_id": null,
+        "prompt": "{question}\n",
+        "revision": null,
+        "tokenizer_sha256": "c8d6e3f861c13d0726b5f216d86da99388b135847b0a9c135e838a360e9c15a5"
+      },
+      "route": "explicit",
+      "trained_config": {
+        "eos_token_id": 50256,
+        "gate_threshold": 0.5,
+        "loop_budget": 8,
+        "marker_token_id": 50257,
+        "pad_token_id": 50256,
+        "periodic_interval": 4,
+        "recurrence_mode": "flt_memory",
+        "workspace_size": 4,
+        "write_mode": "static"
+      }
+    },
+    "model_spec": "dsa",
+    "rows": 64,
+    "scorer_version": "bench-v1"
+  },
+  "model": "dsa-codi-static-n32k-explicit",
+  "n": 64,
+  "runtime": {
+    "device": null,
+    "git_commit": "143f24a48d1ff8a1302420eb4c39f6f3c1c440b8",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 0.0531641157187579,
+  "session_seconds": 3.4166888419995303,
+  "strict_accuracy": 0.40625,
+  "strict_correct": 26,
+  "valid_answer_rate": 1.0
+}

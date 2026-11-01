@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "commit": "143f24a48d1ff8a1302420eb4c39f6f3c1c440b8",
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "gpu_memory_bytes": 42405855232,
+  "prepared_manifest_sha256": "5a9195ba161cbdd7843d1c2be29d28604fca6e9db0e11a132ac6284ec19b753d",
+  "train_records": 32768,
+  "write_mode": "static",
+  "recipe": {
+    "recurrence-mode": "flt_memory",
+    "loops": 8,
+    "workspace": 4,
+    "seed": 7,
+    "lora-rank": 128,
+    "lora-alpha": 32,
+    "lora-dropout": 0.1,
+    "learning-rate": 0.003,
+    "weight-decay": 0.1,
+    "max-grad-norm": 2,
+    "answer-distill-weight": 1
+  },
+  "new_module_learning_rate": null,
+  "batch_size": 32,
+  "gradient_accumulation": 4,
+  "steps": 256,
+  "warmup_steps": 8,
+  "save_every": 74,
+  "calibration": {
+    "peak_bytes": 6425376256,
+    "longest_batch_seconds": 4.068182969999725,
+    "upper_bound_hours": 1.1571720447999219
+  }
+}

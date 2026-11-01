@@ -96,9 +96,10 @@ incidental credit noted in FINDINGS (`iced.5` or `10*5` scored as 5). Non-intege
 That tolerance only touches the 303 non-integer answers among GSM-Hard's 1,319, and it is loose at
 both ends: on 232 large answers being off by 1 still passes, and on the 26 answers below 1e-4 a plain
 `0` passes. LOTUS's exact float comparison is stricter: written to four decimals, only 148 of the
-303 would pass it. So GSM-Hard numbers here can run higher than exact scoring would give. To tighten
-the tolerance, change it and bump `SCORER_VERSION`. That marks every saved result stale, so rescore
-the saved `predictions/` rather than rerunning models.
+303 would pass it. So GSM-Hard numbers here can run higher than exact scoring would give. On the
+saved rows the effect is small: without the tolerance `gpt2-sft` drops from 140 to 137 correct and
+`codi` from 124 to 122. To tighten the tolerance, change it and bump `SCORER_VERSION`. That marks
+every saved result stale, so rescore the saved `predictions/` rather than rerunning models.
 
 **Why results stay comparable.** Each result is keyed by its row name and dataset, and stores the
 model's identity (checkpoint hash, loop budget, decoding settings), the dataset hash and the scorer
@@ -119,7 +120,10 @@ scorer or dataset version are left out of the table and listed as stale.
 
 `gpt2-vanilla`, `gpt2-sft` and `codi` have fixed weights, so evaluating them on the held-out sets tunes
 nothing. [`notebooks/DSA_CODI_Recipe_Colab.ipynb`](../notebooks/DSA_CODI_Recipe_Colab.ipynb) runs all
-three on all eight sets. Leave DSA checkpoints off the held-out sets until their final numbers.
+three on all eight sets. Their rows are complete in [`results/leaderboard.csv`](../results/leaderboard.csv):
+overfit32, dev64 and validation ran on MPS with torch 2.7.1, the other five on an A100 with torch 2.11,
+and no set ran on both. On GSM8K test they score 42.3 (`gpt2-sft`) and 42.5 (`codi`). Leave DSA
+checkpoints off the held-out sets until their final numbers.
 
 **`csqa` is a floor for these rows.** None of the three was trained on CommonsenseQA: `gpt2-sft` and
 `codi` were trained on GSM8K math, and `gpt2-vanilla` on no task at all. The only published CODI GPT-2

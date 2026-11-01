@@ -1,0 +1,38 @@
+{
+  "accuracy": 0.012,
+  "correct": 12,
+  "dataset": "svamp",
+  "finished_at": "2026-10-31T21:52:44+00:00",
+  "identity": {
+    "dataset": "svamp",
+    "dataset_sha256": "b7b70ec5e999ff8f58ea565b3807e660355b6615535accf750368f70b1f86bf2",
+    "model": "gpt2-vanilla",
+    "model_identity": {
+      "batch_size": 16,
+      "checkpoint_sha256": null,
+      "decoding": "greedy",
+      "max_new_tokens": 192,
+      "model_id": "gpt2",
+      "prompt": "{question}\n",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e"
+    },
+    "model_spec": "gpt2-vanilla",
+    "rows": 1000,
+    "scorer_version": "bench-v1"
+  },
+  "model": "gpt2-vanilla",
+  "n": 1000,
+  "runtime": {
+    "device": "cuda",
+    "git_commit": "143f24a48d1ff8a1302420eb4c39f6f3c1c440b8",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 0.15272694931899833,
+  "session_seconds": 152.8191883479999,
+  "strict_accuracy": 0.001,
+  "strict_correct": 1,
+  "valid_answer_rate": 0.556
+}

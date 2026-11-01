@@ -1,0 +1,38 @@
+{
+  "accuracy": 0.10614101592115238,
+  "correct": 140,
+  "dataset": "gsm_hard",
+  "finished_at": "2026-10-31T22:02:37+00:00",
+  "identity": {
+    "dataset": "gsm_hard",
+    "dataset_sha256": "397349753207bde9b9597466d7340d8e8acdfd10b562533a503024485d794ad2",
+    "model": "gpt2-sft",
+    "model_identity": {
+      "batch_size": 16,
+      "checkpoint_sha256": null,
+      "decoding": "greedy",
+      "max_new_tokens": 192,
+      "model_id": "yingfanbot/gsm-cot-gpt2",
+      "prompt": "{question}\n",
+      "revision": "e0ef1887404adbf6c531d2cac7804694321f87bd"
+    },
+    "model_spec": "gpt2-sft",
+    "rows": 1319,
+    "scorer_version": "bench-v1"
+  },
+  "model": "gpt2-sft",
+  "n": 1319,
+  "runtime": {
+    "device": "cuda",
+    "git_commit": "143f24a48d1ff8a1302420eb4c39f6f3c1c440b8",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 0.058509993085668795,
+  "session_seconds": 77.2313669590003,
+  "strict_accuracy": 0.10614101592115238,
+  "strict_correct": 140,
+  "valid_answer_rate": 0.9977255496588324
+}
