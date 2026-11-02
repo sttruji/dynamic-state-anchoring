@@ -129,6 +129,10 @@ Mean answer loss fell from 2.19 over updates 33–64 to 1.76 over updates 225–
 
 **Supported conclusion:** at this budget the recipe preserved explicit capability and produced question-dependent latent estimates, but extra loops added nothing. This arm made no anchor writes, so it does not test anchoring.
 
+## 6. CODI past its trained depth
+
+Added 2 November 2026. Measured on the published CODI weights without training: accuracy falls from 206 to 173 of 500 on validation as the latent loop runs from 6 to 24 steps, and re-feeding a held latent did not recover it. Details, preregistered rules and limits are in [CODI_TRAIL.md](CODI_TRAIL.md).
+
 ## Evidence quality, scoring and limits
 
 | Completed review | Inventoried files verified | Prediction scores independently checked | Raw-token records independently decoded |

@@ -1,0 +1,38 @@
+CONTROL PASS: 1000/1000 texts match at 6 and 12
+
+D1 correct by depth (1 step was 126 in the sweep): {2: 120, 3: 182, 4: 190, 5: 209, 6: 206, 7: 203, 8: 202, 9: 202, 10: 200, 12: 192, 24: 173}
+  even 4 (190) vs odd 5 (209): 12/31, p=0.0054
+  even 6 (206) vs odd 5 (209): 2/5, p=0.453
+  even 6 (206) vs odd 7 (203): 7/4, p=0.549
+  even 8 (202) vs odd 7 (203): 1/2, p=1
+  even 8 (202) vs odd 9 (202): 5/5, p=1
+  even 10 (200) vs odd 9 (202): 0/2, p=0.5
+  even ahead in 1 of 6; pooled 27/49, p=0.0154 (pairs share depths, so the pooled p is optimistic)
+  no parity effect by the rule
+
+D2 drift source
+  pos_reset at 12 vs plain 12: 193 vs 192, gained 1, lost 0, p=1
+  pos_reset at 12 vs plain 6 : 193 vs 206, gained 10, lost 23, p=0.0351
+     answers equal to plain 6: 353/500 (plain 12: 353)
+  pos_reset at 24 vs plain 24: 174 vs 173, gained 1, lost 0, p=1
+  pos_reset at 24 vs plain 6 : 174 vs 206, gained 14, lost 46, p=4.22e-05
+     answers equal to plain 6: 277/500 (plain 24: 274)
+     does not recover by the rule
+  late_six at 12 vs plain 12: 165 vs 192, gained 9, lost 36, p=6.57e-05
+  late_six at 12 vs plain 6 : 165 vs 206, gained 9, lost 50, p=5.26e-08
+     answers equal to plain 6: 289/500 (plain 12: 353)
+  late_six at 24 vs plain 24: 143 vs 173, gained 13, lost 43, p=7.33e-05
+  late_six at 24 vs plain 6 : 143 vs 206, gained 8, lost 71, p=9.69e-14
+     answers equal to plain 6: 243/500 (plain 24: 274)
+     does not recover by the rule
+
+D3 trail content
+gsm8k_valid plain 6 correct 206
+  swap: correct 28, gained 7, lost 185, p=5.66e-46; same answer as own trail 47/500; same as donor's answer 8/500 (own vs donor by chance 9)
+  mean: correct 63, gained 16, lost 159, p=8.46e-31; same answer as own trail 98/500
+  rule: real content if answers follow donor
+svamp plain 6 correct 400
+  swap: correct 183, gained 40, lost 257, p=5.91e-40; same answer as own trail 208/1000; same as donor's answer 23/1000 (own vs donor by chance 17)
+  mean: correct 355, gained 72, lost 117, p=0.00131; same answer as own trail 386/1000
+  fixed point, cos(6,7)>=.95: n=306 plain 242, swap 110, mean 231; swap same as own 138
+  cycling, cos(6,7)<.6: n=649 plain 137, swap 59, mean 105; swap same as own 56

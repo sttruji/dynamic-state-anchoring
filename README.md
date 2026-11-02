@@ -6,6 +6,12 @@ Start with the [DSA overview](DSA_README.md),
 [Colab quickstart](docs/COLAB_QUICKSTART.md). The GitHub repository is
 [`sttruji/dynamic-state-anchoring`](https://github.com/sttruji/dynamic-state-anchoring).
 
+**CODI past its trained depth — 2 November 2026:** without retraining, the published CODI GPT-2
+drifts when its latent loop runs past the 6 steps it learned (206 to 173 of 500 on validation by 24
+steps). The loss is in question-specific content, not position. Agreement between depths predicts
+correctness but loses to token log-probability, and re-feeding a held latent did not help. See
+[CODI_TRAIL.md](docs/CODI_TRAIL.md).
+
 **Benchmark — 25 October 2026:** clone, then `scripts/setup_data.py` builds every
 dataset (GSM8K-Aug, GSM8K-Aug-NL, CommonsenseQA-CoT, SVAMP, GSM-Hard, MultiArith and the
 reviewed overfit32 fixture) byte-identically from pinned sources, and `scripts/evaluate.py`

@@ -1,0 +1,6 @@
+model,gsm8k_valid_acc,gsm8k_valid_strict_acc,gsm8k_valid_n
+codi-iter1,25.20,24.80,500
+codi-iter12,38.40,38.40,500
+codi-iter24,34.60,34.60,500
+codi-iter3,36.40,36.40,500
+codi-iter6,41.20,41.20,500

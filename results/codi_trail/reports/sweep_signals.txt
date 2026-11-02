@@ -1,0 +1,24 @@
+ceiling: right at 6 or at any other depth (needs an oracle to pick; bound only)
+  (6, 12) 215
+  (6, 3) 217
+  (3, 6, 12) 226
+  (3, 6, 12, 24) 232
+  (1, 3, 6, 12, 24) 244
+  right at all of 3, 6, 12, 24: 143
+  lost by 24 but right at 6, and gained by 24: 47 14
+
+agreement as a signal, scored on the 6-step answer
+  6 vs 12: agree 183/353 = 51.8%  disagree 23/147 = 15.6%  Fisher p=1.1e-14
+  3 vs 6: agree 171/315 = 54.3%  disagree 35/185 = 18.9%  Fisher p=2.4e-15
+  6 vs 24: agree 159/274 = 58.0%  disagree 47/226 = 20.8%  Fisher p=1.7e-17
+  3=6=12: all agree 162/257 = 63.0%  not all 44/243 = 18.1%  Fisher p=2.9e-25
+     answering only those 257 (51% coverage) gives 63.0% precision vs 41.2% answering all
+  3=6=12=24: all agree 143/209 = 68.4%  not all 63/291 = 21.6%  Fisher p=4.5e-26
+     answering only those 209 (42% coverage) gives 68.4% precision vs 41.2% answering all
+
+voting, ties broken toward the depth closest to 6
+  (3, 6, 12): 205 (41.0%)  gained 0, lost 1, p=1.000
+  (3, 6, 24): 204 (40.8%)  gained 1, lost 3, p=0.625
+  (6, 12, 24): 201 (40.2%)  gained 7, lost 12, p=0.359
+  (3, 6, 12, 24): 202 (40.4%)  gained 3, lost 7, p=0.344
+  (1, 3, 6, 12, 24): 205 (41.0%)  gained 5, lost 6, p=1.000

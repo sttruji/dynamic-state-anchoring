@@ -1,0 +1,46 @@
+
+=== gsm8k_valid, n=500
+ share of latent energy that is question-specific, step t: [(0, 0.285), (2, 0.271), (4, 0.258), (6, 0.248), (8, 0.239), (12, 0.221), (24, 0.18)]
+ all n=500: residual cosine after removing the per-step dataset mean
+   raw cos(6,t):      [(8, 0.997), (10, 0.991), (12, 0.985), (24, 0.943)]
+   residual cos(6,t): [(2, 0.74), (4, 0.945), (8, 0.984), (10, 0.963), (12, 0.938), (24, 0.796)]
+   residual cos(2,t): [(4, 0.738), (6, 0.74), (8, 0.721), (12, 0.686), (24, 0.606)]
+ can a question be found from its later latent? top-1 retrieval among all questions, using step 6 as the key: [(2, 0.652), (4, 0.938), (8, 0.988), (12, 0.922), (24, 0.674)]
+ same with step 2 as the key: [(4, 0.638), (6, 0.642), (8, 0.622), (12, 0.53), (24, 0.406)]
+ pick depth by sum of token logprobs; bar: above 6 steps with sign test p<0.05 on both sets
+  6 steps 206; oracle over 3,6,12,24: 232
+  depths 6,12       by sum: 207  gained 5, lost 4, p=1
+  depths 6,12       by min: 207  gained 5, lost 4, p=1
+  depths 3,6        by sum: 205  gained 6, lost 7, p=1
+  depths 3,6        by min: 206  gained 6, lost 6, p=1
+  depths 3,6,12     by sum: 203  gained 6, lost 9, p=0.607
+  depths 3,6,12     by min: 204  gained 6, lost 8, p=0.791
+  depths 6,12,24    by sum: 206  gained 7, lost 7, p=1
+  depths 6,12,24    by min: 204  gained 7, lost 9, p=0.804
+  depths 3,6,12,24  by sum: 202  gained 8, lost 12, p=0.503
+  depths 3,6,12,24  by min: 202  gained 8, lost 12, p=0.503
+
+=== svamp, n=1000
+ share of latent energy that is question-specific, step t: [(0, 0.252), (2, 0.349), (4, 0.357), (6, 0.356), (8, 0.352), (12, 0.338), (24, 0.283)]
+ cycling n=649: residual cosine after removing the per-step dataset mean
+   raw cos(6,t):      [(8, 0.997), (10, 0.994), (12, 0.987), (24, 0.929)]
+   residual cos(6,t): [(2, 0.923), (4, 0.981), (8, 0.99), (10, 0.979), (12, 0.96), (24, 0.809)]
+   residual cos(2,t): [(4, 0.939), (6, 0.923), (8, 0.9), (12, 0.864), (24, 0.728)]
+ fixed n=306: residual cosine after removing the per-step dataset mean
+   raw cos(6,t):      [(8, 1.0), (10, 0.999), (12, 0.999), (24, 0.997)]
+   residual cos(6,t): [(2, 0.968), (4, 0.996), (8, 0.999), (10, 0.997), (12, 0.995), (24, 0.965)]
+   residual cos(2,t): [(4, 0.983), (6, 0.968), (8, 0.959), (12, 0.946), (24, 0.899)]
+ can a question be found from its later latent? top-1 retrieval among all questions, using step 6 as the key: [(2, 0.77), (4, 0.968), (8, 0.994), (12, 0.938), (24, 0.526)]
+ same with step 2 as the key: [(4, 0.911), (6, 0.833), (8, 0.761), (12, 0.623), (24, 0.342)]
+ pick depth by sum of token logprobs; bar: above 6 steps with sign test p<0.05 on both sets
+  6 steps 400; oracle over 3,6,12,24: 456
+  depths 6,12       by sum: 407  gained 13, lost 6, p=0.167
+  depths 6,12       by min: 406  gained 12, lost 6, p=0.238
+  depths 3,6        by sum: 415  gained 20, lost 5, p=0.00408
+  depths 3,6        by min: 413  gained 21, lost 8, p=0.0241
+  depths 3,6,12     by sum: 421  gained 25, lost 4, p=0.000104
+  depths 3,6,12     by min: 418  gained 24, lost 6, p=0.00143
+  depths 6,12,24    by sum: 409  gained 16, lost 7, p=0.0931
+  depths 6,12,24    by min: 407  gained 15, lost 8, p=0.21
+  depths 3,6,12,24  by sum: 418  gained 25, lost 7, p=0.0021
+  depths 3,6,12,24  by min: 418  gained 26, lost 8, p=0.00294

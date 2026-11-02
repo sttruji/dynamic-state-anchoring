@@ -1,0 +1,6 @@
+steps 3: 500/500 texts match; correct 182 []
+steps 6: 500/500 texts match; correct 206 []
+steps 12: 500/500 texts match; correct 192 []
+steps 24: 500/500 texts match; correct 173 []
+mean seconds per question 4.49
+CONTROL PASS

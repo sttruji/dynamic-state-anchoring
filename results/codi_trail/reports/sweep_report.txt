@@ -1,0 +1,23 @@
+control: rerun of 6 steps vs the committed codi row
+  correct 206 vs 206 | identical text 500 / 500
+
+steps correct  acc%   95% CI        valid%  vs 6: only N / only 6    p   same answer  N closer / 6 closer   p
+    1    126   25.2  (21.6, 29.2)    100.0      18 / 98      0.000       140       101 / 255      0.000
+    3    182   36.4  (32.3, 40.7)    100.0      11 / 35      0.001       315        81 / 103      0.121
+    6    206   41.2  (37.0, 45.6)    100.0       0 / 0       1.000       500         0 / 0        1.000
+   12    192   38.4  (34.2, 42.7)    100.0       9 / 23      0.020       353        48 / 96       0.000
+   24    173   34.6  (30.6, 38.9)    100.0      14 / 47      0.000       274        80 / 143      0.000
+
+by reasoning steps in the sft output (accuracy % at each CODI step count)
+sft steps   n         1       3       6      12      24
+0-2        192      38.5    57.3    58.9    58.3    53.6
+3-3        146      24.7    39.0    44.5    39.0    37.0
+4-4         79      13.9    13.9    20.3    16.5    13.9
+5-99        83       6.0     4.8    14.5    12.0     6.0
+
+typical output
+1 ['4/2=3>> <<4-3=1>> <<1/2=0.5>> <<12*0.5=6>>Th', '5+2.5=10>>The answer is: 14'] | distinct 491 | seconds/q 0.904
+3 ['The answer is: 200', 'The answer is: 10'] | distinct 211 | seconds/q 0.438
+6 ['The answer is: 200', 'The answer is: 11'] | distinct 223 | seconds/q 0.587
+12 ['The answer is: 200', 'The answer is: 11'] | distinct 220 | seconds/q 0.83
+24 ['The answer is: 200', 'The answer is: 11'] | distinct 224 | seconds/q 1.331

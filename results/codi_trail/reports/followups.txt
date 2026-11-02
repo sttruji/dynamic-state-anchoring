@@ -1,0 +1,52 @@
+=== shape of the 2-cycle: cos(6,7) histogram and 6-step accuracy in each bin
+gsm8k_valid
+  cos(6,7) in [-1.00, 0.20): n= 109  right at 6   47  same answer 6 vs 24   61
+  cos(6,7) in [ 0.20, 0.40): n= 292  right at 6  124  same answer 6 vs 24  157
+  cos(6,7) in [ 0.40, 0.60): n=  96  right at 6   34  same answer 6 vs 24   55
+  cos(6,7) in [ 0.60, 0.80): n=   1  right at 6    0  same answer 6 vs 24    0
+  cos(6,7) in [ 0.80, 0.95): n=   1  right at 6    1  same answer 6 vs 24    1
+  cos(6,7) in [ 1.00, 1.01): n=   1  right at 6    0  same answer 6 vs 24    0
+svamp
+  cos(6,7) in [-1.00, 0.20): n= 111  right at 6   24  same answer 6 vs 24   41
+  cos(6,7) in [ 0.20, 0.40): n= 401  right at 6   83  same answer 6 vs 24  195
+  cos(6,7) in [ 0.40, 0.60): n= 137  right at 6   30  same answer 6 vs 24   70
+  cos(6,7) in [ 0.60, 0.80): n=  20  right at 6    9  same answer 6 vs 24   12
+  cos(6,7) in [ 0.80, 0.95): n=  25  right at 6   12  same answer 6 vs 24   22
+  cos(6,7) in [ 0.95, 1.00): n=  55  right at 6   36  same answer 6 vs 24   49
+  cos(6,7) in [ 1.00, 1.01): n= 251  right at 6  206  same answer 6 vs 24  230
+
+=== is the logprob baseline an artifact of output length?
+gsm8k_valid text sample: ['The answer is: 200', 'The answer is: 11', 'The answer is: 1400']
+ tokens in answer: [(6, 422), (7, 44), (8, 33), (9, 1)]
+ AUROC sum 0.920  mean 0.918  length alone 0.594
+  length 6: n=422, accuracy 0.464, AUROC within length 0.902
+  length 7: n=44, accuracy 0.227, AUROC within length 0.991
+  length 8: n=33, accuracy 0.000, AUROC within length nan
+svamp text sample: ['The answer is: 74.5', 'The answer is: 19', 'The answer is: 3']
+ tokens in answer: [(6, 846), (7, 111), (8, 43)]
+ AUROC sum 0.907  mean 0.907  length alone 0.620
+  length 6: n=846, accuracy 0.468, AUROC within length 0.888
+  length 7: n=111, accuracy 0.036, AUROC within length 0.888
+  length 8: n=43, accuracy 0.000, AUROC within length nan
+
+=== R3 weak spot: agreement effect within logprob quintiles, weighted so thin cells count little
+  gsm8k_valid: Mantel-Haenszel difference +6.2 pts, CI [-2.2, +14.9]
+  svamp: Mantel-Haenszel difference +11.8 pts, CI [+5.4, +17.7]
+
+=== does anything add to logprob? fit on validation, score on SVAMP. Features standardized on validation.
+target: correct
+  logprob                            SVAMP AUROC 0.907
+  logprob + agreement count          SVAMP AUROC 0.912  vs first row +0.005 CI [+0.002, +0.008]
+  logprob + cos(4,6)                 SVAMP AUROC 0.917  vs first row +0.009 CI [+0.004, +0.016]
+  logprob + cos(2,6)                 SVAMP AUROC 0.908  vs first row +0.001 CI [-0.008, +0.009]
+  logprob + cos(6,8)                 SVAMP AUROC 0.923  vs first row +0.016 CI [+0.007, +0.025]
+  logprob + cos(6,7)                 SVAMP AUROC 0.928  vs first row +0.021 CI [+0.009, +0.031]
+  cos(4,6) alone                     SVAMP AUROC 0.686  vs first row -0.222 CI [-0.254, -0.188]
+  agreement count alone              SVAMP AUROC 0.814  vs first row -0.093 CI [-0.115, -0.071]
+target: stable
+  logprob                            SVAMP AUROC 0.859
+  logprob + cos(4,6)                 SVAMP AUROC 0.818  vs first row -0.041 CI [-0.058, -0.024]
+  logprob + cos(2,6)                 SVAMP AUROC 0.815  vs first row -0.045 CI [-0.063, -0.028]
+  logprob + cos(6,8)                 SVAMP AUROC 0.837  vs first row -0.023 CI [-0.039, -0.009]
+  logprob + cos(6,7)                 SVAMP AUROC 0.862  vs first row +0.003 CI [-0.009, +0.012]
+  cos(4,6) alone                     SVAMP AUROC 0.656  vs first row -0.204 CI [-0.239, -0.170]

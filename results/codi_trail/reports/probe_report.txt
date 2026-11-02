@@ -1,0 +1,43 @@
+
+=== gsm8k_valid (discovery, does not count): n=500, 6-step accuracy 41.2%
+R1 agree 162/257 = 63.0%  otherwise 44/243 = 18.1%  Fisher p=2.92e-25
+AUROC  agreement count 0.761 {'B1 sum logprob': 0.92, 'B2 min token prob': 0.919, 'B3 short question': 0.654}
+R2 B1 sum logprob     top 257 precision 72.8% vs agreement 63.0%  diff -9.7 pts  CI [-13.6, -5.9] excludes 0
+R2 B2 min token prob  top 257 precision 72.8% vs agreement 63.0%  diff -9.7 pts  CI [-13.6, -5.9] excludes 0
+R2 B3 short question  top 257 precision 52.5% vs agreement 63.0%  diff +10.5 pts  CI [+5.2, +15.3] excludes 0
+best baseline on validation: B1 sum logprob
+   quintile 1: agree 0/19  otherwise 1/81
+   quintile 2: agree 4/24  otherwise 7/76
+   quintile 3: agree 12/46  otherwise 16/54
+   quintile 4: agree 59/75  otherwise 15/25
+   quintile 5: agree 87/93  otherwise 5/7
+R3 within quintiles of B1 sum logprob: mean effect +8.7 pts  CI [-0.7, +19.1] includes 0
+
+=== SVAMP (replication, counts): n=1000, 6-step accuracy 40.0%
+R1 agree 365/593 = 61.6%  otherwise 35/407 = 8.6%  Fisher p=1.85e-70
+AUROC  agreement count 0.814 {'B1 sum logprob': 0.907, 'B2 min token prob': 0.906, 'B3 short question': 0.649}
+R2 B1 sum logprob     top 593 precision 63.7% vs agreement 61.6%  diff -2.2 pts  CI [-3.8, -0.8] excludes 0
+R2 B2 min token prob  top 593 precision 63.7% vs agreement 61.6%  diff -2.2 pts  CI [-3.9, -0.8] excludes 0
+R2 B3 short question  top 593 precision 48.6% vs agreement 61.6%  diff +13.0 pts  CI [+10.1, +16.5] excludes 0
+   quintile 1: agree 0/44  otherwise 2/156
+   quintile 2: agree 5/46  otherwise 14/154
+   quintile 3: agree 43/117  otherwise 14/83
+   quintile 4: agree 144/188  otherwise 5/12
+   quintile 5: agree 173/198  otherwise 0/2
+R3 within quintiles of B1 sum logprob: mean effect +28.5 pts  CI [+9.7, +35.1] excludes 0
+
+=== HOLD TEST, gsm8k_valid
+hold_next
+  H1 at 24 vs plain 24: 165 vs 173  gained 21, lost 29, p=0.322
+  H2 at 24 vs plain 6 : 165 vs 206  gained 11, lost 52, p=1.67e-07
+  H3 at 12 vs plain 6 : 191 vs 206  gained 9, lost 24, p=0.0135
+     at 12 vs plain 12: 191 vs 192  gained 8, lost 9, p=1
+     answers equal to 6 steps at 12: 328/500 (plain: 353)
+     answers equal to 6 steps at 24: 250/500 (plain: 274)
+hold_fed
+  H1 at 24 vs plain 24: 189 vs 173  gained 34, lost 18, p=0.0365
+  H2 at 24 vs plain 6 : 189 vs 206  gained 10, lost 27, p=0.00763
+  H3 at 12 vs plain 6 : 195 vs 206  gained 2, lost 13, p=0.00739
+     at 12 vs plain 12: 195 vs 192  gained 17, lost 14, p=0.72
+     answers equal to 6 steps at 12: 394/500 (plain: 353)
+     answers equal to 6 steps at 24: 306/500 (plain: 274)
