@@ -1,6 +1,6 @@
 # Dynamic State Anchoring, reframed: anchor what the answer can see
 
-Status, 2 November 2026: Stage 0 is done; Stage 1 is prepared but not run. All evidence is exploratory and comes from
+Status, 3 November 2026: Stages 0 and 1 are done; see [Stage 1 results](LATENT_GATE_STAGE1_RESULTS.md). All evidence is exploratory and comes from
 `gsm8k_valid`, which has already been used for discovery. Records are under [results/latent_gate](../results/latent_gate),
 and the literature is in [LATENT_GATE_LITERATURE.md](LATENT_GATE_LITERATURE.md).
 
@@ -19,7 +19,7 @@ The original DSA proposal blamed deteriorating latent states. The measurements p
 - **Stable states drift just as much.** SIM-CoT's latents stop oscillating and keep their question content (a step-24 latent
   identifies its question among 500 in 97.6% of cases, against 67.4% for CODI), yet it loses as many answers.
 - **Copies alone cause the drift.** After 6 steps, appending exact copies of the step-6 cache entry reproduces SIM-CoT's
-  whole drop (172 against 170 at 24 entries) and about half of CODI's (188 against 173).
+  whole drop (172 against 170 at 24 entries) and a third of CODI's (196 against 173).
 - **Attention moves off the early latents.** The answer's attention share on latents 1–6 falls from 0.158 to 0.033 between 6
   and 24 steps in CODI, and from 0.099 to 0.036 in SIM-CoT.
 - **Extra steps compute nothing new.** Past step 6 the latents repeat the results of rationale steps 1–2. On 5+ step

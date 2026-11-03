@@ -1,0 +1,57 @@
+gsm8k_valid, n=500, 173 with 4+ rationale steps. Correct: all (4+)
+  base         plain      6: 206 (30)  12: 192 (21)  24: 173 (13)
+  base         window     12: 161 (15)  24: 141 (12)
+  base         random     12: 177 (19)  24: 157 (14)
+  base         logn       12: 197 (25)  24: 189 (21)
+  base         logscale   12: 195 (22)  24: 170 (13)
+  base         dedup_soft 12: 202 (25)  24: 201 (25)
+  ft6          plain      6: 209 (30)  12: 201 (26)  24: 180 (17)
+  ft12         plain      6: 200 (24)  12: 210 (26)  24: 203 (25)
+  ft12         dedup_soft 12: 182 (23)  24: 184 (23)
+  gate12_hard  plain      6: 205 (28)  12: 193 (25)  24: 164 (18)
+  gate12_hard  gate       12: 174 (21)  24: 168 (21)
+  gate12_hard  gate_soft  12: 198 (25)  24: 191 (24)
+
+Decision rules (PLAN.md)
+ gate12_hard, at p < 0.025
+  H2: gate12_hard gate@12 vs ft6 plain@6, 4+ problems: 21 vs 30; only first 3, only second 12, p=0.0352
+  H2: gate12_hard gate@12 vs ft6 plain@6, all: 174 vs 209; only first 14, only second 49, p=1.11e-05
+  H2: gate12_hard gate@24 vs gate@12, all: 168 vs 174; only first 4, only second 10, p=0.18
+  => H2 fails for gate12_hard
+  compute: gate12_hard gate@12 vs ft6x2 plain@6, 4+ problems: missing
+  rival: gate12_hard gate@12 vs ft12 plain@12, 4+ problems: 21 vs 26; only first 4, only second 9, p=0.267
+  rival: gate12_hard gate@12 vs ftrand plain@12, 4+ problems: missing
+  rival: gate12_hard gate@12 vs window12 window@12, 4+ problems: missing
+  rival: gate12_hard gate@12 vs rand12 random@12, 4+ problems: missing
+  rival: gate12_hard gate@12 vs base logn@12, 4+ problems: 21 vs 25; only first 8, only second 12, p=0.503
+  rival: gate12_hard gate@12 vs base logscale@12, 4+ problems: 21 vs 22; only first 9, only second 10, p=1
+  rival: gate12_hard gate@12 vs base dedup_soft@12, 4+ problems: 21 vs 25; only first 5, only second 9, p=0.424
+  cost of hard eviction: gate12_hard gate@12 vs gate_soft@12, all: 174 vs 198; only first 15, only second 39, p=0.0015
+
+Stop rule: does any 12-step arm beat ft6 at 6 on the 4+ problems?
+  ft12 plain@12 vs ft6 plain@6: 26 vs 30; only first 1, only second 5, p=0.219
+  ftrand plain@12 vs ft6 plain@6: missing
+  window12 window@12 vs ft6 plain@6: missing
+  rand12 random@12 vs ft6 plain@6: missing
+  gate12 gate@12 vs ft6 plain@6: missing
+  gate12_hard gate@12 vs ft6 plain@6: 21 vs 30; only first 3, only second 12, p=0.0352
+  gate12_label gate@12 vs ft6 plain@6: missing
+  => STOP: no 12-step arm beats ft6 on the 4+ problems
+
+Exploratory, not in PLAN.md (paired comparisons and what the gate kept):
+base dedup_soft@24 vs base plain@24: 201 vs 173  (+42/-14) p=0.000234
+base dedup_soft@24 vs base plain@6: 201 vs 206  (+7/-12) p=0.359
+ft6@24 vs ft6@6: 180 vs 209  (+12/-41) p=8.17e-05
+ft12@24 vs ft12@12: 203 vs 210  (+1/-8) p=0.0391
+ft12@12 vs ft6@6: 210 vs 209  (+12/-11) p=1
+ft12@24 vs ft6@24: 203 vs 180  (+32/-9) p=0.000431
+ft12@6 vs ft6@6: 200 vs 209  (+12/-21) p=0.163
+ft12 dedup_soft@12 vs ft12 plain@12: 182 vs 210  (+13/-41) p=0.000175
+gate12_hard gate_soft@12 vs ft6@6: 198 vs 209  (+18/-29) p=0.144
+gate12_hard gate@24 vs ft6@24: 168 vs 180  (+27/-39) p=0.175
+gate12_hard gate@12: 63 distinct; top [((1, 2, 4, 6, 8, 10), 66), ((1, 3, 5, 7, 9, 11), 65), ((1, 4, 6, 8, 10, 12), 43), ((2, 4, 6, 8, 10, 12), 40), ((1, 2, 6, 8, 10, 12), 28)]
+   per-position keep count: {1: 451, 2: 327, 3: 269, 4: 331, 5: 145, 6: 317, 7: 87, 8: 307, 9: 100, 10: 320, 11: 102, 12: 244}
+   number of odd-position entries kept: {0: 40, 1: 189, 2: 125, 3: 31, 4: 18, 5: 32, 6: 65}
+gate12_hard gate@24: 205 distinct; top [((1, 2, 4, 6, 8, 10), 63), ((1, 2, 3, 4, 5, 6), 21), ((1, 2, 3, 4, 6, 8), 20), ((1, 15, 17, 19, 21, 23), 19), ((2, 4, 6, 8, 10, 12), 14)]
+   per-position keep count: {1: 443, 2: 281, 3: 209, 4: 256, 5: 66, 6: 231, 7: 20, 8: 206, 9: 15, 10: 198, 11: 19, 12: 132, 13: 54, 14: 107, 15: 63, 16: 106, 17: 72, 18: 95, 19: 73, 20: 86, 21: 69, 22: 72, 23: 55, 24: 72}
+   number of odd-position entries kept: {0: 47, 1: 188, 2: 119, 3: 31, 4: 15, 5: 21, 6: 79}
