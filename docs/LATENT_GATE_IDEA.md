@@ -39,8 +39,8 @@ steps and the answer always see a bounded set, however long the loop runs.
 - **Inference: a hard gate.** The lowest-g entry is evicted whenever the budget is exceeded.
 - **The model is fine-tuned too,** at 12 steps under the budget, so that later steps can learn to compute later results.
   Any gain has to come from this.
-- **Proposed label, now dropped.** The plan was to supervise the gate with each latent's logit-lens decode matched to the
-  gold intermediate results. It failed its check: see below.
+- **Proposed label, now dropped.** Supervising the gate with each latent's logit-lens decode, matched to gold
+  intermediate results, failed its check (below).
 
 ## Stage 0: eviction at fixed weights
 
@@ -81,14 +81,15 @@ of 500 ([plan](../results/latent_gate/stage0/PLAN.md), [report](../results/laten
 ## Plan
 
 - **Stage 1, prepared** ([plan](../results/latent_gate/stage1/PLAN.md), notebook
-  `notebooks/DSA_Latent_Gate_Stage1_Colab.ipynb`). SIM-CoT GPT-2 is fine-tuned with equal data in seven arms:
+  `notebooks/DSA_Latent_Gate_Stage1_Colab.ipynb`). SIM-CoT GPT-2 is fine-tuned with equal data in eight arms:
   - 6 steps;
   - 6 steps on twice the data, as a compute control;
   - 12 steps with the full cache;
   - random 6–12 steps;
   - a recency window;
   - random eviction;
-  - the gate.
+  - the gate, trained soft;
+  - the gate, trained with the top-6 cut used at inference.
 
   The frozen model also gets the training-free fixes: additive log-n, multiplicative log-n, and soft deduplication. CODI is
   the replication. Held-out sets are scored once, at the end.

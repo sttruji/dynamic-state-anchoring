@@ -1,6 +1,9 @@
 # Stage 1: training a model to use more latent steps under a cache budget
 
 Written 2 November 2026 after Stage 0 and before any Stage 1 run, and fixed then: its sha256 is in `PLAN.sha256` beside it.
+**Amended the same day, still before any Stage 1 run,** to add `gate12_hard` and test H2 for both gated arms. The soft gate's
+budget penalty can be met without choosing between entries, for instance with every g near 0.5, so training and hard
+inference could diverge. The first version's sha256 was `3cc964c4…`.
 The idea and evidence are in [docs/LATENT_GATE_IDEA.md](../../../docs/LATENT_GATE_IDEA.md); the literature is in
 [docs/LATENT_GATE_LITERATURE.md](../../../docs/LATENT_GATE_LITERATURE.md).
 
@@ -26,6 +29,7 @@ The idea and evidence are in [docs/LATENT_GATE_IDEA.md](../../../docs/LATENT_GAT
 | `window12` | 12 | the 6 latent entries before it (a fixed recency budget) |
 | `rand12` | 12 | above 6 entries, one random entry is hidden for good at each step: training under eviction with no learned choice |
 | `gate12` | 12 | every entry j, with log g_j added to its attention logits; a penalty of 0.1 × max(0, Σg − 6) |
+| `gate12_hard` | 12 | only the 6 highest-scoring entries before it, with log g on those; the same loss as `gate12`, so training matches hard eviction at inference |
 | `gate12_label` | 12 | as `gate12`, plus a binary cross-entropy (weight 1) pulling g_j towards the entry's label |
 
 **Label.** 1 when the logit-lens top-1 token at the entry's position, or at the next entry's position, is one of the
@@ -62,7 +66,7 @@ than unlabelled ones, `gate12_label` is dropped from the run and H3 is not teste
 
 The frozen base model is scored the same way, as `base`, with every policy. Its `logn`, `logscale` and `dedup_soft` rows are
 the training-free rival fixes. Each trained arm is scored with `plain` plus the condition it trained in: `window` for
-`window12`, `random` for `rand12`, `gate` and `gate_soft` for `gate12`, and `dedup_soft` for `ft12`. A hard gate with tied
+`window12`, `random` for `rand12`, `gate` and `gate_soft` for both gated arms, and `dedup_soft` for `ft12`. A hard gate with tied
 scores evicts the newest entry, so an undecided gate behaves like `keep_first`, the best Stage 0 rule.
 
 Discovery and selection use `gsm8k_valid` only. Report all 500, plus the 173 problems with 4 or more rationale steps. The
@@ -73,9 +77,11 @@ selected arm and `ft6` only.
 
 All tests are exact two-sided paired sign tests on `gsm8k_valid`.
 
-- **H2, the main claim.** `gate12` (hard `gate` policy, 12 steps) beats `ft6` at 6 steps on the 4+ step problems, with
-  p < 0.05, and is not lower overall. It must also not fall significantly from 12 to 24 steps.
-- **H2 against the rival fixes.** The same arm must also beat each of these on the 4+ step problems:
+- **H2, the main claim.** It is tested for `gate12` and `gate12_hard` separately, at p < 0.025 each (Bonferroni over
+  the two). An arm passes if, with the hard `gate` policy at 12 steps, it beats `ft6` at 6 steps on the 4+ step problems
+  and is not lower overall. It must also not fall significantly (p < 0.05) from 12 to 24 steps. `gate12_hard` against
+  `gate12` is reported descriptively.
+- **H2 against the rival fixes.** A passing arm must also beat each of these on the 4+ step problems:
   - `ft6x2` plain at 6, the compute control;
   - `ft12` plain at 12;
   - `ftrand` plain at 12;

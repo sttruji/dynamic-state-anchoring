@@ -11,6 +11,8 @@ order; only the latent depth and what each query may attend to differ.
     rand12        12 steps; above 6 entries, a random one is hidden for good at each step (training under eviction,
                   with no learned choice)
     gate12        12 steps; log g_j on every key of latent entry j, with a budget penalty on the sum of g
+    gate12_hard   gate12, but each query sees only the `budget` highest-scoring latent entries before it (log g on
+                  those), so training matches hard eviction at inference; same loss as gate12
     gate12_label  gate12 plus a loss pulling g_j towards the entry's intermediate-result label
 
     python scripts/latent_gate/stage1_train.py --arm gate12_label --checkpoint <dir> --output <dir> --device cuda --bf16
@@ -27,7 +29,7 @@ import sys
 import time
 from pathlib import Path
 
-ARMS = ("ft6", "ft6x2", "ft12", "ftrand", "window12", "rand12", "gate12", "gate12_label")
+ARMS = ("ft6", "ft6x2", "ft12", "ftrand", "window12", "rand12", "gate12", "gate12_hard", "gate12_label")
 ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
 parser.add_argument("--arm", required=True, choices=ARMS)
@@ -47,7 +49,7 @@ parser.add_argument("--label-spread", type=int, default=1,
                     help="an entry is also labelled 1 when one of the next k entries decodes to a gold result; with 1, "
                          "CODI's operator-phase entry before each result is kept with it")
 parser.add_argument("--gate-train", choices=("soft", "hard"), default="soft",
-                    help="hard: during training too, entries outside the top `budget` scores are hidden")
+                    help="hard: during training too, entries outside the top `budget` scores are hidden (gate12_hard sets it)")
 parser.add_argument("--max-question-tokens", type=int, default=256)
 parser.add_argument("--seed", type=int, default=7)
 parser.add_argument("--device", default="cuda")
@@ -64,6 +66,7 @@ from dsa.bench.models.codi import CODIGPT2
 from gate import HIDE, Gate, decode_labels, gold_results, install_bias, set_bias
 
 gated = args.arm.startswith("gate")
+hard_gate = args.gate_train == "hard" or args.arm == "gate12_hard"
 random.seed(args.seed)
 torch.manual_seed(args.seed)
 codi = CODIGPT2(checkpoint=args.checkpoint, device=args.device)
@@ -120,7 +123,7 @@ def key_bias(keys: int, question: int, step: int, scores: list, hidden_mask: tor
         return None
     s = torch.stack(scores[:step - 1], 1)  # [batch, entries]
     logs = F.logsigmoid(s.float())
-    if args.gate_train == "hard" and s.shape[1] > args.budget:
+    if hard_gate and s.shape[1] > args.budget:  # scores are fixed per entry, so a hidden entry never returns
         cut = s.topk(args.budget, dim=1).values[:, -1:]
         logs = torch.where(s >= cut, logs, torch.full_like(logs, HIDE))
     bias = torch.cat([bias[:, :question], logs, bias[:, question + s.shape[1]:]], 1)

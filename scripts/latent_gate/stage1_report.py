@@ -8,7 +8,8 @@ import sys
 from pathlib import Path
 
 folder = Path(sys.argv[1])
-ARMS = ("base", "ft6", "ft6x2", "ft12", "ftrand", "window12", "rand12", "gate12", "gate12_label")
+ARMS = ("base", "ft6", "ft6x2", "ft12", "ftrand", "window12", "rand12", "gate12", "gate12_hard", "gate12_label")
+ALPHA = 0.025  # H2 is tested for gate12 and gate12_hard, Bonferroni over the two
 
 
 def sign_p(x, y):
@@ -57,33 +58,26 @@ def compare(label, a, b, subset=None):
 
 
 print("\nDecision rules (PLAN.md)")
-gated = [arm for arm in ("gate12", "gate12_label") if arm in runs]
-if gated:
-    def key(arm):
-        hits = cell(arm, "gate", "12")
-        return (sum(h for h, l in zip(hits, long) if l), sum(hits))
-    best = max(gated, key=key)
-    print(f" selected gated arm: {best} (more 4+ problems right at 12 steps, then more overall)")
+gated = [arm for arm in ("gate12", "gate12_hard") if arm in runs]
+for best in gated:
+    print(f" {best}, at p < {ALPHA}")
     main = compare(f"H2: {best} gate@12 vs ft6 plain@6, 4+ problems", cell(best, "gate", "12"), cell("ft6", "plain", "6"), True)
     overall = compare(f"H2: {best} gate@12 vs ft6 plain@6, all", cell(best, "gate", "12"), cell("ft6", "plain", "6"))
     hold = compare(f"H2: {best} gate@24 vs gate@12, all", cell(best, "gate", "24"), cell(best, "gate", "12"))
     if main and overall and hold:
-        passed = main[0] > main[1] and main[2] < 0.05 and overall[0] >= overall[1] and not (hold[1] > hold[0] and hold[2] < 0.05)
-        print(f"  => H2 {'PASSES' if passed else 'fails'}")
+        passed = main[0] > main[1] and main[2] < ALPHA and overall[0] >= overall[1] and not (hold[1] > hold[0] and hold[2] < 0.05)
+        print(f"  => H2 {'PASSES' if passed else 'fails'} for {best}")
     compare(f"compute: {best} gate@12 vs ft6x2 plain@6, 4+ problems", cell(best, "gate", "12"), cell("ft6x2", "plain", "6"), True)
     for rival, policy in (("ft12", "plain"), ("ftrand", "plain"), ("window12", "window"), ("rand12", "random"),
                           ("base", "logn"), ("base", "logscale"), ("base", "dedup_soft")):
         compare(f"rival: {best} gate@12 vs {rival} {policy}@12, 4+ problems", cell(best, "gate", "12"), cell(rival, policy, "12"), True)
-    if len(gated) == 2:
-        h3 = compare("H3: gate12_label gate@12 vs gate12 gate@12, all", cell("gate12_label", "gate", "12"), cell("gate12", "gate", "12"))
-        if h3:
-            print(f"  => H3 {'PASSES' if h3[0] > h3[1] and h3[2] < 0.05 else 'fails'}")
-    for arm in gated:
-        compare(f"cost of hard eviction: {arm} gate@12 vs gate_soft@12, all", cell(arm, "gate", "12"), cell(arm, "gate_soft", "12"))
+    compare(f"cost of hard eviction: {best} gate@12 vs gate_soft@12, all", cell(best, "gate", "12"), cell(best, "gate_soft", "12"))
+if len(gated) == 2:
+    compare("soft vs hard training: gate12_hard gate@12 vs gate12 gate@12, all", cell("gate12_hard", "gate", "12"), cell("gate12", "gate", "12"))
 print("\nStop rule: does any 12-step arm beat ft6 at 6 on the 4+ problems?")
 beats = []
 for arm, policy in (("ft12", "plain"), ("ftrand", "plain"), ("window12", "window"), ("rand12", "random"),
-                    ("gate12", "gate"), ("gate12_label", "gate")):
+                    ("gate12", "gate"), ("gate12_hard", "gate"), ("gate12_label", "gate")):
     result = compare(f"{arm} {policy}@12 vs ft6 plain@6", cell(arm, policy, "12"), cell("ft6", "plain", "6"), True)
     if result and result[0] > result[1] and result[2] < 0.05:
         beats.append(arm)
