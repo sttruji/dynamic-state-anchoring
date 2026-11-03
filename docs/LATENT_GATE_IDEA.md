@@ -100,4 +100,4 @@ of 500 ([plan](../results/latent_gate/stage0/PLAN.md), [report](../results/laten
 - **GPT-2 may not use more depth.** PMPS and SIM-CoT found their best at 6–7 latents.
 - **The gate may only learn "keep the first six".** That would tie with `ft6`.
 - **Soft training, hard inference.** Scoring both modes measures the gap.
-- **One explored set so far.**
+- **One explored set.**
