@@ -1,0 +1,38 @@
+
+=================== codi, n=500, 173 with 4+ rationale steps
+ control: plain 6 texts match the probe: 500/500
+ control: plain 12 texts match the probe: 500/500
+ control: plain 24 texts match the probe: 500/500
+
+ correct, all (4+):  plain 6 = 206 (30)
+                                12 steps               24 steps   vs plain 6 at 24 | vs plain 24 at 24
+  plain                         192 (21)               173 (13)   +14/-47 p=2.72e-05 | +0/-0 p=1
+  keep_first                    205 (30)               205 (30)   +0/-1 p=1 | +46/-14 p=4.22e-05  restores
+  recency                       161 (15)               141 (12)   +12/-77 p=9.04e-13 | +23/-55 p=0.000378
+  dedup                         198 (25)               201 (27)   +6/-11 p=0.332 | +39/-11 p=9.02e-05  restores
+  attention                      73 (11)                77 ( 8)   +10/-139 p=3.29e-30 | +14/-110 p=1.17e-19
+  random                        177 (19)               157 (14)   +11/-60 p=2.63e-09 | +24/-40 p=0.0599
+  oracle                         83 (12)                73 (10)   +10/-143 p=2.7e-31 | +15/-115 p=2.85e-20
+  oracle_readout                205 (28)               204 (27)   +2/-4 p=0.688 | +43/-12 p=3.31e-05  restores
+ rule 1, restores (not below plain 6, above plain 24, at 24 steps): ['keep_first', 'dedup', 'oracle_readout']
+ rule 2, oracle vs best heuristic (dedup) at 24: +11/-139 p=2.26e-29 => label does not beat heuristics
+ 312 questions have a labelled entry in the plain 24-step run
+
+=================== simcot, n=500, 173 with 4+ rationale steps
+ control: plain 6 texts match the probe: 500/500
+ control: plain 12 texts match the probe: 500/500
+ control: plain 24 texts match the probe: 500/500
+
+ correct, all (4+):  plain 6 = 204 (29)
+                                12 steps               24 steps   vs plain 6 at 24 | vs plain 24 at 24
+  plain                         185 (20)               170 (19)   +9/-43 p=2.04e-06 | +0/-0 p=1
+  keep_first                    206 (30)               204 (30)   +2/-2 p=1 | +42/-8 p=1.16e-06  restores
+  recency                       168 (18)               152 ( 9)   +24/-76 p=1.81e-07 | +31/-49 p=0.0567
+  dedup                         204 (29)               203 (28)   +3/-4 p=1 | +41/-8 p=1.96e-06  restores
+  attention                     192 (26)               190 (25)   +4/-18 p=0.00434 | +34/-14 p=0.00552
+  random                        180 (22)               173 (16)   +20/-51 p=0.000303 | +33/-30 p=0.801
+  oracle                        164 (18)               158 (13)   +23/-69 p=1.67e-06 | +30/-42 p=0.195
+  oracle_readout                204 (29)               201 (27)   +4/-7 p=0.549 | +38/-7 p=3.12e-06  restores
+ rule 1, restores (not below plain 6, above plain 24, at 24 steps): ['keep_first', 'dedup', 'oracle_readout']
+ rule 2, oracle vs best heuristic (dedup) at 24: +22/-67 p=1.9e-06 => label does not beat heuristics
+ 307 questions have a labelled entry in the plain 24-step run

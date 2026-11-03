@@ -1,0 +1,18 @@
+
+=== labels-codi.jsonl: n=500, depth 12
+ label: 1277 labelled entries (21.3%); mean drop in gold log-prob when removed: labelled -0.010, unlabelled 0.040 nats
+   AUROC of the label for the entry's removal effect being in the top quarter: 0.451
+ spread-1 label: 2554 labelled entries (42.6%); mean drop in gold log-prob when removed: labelled 0.073, unlabelled -0.003 nats
+   AUROC of the label for the entry's removal effect being in the top quarter: 0.429
+ mean removal effect by entry: 1:0.54 2:-0.02 3:0.03 4:-0.02 5:-0.00 6:-0.01 7:-0.05 8:-0.01 9:-0.06 10:-0.01 11:-0.04 12:-0.01
+ labelled share by entry:      1:0.00 2:0.51 3:0.00 4:0.42 5:0.00 6:0.43 7:0.00 8:0.42 9:0.00 10:0.39 11:0.00 12:0.39
+ summed removal effect, entries 1-6: 0.53; entries 7-12: -0.18 nats
+
+=== labels-simcot.jsonl: n=500, depth 12
+ label: 1921 labelled entries (32.0%); mean drop in gold log-prob when removed: labelled 0.037, unlabelled 0.018 nats
+   AUROC of the label for the entry's removal effect being in the top quarter: 0.438
+ spread-1 label: 2473 labelled entries (41.2%); mean drop in gold log-prob when removed: labelled 0.023, unlabelled 0.025 nats
+   AUROC of the label for the entry's removal effect being in the top quarter: 0.409
+ mean removal effect by entry: 1:0.42 2:0.02 3:0.01 4:-0.01 5:-0.01 6:-0.03 7:-0.02 8:-0.02 9:-0.02 10:-0.02 11:-0.01 12:-0.01
+ labelled share by entry:      1:0.17 2:0.17 3:0.28 4:0.33 5:0.40 6:0.36 7:0.39 8:0.34 9:0.38 10:0.33 11:0.37 12:0.33
+ summed removal effect, entries 1-6: 0.39; entries 7-12: -0.10 nats

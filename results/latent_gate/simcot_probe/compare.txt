@@ -1,0 +1,42 @@
+n=500 questions, gsm8k_valid
+
+=== CODI
+ correct: {'3': 182, '6': 206, '12': 192, '24': 173}
+  12 vs 6: gained 9, lost 23, p=0.0201
+  24 vs 6: gained 14, lost 47, p=2.72e-05
+ answer unchanged from 6: {'12': 353, '24': 274}
+ z: mean cos(t,t+1) | cos(t,t+2), t=1..10:
+   0.23|0.84 0.23|0.93 0.24|0.97 0.27|0.99 0.28|1.00 0.30|1.00 0.31|1.00 0.32|1.00 0.33|1.00 0.35|1.00
+ h: mean cos(t,t+1) | cos(t,t+2), t=1..10:
+   0.24|0.65 0.23|0.73 0.23|0.85 0.24|0.94 0.23|0.97 0.24|0.98 0.24|0.99 0.25|0.99 0.24|0.99 0.25|0.99
+ z: same, t=12,16,20: 0.37|1.00 0.41|1.00 0.44|1.00
+ questions with cos(6,8) > cos(6,7) + 0.2: 498/500; settled cos(6,7) >= .95: 1
+ within-6 pairwise mean cos, odd steps | even steps | across: 0.888 | 0.952 | 0.250
+ question-specific energy share, t=2,6,12,24: [0.271, 0.248, 0.221, 0.18]
+ raw cos(6,t):      [(8, 0.997), (12, 0.985), (24, 0.943)]
+ residual cos(6,t): [(8, 0.984), (12, 0.938), (24, 0.796)]
+ residual cos(5,t): [(7, 0.985), (11, 0.947), (23, 0.811)]
+ top-1 retrieval from step 6: [(8, 0.988), (12, 0.922), (24, 0.674)]  from step 5: [(7, 0.982), (11, 0.918), (23, 0.55)]
+
+=== SIM-CoT
+ correct: {'3': 165, '6': 204, '12': 185, '24': 170}
+  12 vs 6: gained 4, lost 23, p=0.000311
+  24 vs 6: gained 9, lost 43, p=2.04e-06
+ answer unchanged from 6: {'12': 375, '24': 306}
+ z: mean cos(t,t+1) | cos(t,t+2), t=1..10:
+   0.73|0.62 0.76|0.68 0.83|0.82 0.90|0.94 0.94|0.99 0.95|1.00 0.95|1.00 0.95|1.00 0.95|1.00 0.95|1.00
+ h: mean cos(t,t+1) | cos(t,t+2), t=1..10:
+   0.62|0.50 0.63|0.54 0.70|0.69 0.77|0.83 0.86|0.95 0.89|0.98 0.90|0.99 0.90|0.99 0.91|1.00 0.91|1.00
+ z: same, t=12,16,20: 0.96|1.00 0.96|1.00 0.97|1.00
+ questions with cos(6,8) > cos(6,7) + 0.2: 65/500; settled cos(6,7) >= .95: 404
+ within-6 pairwise mean cos, odd steps | even steps | across: 0.682 | 0.759 | 0.746
+ question-specific energy share, t=2,6,12,24: [0.509, 0.422, 0.386, 0.332]
+ raw cos(6,t):      [(8, 0.995), (12, 0.99), (24, 0.964)]
+ residual cos(6,t): [(8, 0.989), (12, 0.98), (24, 0.93)]
+ residual cos(5,t): [(7, 0.969), (11, 0.958), (23, 0.907)]
+ top-1 retrieval from step 6: [(8, 0.998), (12, 0.998), (24, 0.976)]  from step 5: [(7, 0.994), (11, 0.992), (23, 0.968)]
+
+=== paired, SIM-CoT against CODI
+ 6 steps: SIM-CoT 204 vs CODI 206; SIM-CoT only 36, CODI only 38, p=0.908
+ 12 steps: SIM-CoT 185 vs CODI 192; SIM-CoT only 34, CODI only 41, p=0.489
+ 24 steps: SIM-CoT 170 vs CODI 173; SIM-CoT only 41, CODI only 44, p=0.828
