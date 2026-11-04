@@ -56,6 +56,16 @@ class Gate(nn.Module):
         return self.net(hidden).squeeze(-1)
 
 
+def top_visible(scores: torch.Tensor, budget: int) -> torch.Tensor:
+    """The entries a hard gate keeps: the `budget` highest scores along the last axis, a tie going to the older entry.
+
+    Inference evicts the lowest score whenever more than `budget` entries exist, a tie evicting the newest. Scores are fixed
+    per entry, so what survives that stream of evictions is exactly this set, at every step.
+    """
+    order = scores.argsort(dim=-1, descending=True, stable=True)[..., :budget]
+    return torch.zeros_like(scores, dtype=torch.bool).scatter(-1, order, True)
+
+
 def numeric(text: str):
     try:
         return float(text.replace(",", "").strip())

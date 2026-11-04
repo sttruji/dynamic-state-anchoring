@@ -14,6 +14,9 @@ order; only the latent depth and what each query may attend to differ.
     gate12_hard   gate12, but each query sees only the `budget` highest-scoring latent entries before it (log g on
                   those), so training matches hard eviction at inference; same loss as gate12
     gate12_label  gate12 plus a loss pulling g_j towards the entry's intermediate-result label
+    gate12_fixed  gate12_hard with its tie bug fixed (results/latent_gate/heldout_scale/PLAN.md, E3): gate12_hard keeps
+                  every entry tied with the last kept score, and its BF16 scores tie often; here the gate runs at FP32
+                  outside autocast and exactly `budget` entries stay visible, a tie kept for the older one, as at inference
 
     python scripts/latent_gate/stage1_train.py --arm gate12_label --checkpoint <dir> --output <dir> --device cuda --bf16
 """
@@ -29,7 +32,7 @@ import sys
 import time
 from pathlib import Path
 
-ARMS = ("ft6", "ft6x2", "ft12", "ftrand", "window12", "rand12", "gate12", "gate12_hard", "gate12_label")
+ARMS = ("ft6", "ft6x2", "ft12", "ftrand", "window12", "rand12", "gate12", "gate12_hard", "gate12_label", "gate12_fixed")
 ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
 parser.add_argument("--arm", required=True, choices=ARMS)
@@ -63,10 +66,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import torch
 import torch.nn.functional as F
 from dsa.bench.models.codi import CODIGPT2
-from gate import HIDE, Gate, decode_labels, gold_results, install_bias, set_bias
+from gate import HIDE, Gate, decode_labels, gold_results, install_bias, set_bias, top_visible
 
 gated = args.arm.startswith("gate")
-hard_gate = args.gate_train == "hard" or args.arm == "gate12_hard"
+fixed = args.arm == "gate12_fixed"
+hard_gate = args.gate_train == "hard" or args.arm in ("gate12_hard", "gate12_fixed")
 random.seed(args.seed)
 torch.manual_seed(args.seed)
 codi = CODIGPT2(checkpoint=args.checkpoint, device=args.device)
@@ -124,8 +128,11 @@ def key_bias(keys: int, question: int, step: int, scores: list, hidden_mask: tor
     s = torch.stack(scores[:step - 1], 1)  # [batch, entries]
     logs = F.logsigmoid(s.float())
     if hard_gate and s.shape[1] > args.budget:  # scores are fixed per entry, so a hidden entry never returns
-        cut = s.topk(args.budget, dim=1).values[:, -1:]
-        logs = torch.where(s >= cut, logs, torch.full_like(logs, HIDE))
+        if fixed:
+            logs = torch.where(top_visible(s, args.budget), logs, torch.full_like(logs, HIDE))
+        else:  # as run in Stage 1: every entry tied with the last kept score stays visible
+            cut = s.topk(args.budget, dim=1).values[:, -1:]
+            logs = torch.where(s >= cut, logs, torch.full_like(logs, HIDE))
     bias = torch.cat([bias[:, :question], logs, bias[:, question + s.shape[1]:]], 1)
     return bias[:, None, None, :]
 
@@ -166,7 +173,8 @@ def train_step(batch, depth, update):
                     position_ids=(start + step - 1)[:, None], use_cache=True, output_hidden_states=True)
         cache, hidden = out.past_key_values, out.hidden_states[-1][:, -1, :]
         if gated:
-            scores.append(gate(hidden.detach().float()))
+            with torch.autocast("cuda", enabled=False) if fixed else contextlib.nullcontext():
+                scores.append(gate(hidden.detach().float()))
             labels.append(decode_labels(tokenizer, out.logits[:, -1, :].detach(), results))
         latent = projection(hidden[:, None, :])
     mask = torch.cat([mask, a_mask], 1)
