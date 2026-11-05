@@ -1,0 +1,303 @@
+Primary pool: gsm8k_test + gsm_hard + multiarith; secondary: svamp; noninferiority margin 2.0 points
+
+== simcot-gpt2
+  gsm8k_valid (n=500)
+    plain      6:  204  12:  185  24:  170
+    keep_first 12:  206  24:  204
+    window     12:  168  24:  152
+    random     12:  180  24:  173
+    logn       12:  190  24:  190
+    dedup_soft 12:  207  24:  207
+    shift      6:  204
+    copy_last  12:  188  24:  171
+    copy_pair  12:  192  24:  173
+  gsm8k_test (n=1319)
+    plain      6:  519  12:  523  24:  486
+    keep_first 12:  520  24:  522
+    dedup_soft 12:  525  24:  525
+    logn       12:  519  24:  496
+    shift      6:  522
+  gsm_hard (n=1319)
+    plain      6:  115  12:  120  24:  113
+    keep_first 12:  116  24:  116
+    dedup_soft 12:  115  24:  115
+    logn       12:  115  24:  113
+    shift      6:  116
+  multiarith (n=180)
+    plain      6:  165  12:  163  24:  158
+    keep_first 12:  164  24:  164
+    dedup_soft 12:  161  24:  161
+    logn       12:  165  24:  162
+    shift      6:  164
+  svamp (n=1000)
+    plain      6:  401  12:  383  24:  361
+    keep_first 12:  401  24:  401
+    dedup_soft 12:  414  24:  415
+    logn       12:  401  24:  396
+    shift      6:  401
+ primary pool, n=2818
+  D1 plain@24 vs plain@6: 757 vs 799 of 2818; +49/-91, p=0.000486, difference -1.5 points [-2.3, -0.7]
+  => D1 holds
+  D2 dedup_soft@24 vs plain@24: 801 vs 757 of 2818; +99/-55, p=0.00049, difference +1.6 points [+0.7, +2.4]
+  D2 dedup_soft@24 vs plain@6: 801 vs 799 of 2818; +26/-24, p=0.888, difference +0.1 points [-0.4, +0.6]
+  => D2 holds
+  D3 keep_first@24 vs plain@24: 802 vs 757 of 2818; +95/-50, p=0.000232, difference +1.6 points [+0.8, +2.4]
+  D3 keep_first@24 vs plain@6: 802 vs 799 of 2818; +5/-2, p=0.453, difference +0.1 points [-0.1, +0.3]
+  => D3 holds
+  D4 shift@6 vs plain@6: 802 vs 799 of 2818; +5/-2, p=0.453, difference +0.1 points [-0.1, +0.3]
+  => D4: positions cost under 2 points
+  G dedup_soft@12 vs plain@6: 801 vs 799 of 2818; +22/-20, p=0.878, difference +0.1 points [-0.4, +0.5]
+  G dedup_soft@24 vs plain@6: 801 vs 799 of 2818; +26/-24, p=0.888, difference +0.1 points [-0.4, +0.6]
+  => G fails
+ secondary pool, n=1000
+  D1 plain@24 vs plain@6: 361 vs 401 of 1000; +10/-50, p=1.62e-07, difference -4.0 points [-5.5, -2.5]
+  => D1 holds
+  D2 dedup_soft@24 vs plain@24: 415 vs 361 of 1000; +69/-15, p=1.94e-09, difference +5.4 points [+3.6, +7.2]
+  D2 dedup_soft@24 vs plain@6: 415 vs 401 of 1000; +22/-8, p=0.0161, difference +1.4 points [+0.3, +2.5]
+  => D2 holds
+  D3 keep_first@24 vs plain@24: 401 vs 361 of 1000; +51/-11, p=2.78e-07, difference +4.0 points [+2.5, +5.5]
+  D3 keep_first@24 vs plain@6: 401 vs 401 of 1000; +1/-1, p=1, difference +0.0 points [-0.3, +0.3]
+  => D3 holds
+  D4 shift@6 vs plain@6: 401 vs 401 of 1000; +1/-1, p=1, difference +0.0 points [-0.3, +0.3]
+  => D4: positions cost under 2 points
+  G dedup_soft@12 vs plain@6: 414 vs 401 of 1000; +21/-8, p=0.0241, difference +1.3 points [+0.2, +2.4]
+  G dedup_soft@24 vs plain@6: 415 vs 401 of 1000; +22/-8, p=0.0161, difference +1.4 points [+0.3, +2.5]
+  => G passes: a free gain
+
+== codi-gpt2
+  gsm8k_valid (n=500)
+    plain      6:  206  12:  192  24:  173
+    keep_first 12:  205  24:  205
+    window     12:  161  24:  141
+    random     12:  177  24:  157
+    logn       12:  197  24:  189
+    dedup_soft 12:  202  24:  201
+    shift      6:  205
+    copy_last  12:  199  24:  194
+    copy_pair  12:  197  24:  185
+  gsm8k_test (n=1319)
+    plain      6:  560  12:  529  24:  454
+    keep_first 12:  559  24:  556
+    dedup_soft 12:  552  24:  554
+    logn       12:  530  24:  495
+    shift      6:  556
+  gsm_hard (n=1319)
+    plain      6:  124  12:  117  24:  100
+    keep_first 12:  124  24:  123
+    dedup_soft 12:  124  24:  126
+    logn       12:  118  24:  111
+    shift      6:  123
+  multiarith (n=180)
+    plain      6:  170  12:  164  24:  164
+    keep_first 12:  170  24:  170
+    dedup_soft 12:  164  24:  163
+    logn       12:  168  24:  167
+    shift      6:  170
+  svamp (n=1000)
+    plain      6:  400  12:  405  24:  398
+    keep_first 12:  402  24:  403
+    dedup_soft 12:  406  24:  402
+    logn       12:  408  24:  411
+    shift      6:  403
+ primary pool, n=2818
+  D1 plain@24 vs plain@6: 718 vs 854 of 2818; +39/-175, p=9.16e-22, difference -4.8 points [-5.8, -3.8]
+  => D1 holds
+  D2 dedup_soft@24 vs plain@24: 843 vs 718 of 2818; +173/-48, p=8.99e-18, difference +4.4 points [+3.4, +5.5]
+  D2 dedup_soft@24 vs plain@6: 843 vs 854 of 2818; +39/-50, p=0.289, difference -0.4 points [-1.0, +0.3]
+  => D2 holds
+  D3 keep_first@24 vs plain@24: 849 vs 718 of 2818; +171/-40, p=1.74e-20, difference +4.6 points [+3.7, +5.6]
+  D3 keep_first@24 vs plain@6: 849 vs 854 of 2818; +1/-6, p=0.125, difference -0.2 points [-0.4, +0.0]
+  => D3 holds
+  D4 shift@6 vs plain@6: 849 vs 854 of 2818; +1/-6, p=0.125, difference -0.2 points [-0.4, +0.0]
+  => D4: positions cost under 2 points
+  G dedup_soft@12 vs plain@6: 840 vs 854 of 2818; +36/-50, p=0.161, difference -0.5 points [-1.1, +0.1]
+  G dedup_soft@24 vs plain@6: 843 vs 854 of 2818; +39/-50, p=0.289, difference -0.4 points [-1.0, +0.3]
+  => G fails
+ secondary pool, n=1000
+  D1 plain@24 vs plain@6: 398 vs 400 of 1000; +27/-29, p=0.894, difference -0.2 points [-1.7, +1.3]
+  => D1 fails
+  D2 dedup_soft@24 vs plain@24: 402 vs 398 of 1000; +39/-35, p=0.728, difference +0.4 points [-1.3, +2.1]
+  D2 dedup_soft@24 vs plain@6: 402 vs 400 of 1000; +25/-23, p=0.885, difference +0.2 points [-1.2, +1.6]
+  => D2 fails
+  D3 keep_first@24 vs plain@24: 403 vs 398 of 1000; +29/-24, p=0.583, difference +0.5 points [-0.9, +1.9]
+  D3 keep_first@24 vs plain@6: 403 vs 400 of 1000; +4/-1, p=0.375, difference +0.3 points [-0.1, +0.7]
+  => D3 fails
+  D4 shift@6 vs plain@6: 403 vs 400 of 1000; +4/-1, p=0.375, difference +0.3 points [-0.1, +0.7]
+  => D4: positions cost under 2 points
+  G dedup_soft@12 vs plain@6: 406 vs 400 of 1000; +26/-20, p=0.461, difference +0.6 points [-0.7, +1.9]
+  G dedup_soft@24 vs plain@6: 402 vs 400 of 1000; +25/-23, p=0.885, difference +0.2 points [-1.2, +1.6]
+  => G fails
+
+== codi-llama1b
+  gsm8k_valid (n=500)
+    plain      6:  268  12:  264  24:  239
+    keep_first 12:  263  24:  252
+    window     12:  244  24:  233
+    random     12:  253  24:  217
+    logn       12:  262  24:  241
+    dedup_soft 12:  262  24:  248
+    shift      6:  252
+    copy_last  12:  261  24:  235
+    copy_pair  12:  270  24:  246
+  gsm8k_test (n=1319)
+    plain      6:  732  12:  728  24:  696
+    keep_first 12:  724  24:  689
+    dedup_soft 12:  725  24:  697
+    logn       12:  716  24:  670
+    shift      6:  689
+  gsm_hard (n=1319)
+    plain      6:  170  12:  170  24:  160
+    keep_first 12:  168  24:  158
+    dedup_soft 12:  168  24:  163
+    logn       12:  169  24:  157
+    shift      6:  158
+  multiarith (n=180)
+    plain      6:  175  12:  173  24:  171
+    keep_first 12:  172  24:  168
+    dedup_soft 12:  172  24:  169
+    logn       12:  172  24:  170
+    shift      6:  168
+  svamp (n=1000)
+    plain      6:  608  12:  599  24:  573
+    keep_first 12:  598  24:  582
+    dedup_soft 12:  599  24:  585
+    logn       12:  603  24:  588
+    shift      6:  582
+ primary pool, n=2818
+  D1 plain@24 vs plain@6: 1027 vs 1077 of 2818; +37/-87, p=8.27e-06, difference -1.8 points [-2.5, -1.0]
+  => D1 holds
+  D2 dedup_soft@24 vs plain@24: 1029 vs 1027 of 2818; +54/-52, p=0.923, difference +0.1 points [-0.6, +0.8]
+  D2 dedup_soft@24 vs plain@6: 1029 vs 1077 of 2818; +37/-85, p=1.65e-05, difference -1.7 points [-2.5, -0.9]
+  => D2 fails
+  D3 keep_first@24 vs plain@24: 1015 vs 1027 of 2818; +58/-70, p=0.331, difference -0.4 points [-1.2, +0.4]
+  D3 keep_first@24 vs plain@6: 1015 vs 1077 of 2818; +28/-90, p=8.91e-09, difference -2.2 points [-3.0, -1.4]
+  => D3 fails
+  D4 shift@6 vs plain@6: 1015 vs 1077 of 2818; +28/-90, p=8.91e-09, difference -2.2 points [-3.0, -1.4]
+  => D4: positions are a confound to report
+  G dedup_soft@12 vs plain@6: 1065 vs 1077 of 2818; +25/-37, p=0.162, difference -0.4 points [-1.0, +0.1]
+  G dedup_soft@24 vs plain@6: 1029 vs 1077 of 2818; +37/-85, p=1.65e-05, difference -1.7 points [-2.5, -0.9]
+  => G fails
+ secondary pool, n=1000
+  D1 plain@24 vs plain@6: 573 vs 608 of 1000; +14/-49, p=1.11e-05, difference -3.5 points [-5.0, -2.0]
+  => D1 holds
+  D2 dedup_soft@24 vs plain@24: 585 vs 573 of 1000; +21/-9, p=0.0428, difference +1.2 points [+0.1, +2.3]
+  D2 dedup_soft@24 vs plain@6: 585 vs 608 of 1000; +10/-33, p=0.000606, difference -2.3 points [-3.6, -1.0]
+  => D2 fails
+  D3 keep_first@24 vs plain@24: 582 vs 573 of 1000; +23/-14, p=0.188, difference +0.9 points [-0.3, +2.1]
+  D3 keep_first@24 vs plain@6: 582 vs 608 of 1000; +10/-36, p=0.000156, difference -2.6 points [-3.9, -1.3]
+  => D3 fails
+  D4 shift@6 vs plain@6: 582 vs 608 of 1000; +10/-36, p=0.000156, difference -2.6 points [-3.9, -1.3]
+  => D4: positions are a confound to report
+  G dedup_soft@12 vs plain@6: 599 vs 608 of 1000; +11/-20, p=0.15, difference -0.9 points [-2.0, +0.2]
+  G dedup_soft@24 vs plain@6: 585 vs 608 of 1000; +10/-33, p=0.000606, difference -2.3 points [-3.6, -1.0]
+  => G fails
+ Part C trigger, second route (gsm8k_valid): dedup_soft@12 on 4+ problems 51 vs plain@6 52; entries 7-12 that are near-copies of an earlier one: 79% => not met
+
+== simcot-llama1b
+  gsm8k_valid (n=500)
+    plain      6:  277  12:  269  24:  250
+    keep_first 12:  273  24:  254
+    window     12:   95  24:   81
+    random     12:  181  24:  104
+    logn       12:  251  24:  208
+    dedup_soft 12:  273  24:  258
+    shift      6:  254
+    copy_last  12:  278  24:  257
+    copy_pair  12:  271  24:  257
+  gsm8k_test (n=1319)
+    plain      6:  735  12:  706  24:  659
+    keep_first 12:  717  24:  683
+    dedup_soft 12:  717  24:  679
+    logn       12:  662  24:  568
+    shift      6:  683
+  gsm_hard (n=1319)
+    plain      6:  165  12:  157  24:  149
+    keep_first 12:  163  24:  154
+    dedup_soft 12:  163  24:  150
+    logn       12:  147  24:  125
+    shift      6:  154
+  multiarith (n=180)
+    plain      6:  175  12:  175  24:  168
+    keep_first 12:  174  24:  171
+    dedup_soft 12:  175  24:  168
+    logn       12:  171  24:  132
+    shift      6:  171
+  svamp (n=1000)
+    plain      6:  610  12:  608  24:  574
+    keep_first 12:  595  24:  575
+    dedup_soft 12:  602  24:  574
+    logn       12:  604  24:  554
+    shift      6:  575
+ primary pool, n=2818
+  D1 plain@24 vs plain@6: 976 vs 1075 of 2818; +34/-133, p=4.89e-15, difference -3.5 points [-4.4, -2.6]
+  => D1 holds
+  D2 dedup_soft@24 vs plain@24: 997 vs 976 of 2818; +71/-50, p=0.0686, difference +0.7 points [-0.0, +1.5]
+  D2 dedup_soft@24 vs plain@6: 997 vs 1075 of 2818; +37/-115, p=1.66e-10, difference -2.8 points [-3.6, -1.9]
+  => D2 fails
+  D3 keep_first@24 vs plain@24: 1008 vs 976 of 2818; +91/-59, p=0.0111, difference +1.1 points [+0.3, +2.0]
+  D3 keep_first@24 vs plain@6: 1008 vs 1075 of 2818; +33/-100, p=4.96e-09, difference -2.4 points [-3.2, -1.6]
+  => D3 fails
+  D4 shift@6 vs plain@6: 1008 vs 1075 of 2818; +33/-100, p=4.96e-09, difference -2.4 points [-3.2, -1.6]
+  => D4: positions are a confound to report
+  G dedup_soft@12 vs plain@6: 1055 vs 1075 of 2818; +30/-50, p=0.033, difference -0.7 points [-1.3, -0.1]
+  G dedup_soft@24 vs plain@6: 997 vs 1075 of 2818; +37/-115, p=1.66e-10, difference -2.8 points [-3.6, -1.9]
+  => G fails
+ secondary pool, n=1000
+  D1 plain@24 vs plain@6: 574 vs 610 of 1000; +13/-49, p=4.82e-06, difference -3.6 points [-5.1, -2.1]
+  => D1 holds
+  D2 dedup_soft@24 vs plain@24: 574 vs 574 of 1000; +27/-27, p=1, difference +0.0 points [-1.4, +1.4]
+  D2 dedup_soft@24 vs plain@6: 574 vs 610 of 1000; +16/-52, p=1.41e-05, difference -3.6 points [-5.2, -2.0]
+  => D2 fails
+  D3 keep_first@24 vs plain@24: 575 vs 574 of 1000; +30/-29, p=1, difference +0.1 points [-1.4, +1.6]
+  D3 keep_first@24 vs plain@6: 575 vs 610 of 1000; +14/-49, p=1.11e-05, difference -3.5 points [-5.0, -2.0]
+  => D3 fails
+  D4 shift@6 vs plain@6: 575 vs 610 of 1000; +14/-49, p=1.11e-05, difference -3.5 points [-5.0, -2.0]
+  => D4: positions are a confound to report
+  G dedup_soft@12 vs plain@6: 602 vs 610 of 1000; +14/-22, p=0.243, difference -0.8 points [-2.0, +0.4]
+  G dedup_soft@24 vs plain@6: 574 vs 610 of 1000; +16/-52, p=1.41e-05, difference -3.6 points [-5.2, -2.0]
+  => G fails
+ Part C trigger, second route (gsm8k_valid): dedup_soft@12 on 4+ problems 57 vs plain@6 55; entries 7-12 that are near-copies of an earlier one: 60% => not met
+
+== simcot-gpt2-gate12_fixed (A2)
+  gsm8k_valid (n=500)
+    plain      6:  196  12:  186  24:  171
+    gate       12:  209  24:  209
+    gate_soft  12:  201  24:  197
+  gsm8k_test (n=1319)
+    gate       12:  527  24:  523
+  gsm_hard (n=1319)
+    gate       12:  122  24:  122
+  multiarith (n=180)
+    gate       12:  168  24:  168
+  svamp (n=1000)
+    gate       12:  414  24:  416
+  gate@24 vs gate@12: 813 vs 817 of 2818; +0/-4, p=0.125, difference -0.1 points [-0.3, -0.0]
+  gate@24 vs ft6 plain@24: 813 vs 806 of 2818; +81/-74, p=0.63, difference +0.2 points [-0.6, +1.1]
+  gate@24 vs base dedup_soft@24 (descriptive): 813 vs 801 of 2818; +65/-53, p=0.311, difference +0.4 points [-0.3, +1.2]
+  => the fixed gate fails its rule
+
+== codi-gpt2-gate12_fixed (A2)
+  gsm8k_valid (n=500)
+    plain      6:  206  12:  190  24:  168
+    gate       12:  186  24:  174
+    gate_soft  12:  202  24:  194
+  gsm8k_test (n=1319)
+    gate       12:  464  24:  420
+  gsm_hard (n=1319)
+    gate       12:  104  24:   90
+  multiarith (n=180)
+    gate       12:  153  24:  142
+  svamp (n=1000)
+    gate       12:  412  24:  406
+  gate@24 vs gate@12: 652 vs 721 of 2818; +9/-78, p=7.47e-15, difference -2.4 points [-3.1, -1.8]
+  gate@24 vs ft6 plain@24: 652 vs 760 of 2818; +84/-192, p=6.85e-11, difference -3.8 points [-5.0, -2.7]
+  gate@24 vs base dedup_soft@24 (descriptive): 652 vs 843 of 2818; +55/-246, p=5.4e-30, difference -6.8 points [-8.0, -5.6]
+  => the fixed gate fails its rule
+
+What the paper may claim (primary pool)
+  simcot-gpt2: drift yes, soft dedup fix holds, free gain no
+  codi-gpt2: drift yes, soft dedup fix holds, free gain no
+  codi-llama1b: drift yes, soft dedup fix fails, free gain no
+  simcot-llama1b: drift yes, soft dedup fix fails, free gain no
+  The fix generalizes: no
+  It holds across scale: not shown

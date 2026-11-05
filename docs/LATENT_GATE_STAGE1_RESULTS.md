@@ -80,6 +80,8 @@ Correct answers out of 500. The number in brackets is out of the 173 problems wi
     entry 1 plus one phase: entries 1, 2, 4, 6, 8 and 10 in 66 questions, or 1, 3, 5, 7, 9 and 11 in 65. At 24 steps it
     often keeps late entries, such as 1, 15, 17, 19, 21 and 23.
   - The tie bug below is a likely confound, so this does not yet show that the gate idea fails on CODI.
+  - Update, 4 November: with the bug fixed, the gate still fails on CODI
+    ([held-out results](LATENT_GATE_HELDOUT_RESULTS.md#the-fixed-gate-a2)).
 - **Training at 12 steps helps CODI far more.** The 12-step model scores 210 at 12 steps and 203 at 24, against the 6-step
   model's 180 at 24 (p = 4e-4). It still loses 7 between 12 and 24 steps (p = 0.04). On SIM-CoT the same comparison at 24
   was 196 against 186 (p = 0.12).

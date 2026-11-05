@@ -1,0 +1,38 @@
+{
+ "model": {
+  "weights": null,
+  "checkpoint": "/content/drive/MyDrive/dynamic-state-anchoring/latent-gate/latent-gate-simcot-n32768-s7/arms/ft6/model/pytorch_model.bin",
+  "lora_merged_fp32": true,
+  "latent_iterations": 6,
+  "max_new_tokens": 256,
+  "decoding": "greedy",
+  "dtype": "float32"
+ },
+ "gate": null,
+ "args": {
+  "llama": null,
+  "checkpoint": "/content/drive/MyDrive/dynamic-state-anchoring/latent-gate/latent-gate-simcot-n32768-s7/arms/ft6/model",
+  "datasets": [
+   "gsm8k_test",
+   "gsm_hard",
+   "multiarith",
+   "svamp"
+  ],
+  "output_dir": "/content/drive/MyDrive/dynamic-state-anchoring/latent-gate/heldout-scale/simcot-gpt2-ft6",
+  "policies": [
+   "plain"
+  ],
+  "depths": [
+   6,
+   12,
+   24
+  ],
+  "budget": 6,
+  "batch": 64,
+  "limit": null,
+  "attention": false,
+  "max_new_tokens": 256,
+  "device": "cuda",
+  "data_dir": null
+ }
+}

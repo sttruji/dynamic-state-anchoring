@@ -1,0 +1,42 @@
+{
+ "model": {
+  "weights": "zen-E/CODI-gpt2@fd641b3d3edc59e4f534b55588e906588c9e36bb",
+  "checkpoint": null,
+  "lora_merged_fp32": true,
+  "latent_iterations": 6,
+  "max_new_tokens": 256,
+  "decoding": "greedy",
+  "dtype": "float32"
+ },
+ "gate": null,
+ "args": {
+  "llama": null,
+  "checkpoint": null,
+  "datasets": [
+   "gsm8k_test",
+   "gsm_hard",
+   "multiarith",
+   "svamp"
+  ],
+  "output_dir": "/content/drive/MyDrive/dynamic-state-anchoring/latent-gate/heldout-scale/codi-gpt2",
+  "policies": [
+   "plain",
+   "keep_first",
+   "dedup_soft",
+   "logn",
+   "shift"
+  ],
+  "depths": [
+   6,
+   12,
+   24
+  ],
+  "budget": 6,
+  "batch": 64,
+  "limit": null,
+  "attention": false,
+  "max_new_tokens": 256,
+  "device": "cuda",
+  "data_dir": null
+ }
+}
