@@ -129,6 +129,21 @@ Mean answer loss fell from 2.19 over updates 33–64 to 1.76 over updates 225–
 
 **Supported conclusion:** at this budget the recipe preserved explicit capability and produced question-dependent latent estimates, but extra loops added nothing. This arm made no anchor writes, so it does not test anchoring.
 
+### Write arms
+
+Added 5 November 2026. On 1 November, an every-loop and a periodic arm trained on the same recipe, data, seed and batches with the [write-arm notebook](../notebooks/DSA_CODI_Writes_Colab.ipynb), code `1e80405` and one A100. Rows are `dsa-codi-every_loop-n32k-*` and `dsa-codi-periodic-n32k-*` in the [leaderboard](../results/leaderboard.csv). Their predictions were recovered from Drive and rescored clean, and the rebuilt leaderboard adds only these eight rows. Their per-update metrics and `plan.json` were not kept.
+
+| Row, correct of 500 on validation | No writes | Every loop | Periodic |
+|---|---:|---:|---:|
+| K=8 | 37 | 44 | 45 |
+| K=4 | 35 | 43 | 44 |
+| K=1 | 45 | 37 | 41 |
+| Explicit route | 205 | 202 | 200 |
+
+Against no writes at K=8, every-loop writes gained 23 questions and lost 16 (exploratory paired p=0.34), and periodic writes gained 21 and lost 13 (p=0.23). The loop still settled by K=4: K=4 and K=8 gave the same answer on 477 (every loop) and 484 (periodic) of 500 questions. `every_loop` overwrites the anchor each loop with a projection of the current workspace, so it holds nothing across loops and is a second control. Only the periodic arm holds a value across loops.
+
+**Supported conclusion:** on this recipe, anchor writes add no measurable accuracy over no writes.
+
 ## 6. CODI past its trained depth
 
 Added 2 November 2026. Measured on the published CODI weights without training: accuracy falls from 206 to 173 of 500 on validation as the latent loop runs from 6 to 24 steps, and re-feeding a held latent did not recover it. Details, preregistered rules and limits are in [CODI_TRAIL.md](CODI_TRAIL.md).

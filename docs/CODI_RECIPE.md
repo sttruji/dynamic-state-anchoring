@@ -56,8 +56,9 @@ then resumed from its backup.
 
 [`notebooks/DSA_CODI_Writes_Colab.ipynb`](../notebooks/DSA_CODI_Writes_Colab.ipynb)
 ([open in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_CODI_Writes_Colab.ipynb))
-is the next arm: the same recipe and data with anchor writes on every loop, without rerunning the
-baselines. It ends by downloading the results straight from the session.
+trains a write arm on the same recipe and data, without rerunning the baselines. It ends by downloading
+the results straight from the session. The every-loop and periodic arms ran on it; their results are in
+[FINDINGS.md](FINDINGS.md) section 5.
 
 **Keep Drive storage free.** When Drive fills up, the mounted folder keeps showing every file while
 uploads fail, so a run looks healthy and its later results and checkpoints never reach Drive. Colab's

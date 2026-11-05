@@ -1,0 +1,47 @@
+{
+  "accuracy": 0.082,
+  "correct": 41,
+  "dataset": "gsm8k_valid",
+  "finished_at": "2026-11-01T18:54:05+00:00",
+  "identity": {
+    "dataset": "gsm8k_valid",
+    "dataset_sha256": "bb26957d13f53e3c8f576f5d68b4f494c5615ca838235b2dbc2c9ae52cb4d205",
+    "model": "dsa-codi-periodic-n32k-k1",
+    "model_identity": {
+      "checkpoint_sha256": "4c019a8950b6f1f34b2dbfd20ffa6e289d23510685115b8d4e17fcf5f44ab718",
+      "decoding": "greedy",
+      "loops": 1,
+      "max_new_tokens": 64,
+      "trained_config": {
+        "eos_token_id": 50256,
+        "gate_threshold": 0.5,
+        "loop_budget": 8,
+        "marker_token_id": 50257,
+        "pad_token_id": 50256,
+        "periodic_interval": 4,
+        "recurrence_mode": "flt_memory",
+        "workspace_size": 4,
+        "write_mode": "periodic"
+      },
+      "write_mode": "periodic"
+    },
+    "model_spec": "dsa",
+    "rows": 500,
+    "scorer_version": "bench-v1"
+  },
+  "model": "dsa-codi-periodic-n32k-k1",
+  "n": 500,
+  "runtime": {
+    "device": "cuda",
+    "git_commit": "1e8040596d12241bc3c8ac997c48b60b416f2b43",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "transformers": "4.46.2"
+  },
+  "seconds_per_question": 0.03822830489599892,
+  "session_seconds": 19.247017810000216,
+  "strict_accuracy": 0.082,
+  "strict_correct": 41,
+  "valid_answer_rate": 1.0
+}
