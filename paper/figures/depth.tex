@@ -1,0 +1,39 @@
+% Written by paper/figures/depth_figure.py; do not edit by hand.
+\definecolor{series1}{HTML}{2A78D6}\definecolor{series2}{HTML}{EB6834}\definecolor{series3}{HTML}{1BAF7A}
+\definecolor{inkmuted}{HTML}{52514E}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 1, horizontal sep=1.0cm},
+  width=0.28\textwidth, height=0.21\textwidth, xmode=log, log basis x=2, xmin=5.2, xmax=27.5,
+  xtick={6,12,24}, xticklabels={6,12,24}, xlabel={latent steps}, tick label style={font=\scriptsize},
+  label style={font=\scriptsize, text=inkmuted}, title style={font=\small, yshift=-0.6ex},
+  axis line style={inkmuted!60}, tick style={inkmuted!60}, ymajorgrids, grid style={inkmuted!15},
+  yticklabel={\pgfmathprintnumber[fixed, precision=0]{\tick}}, ytick distance=2,
+  every axis plot/.append style={line width=1pt, mark size=1.8pt}]
+\nextgroupplot[title={SIM-CoT GPT-2}, ymin=22.35, ymax=28.85, ylabel={accuracy (\%)}, legend to name=depthlegend, legend style={font=\scriptsize, draw=none, legend columns=4, column sep=0.8em}]
+\addplot[draw=none, fill=inkmuted!12, forget plot] coordinates {(5.2,26.35) (27.5,26.35) (27.5,28.35) (5.2,28.35)} --cycle;
+\addplot[color=series1, mark=*] coordinates {(6,28.35) (12,28.60) (24,26.86)};
+\addlegendentry{plain}
+\addplot[color=series2, mark=square*] coordinates {(6,28.35) (12,28.42) (24,28.42)};
+\addlegendentry{soft dedup}
+\addlegendimage{color=series3, mark=triangle*, line width=1pt, mark size=1.8pt}
+\addlegendentry{soft dedup + re-anchoring}
+\addlegendimage{only marks, mark=square*, mark size=3pt, color=inkmuted!18}
+\addlegendentry{within 2 points of 6 steps}
+\nextgroupplot[title={CODI GPT-2}, ymin=24.31, ymax=30.81]
+\addplot[draw=none, fill=inkmuted!12, forget plot] coordinates {(5.2,28.31) (27.5,28.31) (27.5,30.31) (5.2,30.31)} --cycle;
+\addplot[color=series1, mark=*] coordinates {(6,30.31) (12,28.74) (24,25.48)};
+\addplot[color=series2, mark=square*] coordinates {(6,30.31) (12,29.81) (24,29.91)};
+\nextgroupplot[title={CODI-1B}, ymin=32.22, ymax=38.72]
+\addplot[draw=none, fill=inkmuted!12, forget plot] coordinates {(5.2,36.22) (27.5,36.22) (27.5,38.22) (5.2,38.22)} --cycle;
+\addplot[color=series1, mark=*] coordinates {(6,38.22) (12,38.01) (24,36.44)};
+\addplot[color=series2, mark=square*] coordinates {(6,38.22) (12,37.79) (24,36.52)};
+\addplot[color=series3, mark=triangle*] coordinates {(6,38.22) (12,37.79) (24,37.44)};
+\nextgroupplot[title={SIM-CoT-1B}, ymin=32.15, ymax=38.65]
+\addplot[draw=none, fill=inkmuted!12, forget plot] coordinates {(5.2,36.15) (27.5,36.15) (27.5,38.15) (5.2,38.15)} --cycle;
+\addplot[color=series1, mark=*] coordinates {(6,38.15) (12,36.83) (24,34.63)};
+\addplot[color=series2, mark=square*] coordinates {(6,38.15) (12,37.44) (24,35.38)};
+\addplot[color=series3, mark=triangle*] coordinates {(6,38.15) (12,37.79) (24,37.22)};
+\end{groupplot}
+\node[anchor=south] at ($(group c1r1.north west)!0.5!(group c4r1.north east) + (0,0.55cm)$)
+  {\pgfplotslegendfromname{depthlegend}};
+\end{tikzpicture}

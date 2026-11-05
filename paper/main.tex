@@ -1,0 +1,635 @@
+% ECS 282 final report: first draft. Compile with `latexmk -pdf main.tex`.
+% Numbers come from docs/FINDINGS.md, docs/CODI_TRAIL.md, docs/LATENT_GATE_IDEA.md, docs/LATENT_GATE_STAGE1_RESULTS.md and
+% docs/LATENT_GATE_HELDOUT_RESULTS.md, and the records under results/.
+\documentclass[11pt]{article}
+\usepackage[preprint]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{calc}
+
+\newcommand{\pol}[1]{\texttt{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+\title{Dynamic State Anchoring Revisited: Why Latent Chain-of-Thought\\Loses Accuracy Past Its Trained Depth}
+
+\author{Steven Trujillo \and Joshua Dias Barreto \and Xingming Xu \\
+  University of California, Davis \\
+  ECS 282: Advanced NLP \\
+  \texttt{sctrujillo@ucdavis.edu} \quad \texttt{jjbarreto@ucdavis.edu} \quad \texttt{xmxu@ucdavis.edu}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Latent chain-of-thought (CoT) models such as CODI and SIM-CoT reason by feeding continuous hidden states back into the model
+for a fixed number of steps. We set out to make them robust to extra recurrent computation with Dynamic State Anchoring
+(DSA), a gated, persistent anchor state that stores completed intermediate conclusions. On GPT-2, DSA's learned write
+controller never learned when to write, and no write policy improved accuracy. Testing the proposal's premise directly, we
+find that published CODI and SIM-CoT checkpoints lose accuracy when run past their 6 trained latent steps even when their
+latent states are stable: appending exact copies of one latent cache entry reproduces SIM-CoT's whole loss, because repeated
+keys draw the answer's attention away from the early latents. This reframes DSA as a gate over which latent cache entries
+the answer can see. In a preregistered study of four checkpoints (CODI and SIM-CoT at GPT-2 and LLaMA-3.2-1B scale) on 3,818
+held-out questions from GSM8K, GSM-Hard, MultiArith and SVAMP, the drift appears on all four. A position control splits it
+exactly into two mechanisms: dilution by near-copy entries, which dominates at GPT-2 scale and which a training-free soft
+deduplication removes, and the answer's growing rotary-position distance from the latents, which dominates at 1B and which
+re-anchoring the answer removes. Together these hold accuracy at 24 steps within 2 points of the 6-step score on all four
+models. No policy, trained gate or further fine-tuning turns the extra depth into accuracy.
+\end{abstract}
+
+\section{Introduction}
+
+Continuous or latent chain-of-thought methods replace written reasoning with a short sequence of hidden states. Coconut
+\citep{hao2025coconut} feeds the last hidden state back as the next input embedding; CODI \citep{shen2025codi} trains such a
+loop by self-distillation from an explicit-CoT teacher; SIM-CoT \citep{wei2025simcot} adds step-level supervision of each
+latent. The published CODI-style checkpoints all run a fixed budget of 6 latent steps. Looped and recurrent-depth
+transformers suggest that extra iterations can buy extra computation \citep{saunshi2025reasoning, fan2025looped}, which
+raises a natural question for latent CoT: does running more latent steps than the model was trained with help, hurt, or do
+nothing?
+
+Our project proposal asked this question with a specific hypothesis. Intermediate conclusions, we argued, become corrupted as
+latent states pass through many recurrent transformations, so a model that selectively preserves completed conclusions in a
+persistent \emph{anchor} state should stay accurate, or improve, when given more iterations. We called the method Dynamic
+State Anchoring (DSA) and planned to compare a learned, hard-gated write controller with no-write, every-loop and periodic
+write policies on GPT-2.
+
+This report follows the project as it actually unfolded. The original DSA design failed: its controller never learned when
+to write, and no write policy beat writing nothing (Section~\ref{sec:original-failure}). Rather than scale a mechanism with
+no measured benefit, we tested the premise on the published checkpoints. They do lose accuracy past their trained depth,
+but not mainly because their states deteriorate: SIM-CoT's latents are stable and keep their question content, yet it loses
+as many answers as CODI, and appending exact copies of one cache entry reproduces its entire loss
+(Section~\ref{sec:premise}). Every latent step appends a key to the cache, and repeated keys take attention away from the
+early latents that carry the reasoning. That finding turned DSA from a gated memory into a gate over which latent cache
+entries the answer can see (Section~\ref{sec:gate}). A learned version of that gate mostly rediscovered ``keep the first six
+entries'', and a training-free soft deduplication did as well or better. We then froze a plan and tested the diagnosis on
+untouched data and at a second scale (Sections~\ref{sec:setup}--\ref{sec:results}).
+
+Our contributions are:
+\begin{itemize}
+  \item A negative result for the original DSA: on GPT-2, a learned anchor-write controller trained with conclusion labels
+    performs at chance, and anchoring adds no accuracy over no-write, every-loop or periodic controls.
+  \item The first measurements, to our knowledge, of CODI and SIM-CoT run past their trained latent depth: on held-out data,
+    all four checkpoints we test lose accuracy at 24 steps.
+  \item A position control that splits that loss exactly into two mechanisms: dilution by near-copy cache entries, which
+    dominates at GPT-2 scale, and rotary-position distance between the answer and the latents, which dominates at 1B.
+  \item A matching training-free repair, soft deduplication plus, under RoPE, re-anchoring the answer, that holds accuracy at
+    24 steps within 2 points of the 6-step score on all four models.
+  \item Evidence that neither the repair, a trained latent gate, nor further fine-tuning turns extra depth into accuracy for
+    these checkpoints.
+\end{itemize}
+
+\section{Background: latent CoT with appended latents}
+\label{sec:background}
+
+We study CODI-style models. The question's tokens are followed by a begin-of-thought token. At each latent step $t = 1,
+\dots, T$, the model runs one forward step whose input embedding is $z_t = P(h_{t-1})$, a learned projection $P$ of the
+previous step's last-layer hidden state. Each step therefore \emph{appends} one key/value entry per layer to the cache, and
+nothing is overwritten. After $T$ steps an end-of-thought token is fed and the answer is decoded greedily, attending to the
+question and to all $T$ latent entries. Every checkpoint we use was trained with $T = 6$.
+
+\paragraph{Why repeated entries matter.} If a key appears $k$ times in a softmax, the group receives exactly the weight one
+copy would receive with its logit raised by $\log k$. When a loop settles, later latents become near-copies of earlier ones,
+and the readout's attention shifts toward them however stable the states are. Guarantees that a settled loop is safe to run
+deeper assume the readout sees the current state in a fixed context \citep{viakhirev2026thinkshallow,
+blayney2026mechanistic}; append-only latent CoT breaks that assumption.
+
+\paragraph{Models.} CODI GPT-2 and SIM-CoT GPT-2 (124M parameters; \citealp{radford2019gpt2}) use learned absolute position
+embeddings. CODI and SIM-CoT on LLaMA-3.2-1B-Instruct \citep{grattafiori2024llama3} use rotary position embeddings (RoPE;
+\citealp{su2024roformer}), whose attention depends on the distance between query and key positions.
+
+\section{The original Dynamic State Anchoring}
+\label{sec:original}
+
+The proposal added to a shared GPT-2 backbone four latent workspace vectors, one persistent anchor vector, an anchor
+projection head and a scalar write controller. At each loop $t$ the workspace $Z_t$ is updated from the question $X$, the
+previous anchor $A_{t-1}$ and the previous workspace; a mean-pooled summary $u_t$ yields a candidate $C_t = W_a u_t + b_a$
+and a write probability $p_t = \sigma(w_g^\top u_t + b_g)$; and a hard gate $g_t = \mathbb{1}[p_t \geq 0.5]$ decides whether
+$A_t = (1 - g_t) A_{t-1} + g_t C_t$ replaces the stored anchor.
+
+Write timing was supervised with a deterministic annotator that inserts an \texttt{<SA>} marker after each locally verified
+arithmetic conclusion in a GSM8K-Aug rationale \citep{deng2023implicit}, excluding the final answer; it marks 613,547
+conclusions on 83.5\% of training rows. Marked positions were mapped to loop indices, and the explicit teacher's hidden states
+before each marker supplied anchor targets. Training combined answer cross-entropy, explicit-CoT cross-entropy, a binary
+cross-entropy on the write probabilities and a normalized alignment loss on anchor candidates, weighted $1 : 1 : 0.1 : 0.1$.
+For stable recurrence we adapted the Fully Looped Transformer (FLT; \citealp{fu2026flt}): previous-loop memory vectors supply
+the queries at every block. Training started from the LOTUS GPT-2 CoT checkpoint \citep{fan2026lotus}, and the controls were
+no writes (\pol{static}), \pol{every\_loop} and \pol{periodic} (every fourth loop), each sharing the learned arm's
+initialization, data order and supervision.
+
+\section{Why the original design failed}
+\label{sec:original-failure}
+
+\paragraph{Small pilots.} Two pilots trained on 32 questions for 200 updates and scored 128 validation questions. With the
+standard recurrence at $K = 16$ loops, answer-gradient norms grew from about $3 \times 10^2$ at one loop to $2.4 \times
+10^6$, every update hit the clipping threshold, and learned and static arms each scored 3/128. The FLT recurrence at $K = 8$
+cut median gradient norms 88--279-fold and fit 29--31 of the 32 training questions, but validation stayed at 2--3/128. In
+both pilots the controller's ranking of true conclusion loops was at chance (AUROC 0.510 and 0.507), and it wrote far more
+often than the labels asked: on 58.6\% of loops against a labeled rate of 13.4\% in the $K = 16$ pilot.
+
+\paragraph{The data-scale run.} With FLT fixed at $K = 8$, four write policies trained on 512 questions for 1,024 updates and
+were scored on all 500 validation questions (Table~\ref{tab:datascale}). No writes scored highest, and no pairwise difference
+reached $p < 0.05$. The controller's write rate fell from 91\% of loops early in training to zero; at inference it made 8
+writes in 4,000 loop decisions, and its event AUROC was 0.513. Fine-tuning also damaged the shared explicit route: on 64
+validation questions the original checkpoint answered 25 correctly and the fine-tuned routes 13--17.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+Write policy & Train, of 64 & Validation, of 500 \\
+\midrule
+No writes (\pol{static}) & 20 & \textbf{23} (4.6\%) \\
+Every loop & 24 & 20 (4.0\%) \\
+Periodic & 20 & 17 (3.4\%) \\
+Learned & 19 & 14 (2.8\%) \\
+\bottomrule
+\end{tabular}
+\caption{The original DSA on GPT-2 (FLT, $K = 8$, 512 training questions, 1,024 updates). Correct answers.}
+\label{tab:datascale}
+\end{table}
+
+\paragraph{A stronger recipe did not help either.} We then adopted the parts of CODI's GPT-2 recipe that DSA shares (LoRA rank
+128, learning rate $3 \times 10^{-3}$, 128 records per update, answer-position distillation) and trained for one pass over
+32,768 records, 256 updates or 0.2\% of CODI's training. The explicit route was preserved (205/500 on validation, against
+212 for the original checkpoint and 206 for CODI), but latent answers reached only 37/500 with no writes. Every-loop and
+periodic arms on identical batches scored 44 and 45 ($p = 0.34$ and $0.23$ against no writes). The loop had essentially
+settled by 4 iterations: 4 and 8 loops gave the same answer on 477--484 of 500 questions. Note that \pol{every\_loop} overwrites the anchor with a projection of the current workspace, so only
+the periodic and learned arms ever hold a value across loops.
+
+\paragraph{Decision.} We parked the design. The controller had not learned event timing, validation accuracy was poor, extra
+loops added nothing, and no write policy beat writing nothing. Scaling it to LLaMA, as the proposal planned, had no evidence
+behind it. What remained untested was the premise itself.
+
+\section{Testing the premise: drift past the trained depth}
+\label{sec:premise}
+
+We measured the published CODI GPT-2 and SIM-CoT GPT-2 checkpoints, without training, on the 500-question GSM8K-Aug
+validation set (\texttt{gsm8k\_valid}), running the latent loop for more than 6 steps. All analyses in this section are
+exploratory, and this set was reused for discovery throughout.
+
+\paragraph{Both models drift.} CODI answers 206 questions correctly at 6 steps, 192 at 12 and 173 at 24 (24 against 6: 14
+gained, 47 lost, $p < 0.001$); SIM-CoT answers 204, 185 and 170. Two preregistered ideas for exploiting or stopping the drift
+failed: agreement between depths was a weaker confidence signal than the 6-step answer's own token log-probability (SVAMP
+AUROC 0.81 against 0.91), and re-feeding the step-6 latent in place of new ones did not beat the plain loop (165 against 173
+at 24 steps).
+
+\paragraph{But not because the states deteriorate.} CODI's latents alternate between two states \citep[as in][]{li2026pmps},
+and their question-specific content decays: a step-24 latent identifies its own question among the 500 only 67.4\% of the
+time. SIM-CoT's latents instead settle (the cosine between neighbouring steps is about 0.95 from step 6 on) and keep their
+content (97.6\% identification at step 24). Yet SIM-CoT loses as many answers as CODI.
+
+\paragraph{Copies alone reproduce the loss.} After 6 genuine steps, we appended exact copies of the step-6 key/value entry
+until the cache held 24 latent entries. On SIM-CoT this scores 172, against 170 for the real 24-step loop: copies reproduce
+its entire loss. On CODI, single copies score 196 and copies of the last pair 188, against 173: about a third to a half of
+its loss, with the rest coming from the changing content of its new entries.
+
+\paragraph{The readout's attention moves.} The answer's first token puts 0.158 of its attention on latents 1--6 after 6 steps
+in CODI and 0.033 after 24; in SIM-CoT the share falls from 0.099 to 0.036. Extra entries take attention from the early
+latents, which matter most: removing entry 1 alone costs 0.42--0.54 nats of gold-answer log-probability, while removing any
+later single entry costs almost nothing.
+
+\section{DSA reframed: a gate over latent cache entries}
+\label{sec:gate}
+
+If the cache, not the state, is the problem, the thing to anchor is \emph{which latent entries the answer can see}. The
+reframed DSA scores each latent entry when it is produced, adds $\log g_j$ to every attention logit pointing at entry $j$ (the
+exact counterpart of the $\log k$ that copies add), and keeps at most 6 entries, the trained count, evicting the
+lowest-scoring one when the budget is exceeded. A budget penalty $0.1 \cdot \max(0, \sum_j g_j - 6)$ drives the soft gate
+during training. The mechanism itself is prior art for text caches
+\citep{trimkv2026, leviathan2025selective, lin2025fox}; what was new to test was whether it rescues latent CoT past its
+trained depth.
+
+\paragraph{Soft deduplication.} A training-free alternative cancels the log-count boost directly. Once there are more than 6
+latent entries, each entry $j$ receives the additive bias $-\log c_j$, where $c_j$ is the number of latent entries whose fed
+latents have cosine similarity at least 0.95 with entry $j$'s. A cluster of $k$ exact copies then draws the attention of a
+single entry. The bias applies to later latent steps as well as to the answer.
+
+\paragraph{Stage 0: eviction at fixed weights.} With at most 6 latent entries visible at 24 steps, keeping the first six
+entries restores the 6-step score on both models, and dropping near-duplicates nearly does (Table~\ref{tab:stage0}). Recency
+and random eviction hurt, and so do rules that score entries by attention or by whether a logit-lens decode matches a gold
+intermediate result. That decode label, which the reframed proposal meant to supervise the gate with, predicted an entry's
+causal effect worse than chance (AUROC 0.41--0.45), so it was dropped.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcc}
+\toprule
+At 24 steps, of 500 & CODI & SIM-CoT \\
+\midrule
+6 steps, for reference & 206 & 204 \\
+\midrule
+All entries (\pol{plain}) & 173 & 170 \\
+Keep the first 6 & \textbf{205} & \textbf{204} \\
+Drop near-duplicates & 201 & 203 \\
+Keep the 6 most recent & 141 & 152 \\
+Random eviction & 157 & 173 \\
+Highest attention score & 77 & 190 \\
+Decode matches a gold result & 73 & 158 \\
+\bottomrule
+\end{tabular}
+\caption{Stage 0: eviction rules on the frozen GPT-2 checkpoints, at most 6 latent entries visible, \texttt{gsm8k\_valid}.}
+\label{tab:stage0}
+\end{table}
+
+\paragraph{Stage 1: fine-tuning with the gate.} The main hypothesis (H2) was that a model fine-tuned at 12 steps under the
+gated budget beats the same model fine-tuned at 6 (\pol{ft6}) on problems with 4 or more rationale steps, at $p < 0.025$,
+and holds at 24. Each arm ran one pass over 32,768 GSM8K-Aug problems in a fixed order with seed 7. On SIM-CoT GPT-2, eight
+arms ran; CODI GPT-2 replicated the three most informative (Table~\ref{tab:stage1}). H2 failed on both models, so the
+planned stop rule fired.
+\begin{itemize}
+  \item \textbf{No 12-step arm used the extra steps.} On the 173 problems with 4+ steps, the SIM-CoT gates scored 26 and 28
+    against \pol{ft6}'s 31, and the CODI gate 21 against 30.
+  \item \textbf{The gate rediscovered ``keep the first six''.} On SIM-CoT it kept exactly entries 1--6 on 196 of 500
+    questions and matched soft dedup (206 against 207 at 24 steps).
+  \item \textbf{On CODI the gate failed.} It learned to keep one of CODI's two alternating phases, and with eviction it
+    scored 168 at 24 steps.
+  \item \textbf{Soft dedup held the 6-step score on both base models with no training}: 207 against 204 on SIM-CoT and 201
+    against 206 on CODI.
+\end{itemize}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{llccc}
+\toprule
+& Model and policy & 6 & 12 & 24 \\
+\midrule
+\multirow{5}{*}{\rotatebox{90}{SIM-CoT}}
+& Base, \pol{plain} & 204 & 185 & 170 \\
+& Base, soft dedup & -- & 207 & \textbf{207} \\
+& \pol{ft6}, \pol{plain} & \textbf{215} & 202 & 186 \\
+& \pol{ft12}, \pol{plain} & 211 & 207 & 196 \\
+& Gate (top-6 trained), evict & -- & 207 & 206 \\
+\midrule
+\multirow{5}{*}{\rotatebox{90}{CODI}}
+& Base, \pol{plain} & 206 & 192 & 173 \\
+& Base, soft dedup & -- & 202 & 201 \\
+& \pol{ft6}, \pol{plain} & \textbf{209} & 201 & 180 \\
+& \pol{ft12}, \pol{plain} & 200 & \textbf{210} & 203 \\
+& Gate (top-6 trained), evict & -- & 174 & 168 \\
+\bottomrule
+\end{tabular}
+\caption{Stage 1 on GPT-2, correct of 500 on \texttt{gsm8k\_valid} at 6, 12 and 24 latent steps. Remaining SIM-CoT arms
+are in the results repository.}
+\label{tab:stage1}
+\end{table}
+
+Stage 1 left a diagnosis with a cheap fix, measured on one explored set and at one scale. The rest of this report tests it
+on untouched data and at 1B.
+
+\section{Held-out and scale evaluation}
+\label{sec:setup}
+
+\paragraph{Preregistration.} The plan, models, data, policies and decision rules below were written after Stage 1 and frozen,
+with a recorded SHA-256 hash, before any run. One amendment, adding re-anchoring (Section~\ref{sec:anchoring}) and an
+exploratory fine-tuning arm at 1B, was written after the main runs and before any run of what it added; it changed no
+earlier rule.
+
+\paragraph{Models.} Four published checkpoints, all trained with 6 latent steps: SIM-CoT GPT-2, CODI GPT-2, CODI on
+LLaMA-3.2-1B-Instruct and SIM-CoT on LLaMA-3.2-1B. For the LLaMA models we merged the published LoRA adapters into the base
+weights at FP32. Our port reproduces their published GSM8K accuracy: 55.5\% for CODI-1B (published 55.6\%) and 55.7\% for
+SIM-CoT-1B (published 56.1\%). A 3B SIM-CoT model was optional and was not run.
+
+\paragraph{Data.}
+\begin{itemize}
+  \item \textbf{Discovery:} \texttt{gsm8k\_valid} (500), already explored for the GPT-2 models.
+  \item \textbf{Primary held-out pool (2,818):} GSM8K test (1,319; \citealp{cobbe2021gsm8k}), in distribution; GSM-Hard
+    (1,319; \citealp{gao2023pal}) and MultiArith (180; \citealp{roy2015multiarith}), out of distribution. None had been
+    scored past 6 steps or under any policy. GSM-Hard is GSM8K test with larger numbers, so the two are correlated.
+  \item \textbf{Secondary:} SVAMP (1,000; \citealp{patel2021svamp}), reported separately because an earlier CODI study used it.
+\end{itemize}
+
+\paragraph{Policies.} All decoding is greedy, with a budget of 6 latent entries where one applies.
+\begin{itemize}
+  \item \pol{plain}: every latent entry, at 6, 12 and 24 steps.
+  \item \pol{keep\_first}: only entries 1--6 stay visible; later steps are still computed.
+  \item \pol{dedup\_soft}: soft deduplication (Section~\ref{sec:gate}).
+  \item \pol{logn}: every latent entry gets $-\log(n/6)$ once there are $n > 6$, a length-scaling rival.
+  \item \pol{shift}: 6 latent steps, with the answer placed at the positions it would have after 24 steps. This
+    position-only control is the new ingredient.
+  \item \pol{gate}: the 6 highest-scoring entries, for gated checkpoints.
+\end{itemize}
+
+\paragraph{Decision rules.} Each is tested per model on the primary pool with exact two-sided paired sign tests and 95\%
+paired Wald confidence intervals on accuracy differences. The noninferiority margin is 2 points, about the single-seed
+noise seen in Stage 1.
+\begin{itemize}
+  \item \textbf{D1, drift:} \pol{plain}@24 is below \pol{plain}@6 ($p < 0.05$).
+  \item \textbf{D2, the soft-dedup fix (primary):} \pol{dedup\_soft}@24 beats \pol{plain}@24 ($p < 0.05$), and the lower
+    end of the CI on \pol{dedup\_soft}@24 $-$ \pol{plain}@6 is above $-2$ points.
+  \item \textbf{D3, the budget fix:} the same for \pol{keep\_first}@24.
+  \item \textbf{D4, position control (descriptive):} whether \pol{shift}@6 costs more than 2 points against \pol{plain}@6.
+  \item \textbf{G, a free gain:} \pol{dedup\_soft} at 12 or 24 beats \pol{plain}@6 ($p < 0.025$ each).
+\end{itemize}
+The paper may claim that the fix generalizes only if D2 holds on every model where D1 holds, and that it holds across scale
+only if a 1B model shows both D1 and D2.
+
+\paragraph{Engineering checks.} A batched evaluator reproduced Stage 1's \texttt{gsm8k\_valid} counts exactly on both GPT-2
+models. For LLaMA, latent biases enter as a 4D additive attention mask, and we checked that a zero bias reproduces the
+model's own mask exactly and that $k$ copies each given $-\log k$ reproduce a single entry's logits within $10^{-4}$. All
+runs used Colab GPUs (A100, and an RTX PRO 6000 for the last fine-tuning runs).
+
+\section{Results}
+\label{sec:results}
+
+\begin{figure*}[t]
+\centering
+\input{figures/depth.tex}
+\caption{Accuracy on the primary held-out pool (2,818 questions) against the number of latent steps. Every policy equals
+\pol{plain} at 6 steps, where no bias or move applies; the shaded band is the 2-point noninferiority margin below the 6-step
+score. Each panel spans 6.5 points, so slopes compare across panels. Re-anchoring applies to the RoPE models only. Exact counts
+are in Table~\ref{tab:main}.}
+\label{fig:depth}
+\end{figure*}
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lcccccccc}
+\toprule
+& \multicolumn{3}{c}{\pol{plain}} & \pol{keep\_first} & \multicolumn{2}{c}{\pol{dedup\_soft}} & \pol{shift} &
+\pol{dedup\_anchor} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-5} \cmidrule(lr){6-7} \cmidrule(lr){8-8} \cmidrule(lr){9-9}
+Model & 6 & 12 & 24 & 24 & 12 & 24 & 6 & 24 \\
+\midrule
+SIM-CoT GPT-2 & 799 & \textbf{806} & 757 & 802 & 801 & 801 & 802 & -- \\
+CODI GPT-2 & \textbf{854} & 810 & 718 & 849 & 840 & 843 & 849 & -- \\
+CODI-1B & \textbf{1077} & 1071 & 1027 & 1015 & 1065 & 1029 & 1015 & 1055 \\
+SIM-CoT-1B & \textbf{1075} & 1038 & 976 & 1008 & 1055 & 997 & 1008 & 1049 \\
+\bottomrule
+\end{tabular}
+\caption{Correct answers on the primary held-out pool (2,818 questions: GSM8K test, GSM-Hard and MultiArith) by policy and
+number of latent steps; bold marks the best in each row. \pol{dedup\_anchor} (Section~\ref{sec:anchoring}) applies to the
+RoPE models only.}
+\label{tab:main}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccccc}
+\toprule
+& D1: \pol{plain}@24 & \multicolumn{2}{c}{D2: \pol{dedup\_soft}@24} & \multicolumn{2}{c}{R1: \pol{dedup\_anchor}@24} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6}
+Model & vs \pol{plain}@6 & vs \pol{plain}@24 & vs \pol{plain}@6 & vs \pol{plain}@24 & vs \pol{plain}@6 \\
+\midrule
+SIM-CoT GPT-2 & $-1.5$ [$-2.3$, $-0.7$] & $+1.6$ & $+0.1$ [$-0.4$, $+0.6$] \checkmark & -- & -- \\
+CODI GPT-2 & $-4.8$ [$-5.8$, $-3.8$] & $+4.4$ & $-0.4$ [$-1.0$, $+0.3$] \checkmark & -- & -- \\
+CODI-1B & $-1.8$ [$-2.5$, $-1.0$] & $+0.1$ ($p = 0.92$) & $-1.7$ [$-2.5$, $-0.9$] $\times$ & $+1.0$ &
+$-0.8$ [$-1.3$, $-0.3$] \checkmark \\
+SIM-CoT-1B & $-3.5$ [$-4.4$, $-2.6$] & $+0.7$ ($p = 0.07$) & $-2.8$ [$-3.6$, $-1.9$] $\times$ & $+2.6$ &
+$-0.9$ [$-1.5$, $-0.3$] \checkmark \\
+\bottomrule
+\end{tabular}
+\caption{Planned decision rules on the primary pool, in accuracy points with 95\% paired CIs; \checkmark{} marks a rule that
+holds and $\times$ one that fails. D1 holds on every model at $p \leq 5 \times 10^{-4}$. Differences shown without a $p$-value
+are significant at $p < 0.05$. R1, from the amendment, applies D2's criteria to \pol{dedup\_anchor}. D4 is the position
+column of Table~\ref{tab:split}.}
+\label{tab:rules}
+\end{table*}
+
+\subsection{The drift is real on every model}
+
+D1 holds on all four checkpoints: running 24 latent steps instead of 6 costs 1.5 to 4.8 points on untouched data
+(Figure~\ref{fig:depth}; Tables~\ref{tab:main} and~\ref{tab:rules}). No policy at any depth significantly beats stopping at
+6 steps on the primary pool (the closest is SIM-CoT GPT-2's \pol{plain}@12, 806 against 799, $p = 0.51$), so G fails
+everywhere. The one exception in the whole study is a secondary-set result: on SVAMP, SIM-CoT GPT-2 with soft dedup at 24
+steps scores 415 against 401 ($p = 0.016$), which we do not count as a claim given the number of comparisons.
+
+\subsection{Soft dedup fixes GPT-2 but not 1B}
+
+D2 holds on both GPT-2 models: soft dedup at 24 steps beats the plain loop and lands within half a point of the 6-step score.
+The first-six budget (D3) holds there too. On both 1B models D2 fails: soft dedup barely improves on the plain loop and stays
+1.7 and 2.8 points below the 6-step score. By the plan's rules, ``the fix generalizes'' and ``it holds across scale'' are
+not supported.
+
+\subsection{Position versus content}
+\label{sec:split}
+
+The position control explains the failure. \pol{shift}@6 and \pol{keep\_first}@24 are the same computation (the answer sees
+latents 1--6 and starts 18 positions later than usual), and they produced identical text on every question for all four
+models. The loss at 24 steps therefore splits exactly into a \emph{position} part, \pol{shift}@6 $-$ \pol{plain}@6, and a
+\emph{content} part, \pol{plain}@24 $-$ \pol{shift}@6, the effect of entries 7--24 at a fixed answer position
+(Table~\ref{tab:split}).
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccc}
+\toprule
+Primary pool, points & Total & Position & Content \\
+\midrule
+SIM-CoT GPT-2 & $-1.5$ & $+0.1$ & $-1.6$ \\
+CODI GPT-2 & $-4.8$ & $-0.2$ & $-4.6$ \\
+CODI-1B & $-1.8$ & $-2.2$ & $+0.4$ \\
+SIM-CoT-1B & $-3.5$ & $-2.4$ & $-1.1$ \\
+\bottomrule
+\end{tabular}
+\caption{The 24-step loss split exactly into position (\pol{shift}@6 $-$ \pol{plain}@6) and content (\pol{plain}@24 $-$
+\pol{shift}@6).}
+\label{tab:split}
+\end{table}
+
+On GPT-2, whose learned absolute positions make the answer's position nearly free, the whole loss is content: the
+near-copy dilution that soft dedup removes. On the 1B LLaMA models, position accounts for all of CODI-1B's loss and two
+thirds of SIM-CoT-1B's, and a policy that only reweights or evicts entries cannot touch it. Attention shares, measured on
+\texttt{gsm8k\_valid} at the answer's first token, agree (Table~\ref{tab:attention}): under RoPE the shift alone halves the
+answer's attention on latents 1--6 with no extra entries at all, while on GPT-2 it barely moves it. The latents still repeat
+at 1B: 92\% (CODI-1B) and 78\% (SIM-CoT-1B) of entries 7--24 are near-copies of an earlier entry, against 100\% on GPT-2. Both
+mechanisms are present at 1B; the positional one is larger.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccccc}
+\toprule
+& \multicolumn{2}{c}{6 steps} & \multicolumn{3}{c}{24 steps} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-6}
+Model & plain & shift & plain & dedup & +anchor \\
+\midrule
+SIM-CoT GPT-2 & 0.099 & 0.094 & 0.036 & 0.075 & -- \\
+CODI GPT-2 & 0.158 & 0.153 & 0.033 & 0.057 & -- \\
+CODI-1B & 0.096 & 0.047 & 0.030 & 0.027 & 0.049 \\
+SIM-CoT-1B & 0.096 & 0.053 & 0.036 & 0.038 & 0.058 \\
+\bottomrule
+\end{tabular}
+\caption{The answer's attention share on latents 1--6 (\texttt{gsm8k\_valid}, mean over layers and questions; exploratory).}
+\label{tab:attention}
+\end{table}
+
+\subsection{Re-anchoring the answer under RoPE}
+\label{sec:anchoring}
+
+Because RoPE makes attention depend only on relative position, the answer's distance from the latents can be repaired
+exactly, without recomputing anything: rotating a cached key by a position offset is the same as having computed it at the
+new position. The amendment added two policies for the LLaMA models. \pol{anchor} runs the plain loop and then, before the
+readout, moves each later entry that is a near-copy of an earlier one to that copy's position and gives every other later
+entry the next free position; the answer starts right after the last position used. \pol{dedup\_anchor} does the same after
+a soft-dedup loop. A check on the real weights confirmed the rotation: moving every key and the query 18 positions changes
+no logit by more than $10^{-3}$.
+
+Its rules applied D2's criteria to \pol{dedup\_anchor}@24 (R1, primary) and to \pol{anchor}@24 (R2), and asked whether
+either beats \pol{plain}@6 (G2). \textbf{R1 holds on both 1B models} (Tables~\ref{tab:main} and~\ref{tab:rules}): at 24 steps,
+\pol{dedup\_anchor} beats the plain loop by 1.0 and 2.6 points and stays within 0.8 and 0.9 points of the 6-step score,
+recovering 28 of CODI-1B's 50 lost answers and 73 of SIM-CoT-1B's 99. R2 holds for CODI-1B, whose loss was all position, but
+not for SIM-CoT-1B, which also has a content part and needs soft dedup as well, as the split predicts. G2 fails: the best
+deeper result, \pol{dedup\_anchor} at 12 steps, is 0.4 points below 6 steps on both models, and the remaining gap at 24
+steps, though inside the margin, is significant ($p \approx 0.005$). On SVAMP R1 also holds, with \pol{dedup\_anchor}@24
+within 0.5 points of \pol{plain}@6. On \texttt{gsm8k\_valid}, re-anchoring needs only 1.4 (CODI-1B) and 4.0 (SIM-CoT-1B)
+positions past entry 6 on average, but restores only part of the attention on latents 1--6 (Table~\ref{tab:attention}).
+
+\subsection{Trained gates and further fine-tuning}
+
+\paragraph{GPT-2.} We retrained the top-6 gate with a bug fixed (Stage 1 trained it with ties at the cut computed in bf16).
+On SIM-CoT GPT-2 it holds depth (817 at 12 steps, 813 at 24 on the primary pool) but does not beat \pol{ft6} at 24 steps
+(813 against 806, $p = 0.63$); it again keeps exactly entries 1--6, on 190 of 500 validation questions. On CODI GPT-2 it still fails (652 at
+24 steps against 760 for \pol{ft6}), keeping one of CODI's two phases, so the bug did not cause Stage 1's failure.
+
+\paragraph{1B.} As an exploratory addition, we fine-tuned SIM-CoT-1B with the Stage 1 recipe (full fine-tune, one pass over
+the same 32,768 problems) as \pol{ft6}, \pol{ft12} and the fixed gate (Table~\ref{tab:partc}). No arm passed the rule, so
+nothing was run on held-out data. More importantly, the fine-tune itself cost accuracy: \pol{ft6} scores 246 against the base
+model's 277 at its own trained depth ($-6.2$ points, $p = 2 \times 10^{-4}$), and every arm ends below the base model. Its
+answer-token cross-entropy is already 0.04--0.11 at the first update and stays roughly flat, against 0.24--0.37 falling by a
+third to a half for the GPT-2 gates, which suggests SIM-CoT-1B already fits these training answers and the recipe has
+little left to teach. Training at 12 steps does remove the drift (\pol{ft12}: 240 at 12 steps, 237 at 24), but from a lower
+start.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccc}
+\toprule
+SIM-CoT-1B, of 500 & 6 & 12 & 24 \\
+\midrule
+Base, \pol{plain} & \textbf{277} & 269 & 250 \\
+\pol{ft6}, \pol{plain} & 246 & 237 & 214 \\
+\pol{ft12}, \pol{plain} & 240 & 240 & 237 \\
+Fixed gate, evict & -- & 259 & 235 \\
+\bottomrule
+\end{tabular}
+\caption{Exploratory fine-tuning at 1B on \texttt{gsm8k\_valid}.}
+\label{tab:partc}
+\end{table}
+
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{Why the original DSA failed.} The proposal assumed that latent states deteriorate over extra iterations and that
+a gated memory could hold what they lose. Its controller never found a learnable signal in the conclusion labels, and at the
+budgets we could afford the latent route stayed far below the explicit one. More fundamentally, the premise was wrong in an
+instructive way: the published latent CoT models do lose accuracy with extra steps, but for SIM-CoT the states are not the
+problem, and for all of them the cache and the answer's position are.
+
+\paragraph{Append-only reasoning is not depth-safe.} Dynamical accounts of looped models predict that a loop which settles
+can be run deeper safely \citep{viakhirev2026thinkshallow, blayney2026mechanistic}. Those guarantees assume a fixed
+context. In append-only latent CoT, a settled state appended repeatedly still degrades the readout, and SIM-CoT is a clean
+counterexample.
+
+\paragraph{Repair, not gain.} Each mechanism has a matching training-free repair, and together they hold accuracy past the
+trained depth on all four models. None of them, and neither a trained gate nor more fine-tuning, makes the extra steps
+useful. This matches the broader pattern that methods stabilizing loops past their trained depth preserve peak accuracy
+without exceeding it \citep{viakhirev2026thinkshallow}. Making extra latent steps add accuracy likely needs training that
+targets depth directly, such as randomized loop counts \citep{kuo2026stabilizing} or architectures trained with more latents
+\citep{wu2025pccot}, and, at 1B, a recipe that does not erode the base model.
+
+\section{Related work}
+\label{sec:related}
+
+\paragraph{Latent chain-of-thought.} Implicit CoT distills written reasoning into hidden states \citep{deng2023implicit}.
+Coconut feeds the last hidden state back as the next input embedding \citep{hao2025coconut}; CODI trains such a loop by
+self-distillation from an explicit-CoT teacher at the answer position \citep{shen2025codi}; SIM-CoT supervises each latent
+step through an auxiliary decoder \citep{wei2025simcot}; and PMPS supervises latents with soft prototypes
+\citep{li2026pmps}. PCCoT instead updates a fixed set of latents in parallel by Jacobi iteration, so its cache does not grow
+\citep{wu2025pccot}, and pause tokens add unstructured extra computation \citep{goyal2024pause}. Our original design built on
+LOTUS, which supervises parallel latent blocks inside a loop \citep{fan2026lotus}, and on FLT's stabilized recurrence
+\citep{fu2026flt}. Several of these papers report that accuracy falls as the number of \emph{training} latents grows. CODI
+peaks at 6 and attributes the decline to optimization, PMPS finds that CODI drops sharply at 8, and SIM-CoT traces Coconut's
+collapse at larger counts to homogeneous latents. These are effects of the count a model is trained with. We found no work
+that runs a trained checkpoint past its latent count at inference; the closest is LOTUS, which reports one extra iteration
+(70.0\% at its trained depth, 69.3\% one step beyond).
+
+\paragraph{Looped models and test-time depth.} Looped and recurrent-depth transformers reuse weights across iterations to
+add computation \citep{saunshi2025reasoning, fan2025looped, geiping2025huginn, zhu2025ouro}. Running a recurrent network past
+its training regime can degrade it, which \citet{bansal2022overthinking} called overthinking and fixed with input recall and
+a progressive loss. Recent work explains depth degradation through the loop's dynamics.
+\citet{viakhirev2026thinkshallow} sort recurrent operators into settling, marginal and drifting regimes and show that settling
+operators do not degrade with added depth; \citet{blayney2026mechanistic} find that looped language models reach fixed
+points and bound the change in attention by the change in the state; \citet{kuo2026stabilizing} stabilize extrapolation by
+randomizing the number of loops during training. Bounding access to past loop states also rescues depth
+\citep{li2026infiloop, recurtrace2026}, and Huginn and Ouro decode with a bounded or last-step cache. These models replace
+their state at each iteration, so the readout sees the current state in a fixed context. Append-only latent CoT breaks that
+assumption: each step adds a key, so a settled state appended repeatedly still draws attention, and SIM-CoT is a
+counterexample to the view that settling implies depth safety. The two families also disagree on what a bounded cache should
+keep. Ouro loses almost nothing by keeping only its last step, whereas in CODI-style models a recency window hurts and the
+early entries must be kept (Table~\ref{tab:stage0}). Finally, the methods that stabilize loops past their trained depth
+restore accuracy but do not exceed the peak \citep{viakhirev2026thinkshallow}, as our repairs do.
+
+\paragraph{Attention dilution, length and position.} When logits are bounded, softmax attention must disperse as keys are
+added \citep{velickovic2025softmax}; multiplying logits by $\log n$ \citep{chiang2022overcoming} or scaling them with length
+\citep{nakanishi2025ssmax} counteracts this, and attention sinks absorb surplus mass \citep{xiao2024streamingllm}. Repeating
+a token makes final representations arbitrarily close as the sequence grows \citep{barbero2024glasses}. Our log-count identity
+is the same algebra applied to duplicated latent keys. A length-based correction such as our \pol{logn} policy rescales every
+latent entry alike, so it cannot separate near-copies from the entries they copy, whereas soft dedup can. On the position
+side, RoPE makes attention depend on relative distance \citep{su2024roformer}, which is what lets a rotation re-anchor
+cached keys exactly.
+
+\paragraph{KV-cache eviction and learned gates.} Fixed rules for evicting text-cache entries keep heavy hitters by
+cumulative attention \citep{zhang2023h2o}, keep sinks and a recent window \citep{xiao2024streamingllm}, or remove redundant
+entries by key similarity \citep{cai2025rkv, park2025keydiff}. Learned variants add a data-dependent bias to the attention
+logits: Selective Attention \citep{leviathan2025selective}, the Forgetting Transformer \citep{lin2025fox}, Dynamic Context
+Pruning \citep{anagnostidis2023dcp} and Dynamic Memory Sparsification \citep{lancucki2025dms}, the last two training soft and
+pruning hard. TRIM-KV \citep{trimkv2026} learns a retention score with a capacity penalty and evicts the lowest-scoring entry,
+the mechanism closest to our gate. In latent reasoning, KaVa compresses a teacher's cache by redundancy-aware eviction to
+build distillation targets for a CODI-family student \citep{kuzina2025kava}, and AGCLR adds learned gates over a separate
+memory vector in a Coconut loop \citep{farhan2026agclr}. Neither gates the latent cache at inference or runs past the
+trained depth. Soft dedup differs from similarity-based eviction in three ways: it reweights instead of evicting, it groups
+entries by their fed latent vectors rather than by keys, and it exactly cancels the log-count boost of copies. We found no
+prior test of it.
+
+\paragraph{Supervising intermediate latent steps.} The original DSA, like SIM-CoT and PMPS, supervised latent computation
+with gold intermediate results. CODI reports that its latents often decode to the reference intermediate values, but PMPS
+finds that logit-lens readouts do not map one-to-one onto CoT steps, which is consistent with our decode label predicting an
+entry's causal effect worse than chance. Process reward models for latent reasoning remain weak
+\citep{wang2025inference}.
+
+\section{Conclusion}
+
+We set out to make latent chain-of-thought robust to extra recurrent computation with a gated anchor state. That design
+failed, but testing its premise showed why such models lose accuracy past their trained depth: appended near-copy latents
+dilute the answer's attention, and under RoPE the answer drifts away from the latents it needs. A training-free repair matched
+to each mechanism holds accuracy at 24 steps within 2 points of the 6-step score on four checkpoints at two scales. Turning
+the extra depth into accuracy remains open.
+
+\section*{Limitations}
+
+Every training arm used one seed; Stage 1 suggests single-seed noise of about 10 answers in 500. The GPT-2 analyses in
+Sections~\ref{sec:premise} and~\ref{sec:gate} reused one validation set for discovery. Re-anchoring was designed after the
+main held-out runs had revealed the position cost on the same held-out sets; its rules were fixed before it ran, but it is
+not a clean confirmation, which needs a set not yet used. GSM-Hard is derived from GSM8K test, so the primary pool is not
+three independent sets. Our SIM-CoT GPT-2 port scores 39.3\% on GSM8K test against 42.6\% reported by its authors (CODI
+GPT-2: 42.5\% against 43.7\%). We used greedy decoding and arithmetic word problems only, and did not run the 3B model. The
+1B fine-tuning arms were scored on validation only.
+
+\bibliography{references}
+
+\end{document}
