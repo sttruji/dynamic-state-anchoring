@@ -1,7 +1,8 @@
 # Held-out and scale results: soft dedup fixes GPT-2, but at 1B the answer's position is the main cost
 
-Status, 4 November 2026: Parts A and B of the held-out and scale study have run. Part C did not trigger, and the optional
-3B model was not run.
+Status, 5 November 2026: Parts A and B of the held-out and scale study have run. Part C did not trigger, and the optional
+3B model was not run. Amendment 1's B3, re-anchoring the answer at 1B, has also run (commit `48a461d`; see
+[below](#amendment-1-b3-re-anchoring-the-answer-at-1b)). Its untriggered Part C is pending.
 
 - **The runs.** One Colab A100 notebook ran everything at commit `837f5df`.
 - **The plan.** [PLAN.md](../results/latent_gate/heldout_scale/PLAN.md) was frozen before any run. Its sha256
@@ -109,6 +110,49 @@ the report.
 - **The latents still repeat at 1B.** 92% (CODI-1B) and 78% (SIM-CoT-1B) of entries 7–24 are near-copies, against 100% on
   GPT-2. So both mechanisms are present at 1B, and the positional one is larger.
 
+## Amendment 1, B3: re-anchoring the answer at 1B
+
+**What was tested.**
+- Amendment 1 to PLAN.md was written after Part B and before any B3 run. The rehashed plan's sha256 is `40233c43…`.
+- **`anchor`** moves each later near-copy entry to the position of its earliest copy, by rotating its RoPE key. It gives
+  every other later entry the next free position, and starts the answer right after the last position used.
+- **`dedup_anchor`** does the same after a `dedup_soft` loop, keeping its bias.
+- **The rotation is exact.** Check 4 moves every key and the query 18 positions; it passed on both models.
+- [amendment_report.txt](../results/latent_gate/heldout_scale/amendment_report.txt) applies the amendment's rules.
+
+**Primary pool, correct out of 2,818:**
+
+| Model | plain 6 | plain 24 | dedup_soft 24 | anchor 24 | dedup_anchor 12 | dedup_anchor 24 |
+|---|---|---|---|---|---|---|
+| CODI-1B | **1077** | 1027 | 1029 | 1058 | 1065 | 1055 |
+| SIM-CoT-1B | **1075** | 976 | 997 | 1011 | 1065 | 1049 |
+
+**The rules.** R1 and R2 use D2's criteria; G2 asks for a win over `plain`@6.
+
+| Model | R1, `dedup_anchor`@24 | R2, `anchor`@24 | G2 |
+|---|---|---|---|
+| CODI-1B | **holds**: +1.0 [+0.2, +1.8] over plain@24, p = 0.013; −0.8 [−1.3, −0.3] vs plain@6 | **holds**: +1.1, p = 9e−5; −0.7 [−1.3, −0.1] | fails |
+| SIM-CoT-1B | **holds**: +2.6 [+1.7, +3.5], p = 2e−8; −0.9 [−1.5, −0.3] | fails: +1.2; −2.3 [−3.0, −1.5] | fails |
+
+**What it shows.**
+- **Once the answer is re-anchored, the training-free fix holds at 1B.** With D2 on GPT-2, it now holds on all four
+  models within the 2-point margin.
+- **It is not free.** At 24 steps it is still 0.8–0.9 points below 6 steps, significant on both models (p ≈ 0.005).
+- **No depth beats 6 steps,** so G2 fails. The best deeper result is `dedup_anchor`@12, at −0.4 points on both models.
+- **Moving the answer is what helps.** `dedup_anchor`@24 beats `dedup_soft`@24 by +0.9 (CODI-1B) and +1.8 (SIM-CoT-1B)
+  points, p ≤ 0.005.
+- **The two models need different parts, as the split predicted.**
+  - CODI-1B's loss was all position, so re-anchoring alone is enough.
+  - SIM-CoT-1B also has a content part, so it needs soft dedup as well.
+- **It recovers most of the drift:** 28 of CODI-1B's 50 lost answers and 73 of SIM-CoT-1B's 99.
+- **SVAMP agrees.** R1 holds on both models, and `dedup_anchor`@24 is within 0.5 points of `plain`@6.
+
+**Exploratory, on `gsm8k_valid`** (in explore.txt):
+- **Few new positions are needed.** At 24 steps, `dedup_anchor` uses 1.4 (CODI-1B) and 4.0 (SIM-CoT-1B) positions past
+  entry 6 on average, and none on 21–24% of questions.
+- **Attention on entries 1–6 comes back only partly.** It is 0.049 and 0.058 under `dedup_anchor`@24, against 0.096 at 6
+  steps and 0.027 / 0.038 under `dedup_soft`@24. The rest of the gap is not explained here.
+
 ## The fixed gate (A2)
 
 **SIM-CoT GPT-2: it holds depth but fails its rule.**
@@ -135,13 +179,18 @@ attention shares are exploratory analyses of them.
    - **Dilution by near-copy cache entries.** It dominates at GPT-2 scale, and soft dedup or a keep-first budget removes it
      with no training.
    - **The answer's growing RoPE distance from the latents.** It dominates at 1B, and no content-level policy fixes it.
-3. **At 1B, nothing tested beats stopping at 6 steps.** The best deeper result is `dedup_soft` at 12 steps: −0.4 points for
-   CODI-1B and −0.7 for SIM-CoT-1B.
-4. **The learned gate is not a contribution.** With the tie bug fixed, it fails again on CODI, and on SIM-CoT it matches
+     Re-anchoring the answer does (Amendment 1).
+3. **A training-free repair holds depth on all four models.** That is soft dedup on GPT-2, and soft dedup plus
+   re-anchoring at 1B, each within 2 points of the 6-step score.
+4. **Nothing tested beats stopping at 6 steps.** At 1B the best deeper result is `dedup_anchor` at 12 steps, −0.4 points on
+   both models.
+5. **The learned gate is not a contribution.** With the tie bug fixed, it fails again on CODI, and on SIM-CoT it matches
    soft dedup.
 
-The paper is now a diagnosis across scale: why latent CoT models lose accuracy past their trained depth. It is no longer a
-fix that generalizes. The position finding comes from the plan's own control, D4, so it is not a post hoc rescue.
+The paper is a diagnosis across scale: why latent CoT models lose accuracy past their trained depth. It now comes with a
+matching repair that holds depth, though it does not turn depth into accuracy. The position finding comes from the plan's
+own control, D4, so it is not a post hoc rescue. The repair for it was designed after D4, so its test is weaker (see the
+caveats).
 
 ## Caveats
 
@@ -154,5 +203,9 @@ fix that generalizes. The position finding comes from the plan's own control, D4
   - The attention shares are measured on `gsm8k_valid` only.
 - **Discovery and held-out data disagree on CODI-1B's content part:** −2.6 points on `gsm8k_valid`, +0.4 on the primary
   pool. The held-out pool is the reference.
+- **B3 reuses the held-out sets.**
+  - Amendment 1 was designed after Part B had shown the position cost on these same sets.
+  - Its rules were fixed before B3 ran, but the sets are no longer untouched for this question.
+  - A clean confirmation needs a set Part B did not use.
 - **One training seed** for the gate arms.
 - **`gsm_hard` is `gsm8k_test` with larger numbers,** so the primary pool is not three independent sets.

@@ -95,3 +95,19 @@ for base in BASES:
         sets = collections.Counter(tuple(r["gate"][depth]["kept"]) for r in rows)
         early = sum(sum(j <= 6 for j in r["gate"][depth]["kept"]) for r in rows) / (6 * len(rows))
         print(f"  {base}-gate12_fixed @{depth}: {early:.0%} of kept entries are 1-6; most common {sets.most_common(3)}")
+
+print("\n== Re-anchoring (Amendment 1, B3) on gsm8k_valid: the answer's attention share on entries 1-6 / later, and the "
+      "positions used past entry 6")
+for base in BASES:
+    rows = load(f"{base}-anchor", ("gsm8k_valid",))
+    if rows is None:
+        continue
+    for policy in ("anchor", "dedup_anchor"):
+        cells = []
+        for depth in ("12", "24"):
+            share = lambda part: sum(sum(r[policy][depth]["attn"][part]) / len(r[policy][depth]["attn"][part])
+                                     for r in rows) / len(rows)
+            extra = [max(r[policy][depth]["slots"]) - 6 for r in rows]
+            cells.append(f"@{depth} {share('latent_1_6'):.3f}/{share('latent_later'):.3f}, "
+                         f"{sum(extra) / len(rows):.2f} positions past 6 (none on {sum(e == 0 for e in extra)})")
+        print(f"  {base:15} {policy:12} " + "  ".join(cells))

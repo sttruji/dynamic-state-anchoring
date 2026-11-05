@@ -63,3 +63,9 @@ Exploratory, not preregistered.
   simcot-gpt2-gate12_fixed @24: 85% of kept entries are 1-6; most common [((1, 2, 3, 4, 5, 6), 189), ((1, 2, 3, 4, 6, 8), 41), ((1, 2, 3, 4, 5, 7), 36)]
   codi-gpt2-gate12_fixed @12: 60% of kept entries are 1-6; most common [((1, 3, 5, 7, 9, 11), 83), ((1, 2, 4, 6, 8, 10), 53), ((1, 4, 6, 8, 10, 12), 47)]
   codi-gpt2-gate12_fixed @24: 46% of kept entries are 1-6; most common [((1, 2, 4, 6, 8, 10), 50), ((1, 15, 17, 19, 21, 23), 29), ((1, 2, 3, 4, 6, 8), 21)]
+
+== Re-anchoring (Amendment 1, B3) on gsm8k_valid: the answer's attention share on entries 1-6 / later, and the positions used past entry 6
+  codi-llama1b    anchor       @12 0.071/0.055, 1.30 positions past 6 (none on 129)  @24 0.057/0.108, 1.42 positions past 6 (none on 125)
+  codi-llama1b    dedup_anchor @12 0.061/0.033, 1.29 positions past 6 (none on 128)  @24 0.049/0.042, 1.43 positions past 6 (none on 122)
+  simcot-llama1b  anchor       @12 0.073/0.057, 2.52 positions past 6 (none on 110)  @24 0.056/0.109, 4.20 positions past 6 (none on 97)
+  simcot-llama1b  dedup_anchor @12 0.071/0.036, 2.43 positions past 6 (none on 117)  @24 0.058/0.052, 3.97 positions past 6 (none on 107)

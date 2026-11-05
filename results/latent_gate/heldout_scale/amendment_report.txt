@@ -1,0 +1,150 @@
+Amendment 1. B3: re-anchoring at 1B; noninferiority margin 2 points
+
+== codi-llama1b
+  gsm8k_valid (n=500)
+    plain        6:  268  12:  264  24:  239
+    keep_first   12:  263  24:  252
+    window       12:  244  24:  233
+    random       12:  253  24:  217
+    logn         12:  262  24:  241
+    dedup_soft   12:  262  24:  248
+    shift        6:  252
+    copy_last    12:  261  24:  235
+    copy_pair    12:  270  24:  246
+    dedup_anchor 12:  263  24:  263
+    anchor       12:  268  24:  264
+  gsm8k_test (n=1319)
+    plain        6:  732  12:  728  24:  696
+    keep_first   12:  724  24:  689
+    dedup_soft   12:  725  24:  697
+    logn         12:  716  24:  670
+    shift        6:  689
+    dedup_anchor 12:  721  24:  713
+    anchor       12:  721  24:  716
+  gsm_hard (n=1319)
+    plain        6:  170  12:  170  24:  160
+    keep_first   12:  168  24:  158
+    dedup_soft   12:  168  24:  163
+    logn         12:  169  24:  157
+    shift        6:  158
+    dedup_anchor 12:  171  24:  169
+    anchor       12:  172  24:  168
+  multiarith (n=180)
+    plain        6:  175  12:  173  24:  171
+    keep_first   12:  172  24:  168
+    dedup_soft   12:  172  24:  169
+    logn         12:  172  24:  170
+    shift        6:  168
+    dedup_anchor 12:  173  24:  173
+    anchor       12:  174  24:  174
+  svamp (n=1000)
+    plain        6:  608  12:  599  24:  573
+    keep_first   12:  598  24:  582
+    dedup_soft   12:  599  24:  585
+    logn         12:  603  24:  588
+    shift        6:  582
+    dedup_anchor 12:  609  24:  607
+    anchor       12:  607  24:  598
+ primary pool, n=2818
+  positions used after entry 6 at 24 steps (dedup_anchor): mean 1.37 of 18
+  R1 dedup_anchor@24 vs plain@24: 1055 vs 1027 of 2818; +74/-46, p=0.0134, difference +1.0 points [+0.2, +1.8]
+  R1 dedup_anchor@24 vs plain@6: 1055 vs 1077 of 2818; +17/-39, p=0.00456, difference -0.8 points [-1.3, -0.3]
+  => R1 holds
+  R2 anchor@24 vs plain@24: 1058 vs 1027 of 2818; +46/-15, p=8.84e-05, difference +1.1 points [+0.6, +1.6]
+  R2 anchor@24 vs plain@6: 1058 vs 1077 of 2818; +30/-49, p=0.0422, difference -0.7 points [-1.3, -0.1]
+  => R2 holds
+  G2 dedup_anchor@12 vs plain@6: 1065 vs 1077 of 2818; +14/-26, p=0.0807, difference -0.4 points [-0.9, +0.0]
+  G2 dedup_anchor@24 vs plain@6: 1055 vs 1077 of 2818; +17/-39, p=0.00456, difference -0.8 points [-1.3, -0.3]
+  => G2 fails
+  descriptive: dedup_anchor@24 vs dedup_soft@24 (what moving the answer adds): 1055 vs 1029 of 2818; +53/-27, p=0.00487, difference +0.9 points [+0.3, +1.5]
+  descriptive: anchor@24 vs plain@24: 1058 vs 1027 of 2818; +46/-15, p=8.84e-05, difference +1.1 points [+0.6, +1.6]
+ secondary pool, n=1000
+  positions used after entry 6 at 24 steps (dedup_anchor): mean 0.54 of 18
+  R1 dedup_anchor@24 vs plain@24: 607 vs 573 of 1000; +49/-15, p=2.44e-05, difference +3.4 points [+1.8, +5.0]
+  R1 dedup_anchor@24 vs plain@6: 607 vs 608 of 1000; +7/-8, p=1, difference -0.1 points [-0.9, +0.7]
+  => R1 holds
+  R2 anchor@24 vs plain@24: 598 vs 573 of 1000; +35/-10, p=0.000247, difference +2.5 points [+1.2, +3.8]
+  R2 anchor@24 vs plain@6: 598 vs 608 of 1000; +15/-25, p=0.154, difference -1.0 points [-2.2, +0.2]
+  => R2 fails
+  G2 dedup_anchor@12 vs plain@6: 609 vs 608 of 1000; +6/-5, p=1, difference +0.1 points [-0.6, +0.8]
+  G2 dedup_anchor@24 vs plain@6: 607 vs 608 of 1000; +7/-8, p=1, difference -0.1 points [-0.9, +0.7]
+  => G2 fails
+  descriptive: dedup_anchor@24 vs dedup_soft@24 (what moving the answer adds): 607 vs 585 of 1000; +31/-9, p=0.00068, difference +2.2 points [+1.0, +3.4]
+  descriptive: anchor@24 vs plain@24: 598 vs 573 of 1000; +35/-10, p=0.000247, difference +2.5 points [+1.2, +3.8]
+
+== simcot-llama1b
+  gsm8k_valid (n=500)
+    plain        6:  277  12:  269  24:  250
+    keep_first   12:  273  24:  254
+    window       12:   95  24:   81
+    random       12:  181  24:  104
+    logn         12:  251  24:  208
+    dedup_soft   12:  273  24:  258
+    shift        6:  254
+    copy_last    12:  278  24:  257
+    copy_pair    12:  271  24:  257
+    dedup_anchor 12:  277  24:  273
+    anchor       12:  279  24:  269
+  gsm8k_test (n=1319)
+    plain        6:  735  12:  706  24:  659
+    keep_first   12:  717  24:  683
+    dedup_soft   12:  717  24:  679
+    logn         12:  662  24:  568
+    shift        6:  683
+    dedup_anchor 12:  725  24:  712
+    anchor       12:  717  24:  686
+  gsm_hard (n=1319)
+    plain        6:  165  12:  157  24:  149
+    keep_first   12:  163  24:  154
+    dedup_soft   12:  163  24:  150
+    logn         12:  147  24:  125
+    shift        6:  154
+    dedup_anchor 12:  165  24:  163
+    anchor       12:  162  24:  152
+  multiarith (n=180)
+    plain        6:  175  12:  175  24:  168
+    keep_first   12:  174  24:  171
+    dedup_soft   12:  175  24:  168
+    logn         12:  171  24:  132
+    shift        6:  171
+    dedup_anchor 12:  175  24:  174
+    anchor       12:  175  24:  173
+  svamp (n=1000)
+    plain        6:  610  12:  608  24:  574
+    keep_first   12:  595  24:  575
+    dedup_soft   12:  602  24:  574
+    logn         12:  604  24:  554
+    shift        6:  575
+    dedup_anchor 12:  609  24:  605
+    anchor       12:  610  24:  604
+ primary pool, n=2818
+  positions used after entry 6 at 24 steps (dedup_anchor): mean 3.10 of 18
+  R1 dedup_anchor@24 vs plain@24: 1049 vs 976 of 2818; +122/-49, p=2.27e-08, difference +2.6 points [+1.7, +3.5]
+  R1 dedup_anchor@24 vs plain@6: 1049 vs 1075 of 2818; +27/-53, p=0.00487, difference -0.9 points [-1.5, -0.3]
+  => R1 holds
+  R2 anchor@24 vs plain@24: 1011 vs 976 of 2818; +67/-32, p=0.000562, difference +1.2 points [+0.6, +1.9]
+  R2 anchor@24 vs plain@6: 1011 vs 1075 of 2818; +28/-92, p=3.77e-09, difference -2.3 points [-3.0, -1.5]
+  => R2 fails
+  G2 dedup_anchor@12 vs plain@6: 1065 vs 1075 of 2818; +21/-31, p=0.212, difference -0.4 points [-0.9, +0.1]
+  G2 dedup_anchor@24 vs plain@6: 1049 vs 1075 of 2818; +27/-53, p=0.00487, difference -0.9 points [-1.5, -0.3]
+  => G2 fails
+  descriptive: dedup_anchor@24 vs dedup_soft@24 (what moving the answer adds): 1049 vs 997 of 2818; +79/-27, p=4.33e-07, difference +1.8 points [+1.1, +2.6]
+  descriptive: anchor@24 vs plain@24: 1011 vs 976 of 2818; +67/-32, p=0.000562, difference +1.2 points [+0.6, +1.9]
+ secondary pool, n=1000
+  positions used after entry 6 at 24 steps (dedup_anchor): mean 1.85 of 18
+  R1 dedup_anchor@24 vs plain@24: 605 vs 574 of 1000; +47/-16, p=0.000117, difference +3.1 points [+1.6, +4.6]
+  R1 dedup_anchor@24 vs plain@6: 605 vs 610 of 1000; +7/-12, p=0.359, difference -0.5 points [-1.4, +0.4]
+  => R1 holds
+  R2 anchor@24 vs plain@24: 604 vs 574 of 1000; +42/-12, p=5.21e-05, difference +3.0 points [+1.6, +4.4]
+  R2 anchor@24 vs plain@6: 604 vs 610 of 1000; +11/-17, p=0.345, difference -0.6 points [-1.6, +0.4]
+  => R2 holds
+  G2 dedup_anchor@12 vs plain@6: 609 vs 610 of 1000; +5/-6, p=1, difference -0.1 points [-0.8, +0.6]
+  G2 dedup_anchor@24 vs plain@6: 605 vs 610 of 1000; +7/-12, p=0.359, difference -0.5 points [-1.4, +0.4]
+  => G2 fails
+  descriptive: dedup_anchor@24 vs dedup_soft@24 (what moving the answer adds): 605 vs 574 of 1000; +44/-13, p=4.71e-05, difference +3.1 points [+1.6, +4.6]
+  descriptive: anchor@24 vs plain@24: 604 vs 574 of 1000; +42/-12, p=5.21e-05, difference +3.0 points [+1.6, +4.4]
+
+What the paper may claim (primary pool; D1 holds on both 1B models in Part B)
+  codi-llama1b: re-anchored soft dedup holds
+  simcot-llama1b: re-anchored soft dedup holds
+  The training-free fix holds across scale once the answer is re-anchored: yes

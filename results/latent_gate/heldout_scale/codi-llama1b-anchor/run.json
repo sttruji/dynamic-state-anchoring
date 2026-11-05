@@ -1,0 +1,39 @@
+{
+ "model": {
+  "weights": "zen-E/CODI-llama3.2-1b-Instruct@b2c88ba224b06b12b52ef39b87f794b98a6eb1c8",
+  "base": "zen-E/CODI-llama3.2-1b-Instruct@b2c88ba224b06b12b52ef39b87f794b98a6eb1c8",
+  "lora_merged_fp32": true,
+  "latent_iterations": 6,
+  "max_new_tokens": 256,
+  "decoding": "greedy",
+  "dtype": "float32"
+ },
+ "gate": null,
+ "args": {
+  "llama": "codi-llama1b",
+  "checkpoint": null,
+  "weights": null,
+  "datasets": [
+   "gsm8k_test",
+   "gsm_hard",
+   "multiarith",
+   "svamp"
+  ],
+  "output_dir": "/content/drive/MyDrive/dynamic-state-anchoring/latent-gate/heldout-scale/codi-llama1b-anchor",
+  "policies": [
+   "dedup_anchor",
+   "anchor"
+  ],
+  "depths": [
+   12,
+   24
+  ],
+  "budget": 6,
+  "batch": 32,
+  "limit": null,
+  "attention": false,
+  "max_new_tokens": 256,
+  "device": "cuda",
+  "data_dir": null
+ }
+}
