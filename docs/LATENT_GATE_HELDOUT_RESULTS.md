@@ -2,7 +2,8 @@
 
 Status, 5 November 2026: Parts A and B of the held-out and scale study have run. Part C did not trigger, and the optional
 3B model was not run. Amendment 1's B3, re-anchoring the answer at 1B, has also run (commit `48a461d`; see
-[below](#amendment-1-b3-re-anchoring-the-answer-at-1b)). Its untriggered Part C is pending.
+[below](#amendment-1-b3-re-anchoring-the-answer-at-1b)). Its untriggered Part C ran too: no arm passed, and the fine-tune
+itself cost accuracy ([below](#amendment-1-part-c-fine-tuning-sim-cot-1b)).
 
 - **The runs.** One Colab A100 notebook ran everything at commit `837f5df`.
 - **The plan.** [PLAN.md](../results/latent_gate/heldout_scale/PLAN.md) was frozen before any run. Its sha256
@@ -153,6 +154,42 @@ the report.
 - **Attention on entries 1–6 comes back only partly.** It is 0.049 and 0.058 under `dedup_anchor`@24, against 0.096 at 6
   steps and 0.027 / 0.038 under `dedup_soft`@24. The rest of the gap is not explained here.
 
+## Amendment 1, Part C: fine-tuning SIM-CoT-1B
+
+**How it ran.**
+- It was untriggered and exploratory, run at the user's request.
+- It ran on a Colab G4 (RTX PRO 6000, 96 GB) at commit `48a461d`. The three arms trained in 6, 8 and 10 minutes.
+- **The micro-batch differs from the plan.** It was 32, the whole batch, where the plan says 8, or 4 if 8 does not fit.
+  Losses are normalized over the batch, so the gradient is the same. Each arm's `args.json` records it.
+
+**Validation** (`gsm8k_valid`, n = 500): correct answers, with the 4+ step problems (of 173) in brackets.
+
+| Arm | 6 steps | 12 steps | 24 steps |
+|---|---|---|---|
+| base, `plain` | **277** (55) | 269 (54) | 250 (49) |
+| `ft6`, `plain` | 246 (42) | 237 (40) | 214 (31) |
+| `ft12`, `plain` | 240 (38) | 240 (40) | 237 (41) |
+| `gate12_fixed`, `gate` | — | 259 (49) | 235 (39) |
+
+**The rule: no arm passes,** so nothing ran on the held-out sets.
+- **`ft12`:** at 12 steps it scores 40 against `ft6`@6's 42 on the 4+ step problems (p = 0.82).
+- **`gate12_fixed`:** at 12 steps it scores 49 against 42 (p = 0.27), and it drops to 235 at 24 steps (p = 8e−6).
+
+**The fine-tune itself costs accuracy.**
+- `ft6`, the control, loses 6.2 points to the base model at its own trained depth: 246 against 277, [−9.4, −3.0],
+  p = 2e−4.
+- Every arm ends below the base model's `plain`@6.
+- **It is not a loading or format bug.** The outputs keep the "The answer is: X" format, and `ft6`'s text differs from
+  the base model's on 210 of 500 questions.
+
+**Exploratory.**
+- **The training loss suggests why.** SIM-CoT-1B already fits the training answers.
+  - Its answer-token cross-entropy is 0.04–0.11 from the first update and stays roughly flat over the pass.
+  - On GPT-2, the gate arms of the same recipe start at 0.24–0.37 and fall by a third to a half.
+  - So at 1B the recipe has little left to learn from GSM8K-Aug, and its updates only cost accuracy.
+- **`ft12` no longer drifts.** It scores 240 at 12 steps and 237 at 24 (−0.6, p = 0.66), while `ft6` goes from 246 to
+  214. Training at 12 steps lets the model run 24, but from a lower start.
+
 ## The fixed gate (A2)
 
 **SIM-CoT GPT-2: it holds depth but fails its rule.**
@@ -186,6 +223,8 @@ attention shares are exploratory analyses of them.
    both models.
 5. **The learned gate is not a contribution.** With the tie bug fixed, it fails again on CODI, and on SIM-CoT it matches
    soft dedup.
+6. **Stage 1's fine-tune does not carry over to 1B.** On SIM-CoT-1B it costs 6 points at the trained depth, so it cannot
+   test a trained gate there (Part C).
 
 The paper is a diagnosis across scale: why latent CoT models lose accuracy past their trained depth. It now comes with a
 matching repair that holds depth, though it does not turn depth into accuracy. The position finding comes from the plan's
@@ -207,5 +246,5 @@ caveats).
   - Amendment 1 was designed after Part B had shown the position cost on these same sets.
   - Its rules were fixed before B3 ran, but the sets are no longer untouched for this question.
   - A clean confirmation needs a set Part B did not use.
-- **One training seed** for the gate arms.
+- **One training seed** for the gate arms and for each Part C arm. Part C was scored on `gsm8k_valid` only.
 - **`gsm_hard` is `gsm8k_test` with larger numbers,** so the primary pool is not three independent sets.

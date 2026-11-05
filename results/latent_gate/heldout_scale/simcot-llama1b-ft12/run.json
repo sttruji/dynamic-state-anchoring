@@ -1,0 +1,36 @@
+{
+ "model": {
+  "weights": "/content/partc/ft12/model",
+  "base": "internlm/SIM_COT-LLaMA3-CODI-1B@6e16fe4215025a9c48bc90d214c57349f247b017",
+  "lora_merged_fp32": true,
+  "latent_iterations": 6,
+  "max_new_tokens": 256,
+  "decoding": "greedy",
+  "dtype": "float32"
+ },
+ "gate": null,
+ "args": {
+  "llama": "simcot-llama1b",
+  "checkpoint": null,
+  "weights": "/content/partc/ft12/model",
+  "datasets": [
+   "gsm8k_valid"
+  ],
+  "output_dir": "/content/drive/MyDrive/dynamic-state-anchoring/latent-gate/heldout-scale/simcot-llama1b-ft12",
+  "policies": [
+   "plain"
+  ],
+  "depths": [
+   6,
+   12,
+   24
+  ],
+  "budget": 6,
+  "batch": 32,
+  "limit": null,
+  "attention": false,
+  "max_new_tokens": 256,
+  "device": "cuda",
+  "data_dir": null
+ }
+}

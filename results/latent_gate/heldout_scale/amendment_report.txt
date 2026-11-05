@@ -148,3 +148,35 @@ What the paper may claim (primary pool; D1 holds on both 1B models in Part B)
   codi-llama1b: re-anchored soft dedup holds
   simcot-llama1b: re-anchored soft dedup holds
   The training-free fix holds across scale once the answer is re-anchored: yes
+
+== Part C (untriggered, exploratory): simcot-llama1b
+  base, gsm8k_valid, correct (4+ problems, of 173) (n=500)
+    plain        6:  277 (55)  12:  269 (54)  24:  250 (49)
+    keep_first   12:  273 (59)  24:  254 (53)
+    window       12:   95 (20)  24:   81 (7)
+    random       12:  181 (40)  24:  104 (17)
+    logn         12:  251 (51)  24:  208 (42)
+    dedup_soft   12:  273 (57)  24:  258 (52)
+    shift        6:  254 (53)
+    copy_last    12:  278 (61)  24:  257 (50)
+    copy_pair    12:  271 (54)  24:  257 (51)
+  ft6, gsm8k_valid, correct (4+ problems, of 173) (n=500)
+    plain        6:  246 (42)  12:  237 (40)  24:  214 (31)
+  ft12, gsm8k_valid, correct (4+ problems, of 173) (n=500)
+    plain        6:  240 (38)  12:  240 (40)  24:  237 (41)
+  gate12_fixed, gsm8k_valid, correct (4+ problems, of 173) (n=500)
+    plain        6:  254 (46)  12:  245 (43)  24:  232 (43)
+    gate         12:  259 (49)  24:  235 (39)
+    gate_soft    12:  257 (47)  24:  241 (43)
+  ft12 plain@12 vs ft6 plain@6, 4+ problems: 40 vs 42 of 173; +9/-11, p=0.824, difference -1.2 points [-6.2, +3.9]
+  ft12 plain@12 vs ft6 plain@6, all: 240 vs 246 of 500; +33/-39, p=0.556, difference -1.2 points [-4.5, +2.1]
+  ft12 plain@24 vs plain@12, all: 237 vs 240 of 500; +9/-12, p=0.664, difference -0.6 points [-2.4, +1.2]
+  descriptive: ft12 plain@12 vs base plain@6, all: 240 vs 277 of 500; +21/-58, p=3.76e-05, difference -7.4 points [-10.8, -4.0]
+  => ft12 fails the Part C rule
+  gate12_fixed gate@12 vs ft6 plain@6, 4+ problems: 49 vs 42 of 173; +18/-11, p=0.265, difference +4.0 points [-2.0, +10.1]
+  gate12_fixed gate@12 vs ft6 plain@6, all: 259 vs 246 of 500; +43/-30, p=0.16, difference +2.6 points [-0.7, +5.9]
+  gate12_fixed gate@24 vs gate@12, all: 235 vs 259 of 500; +3/-27, p=8.43e-06, difference -4.8 points [-6.9, -2.7]
+  descriptive: gate12_fixed gate@12 vs base plain@6, all: 259 vs 277 of 500; +27/-45, p=0.0444, difference -3.6 points [-6.9, -0.3]
+  => gate12_fixed fails the Part C rule
+  descriptive: ft6 plain@6 vs base plain@6, all: 246 vs 277 of 500; +18/-49, p=0.000194, difference -6.2 points [-9.4, -3.0]
+  => passing arms: none
