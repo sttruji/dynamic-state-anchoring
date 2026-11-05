@@ -8,6 +8,9 @@ cache column Q + j - 1, Q being the padded question length (<bot> is column Q - 
 
 The latent bias reaches GPT-2 through the patched eager attention in gate.py, and LLaMA through a 4D additive attention
 mask, which transformers 4.46 adds to the logits unchanged.
+
+Re-anchoring (`anchor`, `dedup_anchor`; PLAN.md, Amendment 1) is LLaMA-only: RoPE keys are rotated to new positions after
+the loop, which is exact because RoPE is a rotation by position, so the answer can sit right after the latents it reads.
 """
 from __future__ import annotations
 
@@ -20,9 +23,10 @@ import torch.nn.functional as F
 from gate import HIDE, install_bias, set_bias, top_visible
 
 POLICIES = ("plain", "keep_first", "window", "random", "logn", "dedup_soft", "shift", "copy_last", "copy_pair", "gate",
-            "gate_soft")
+            "gate_soft", "anchor", "dedup_anchor")
 EVICTING = ("keep_first", "window", "random", "gate")
 COPYING = ("copy_last", "copy_pair")
+ANCHORING = ("anchor", "dedup_anchor")  # the loop runs as plain / dedup_soft; only the answer's positions change
 
 
 @dataclass
@@ -109,11 +113,42 @@ def latent_bias(policy: str, budget: int, visible: torch.Tensor, fed: list, log_
         bias = torch.stack(log_gates, 1).float()
     elif n > budget and policy == "logn":
         bias = torch.full((batch, n), -math.log(n / budget), device=visible.device)
-    elif n > budget and policy == "dedup_soft":
+    elif n > budget and policy in ("dedup_soft", "dedup_anchor"):
         vectors = F.normalize(torch.stack(fed, 1), dim=-1)
         bias = -((vectors @ vectors.transpose(1, 2)) >= 0.95).sum(2).float().log()
     bias = torch.where(visible, bias, torch.full_like(bias, HIDE))
     return bias if bool((bias != 0).any()) else None
+
+
+def anchor_slots(fed: list, budget: int) -> torch.Tensor:
+    """[batch, n]: the position after <bot> each latent entry is read at. Entries 1..budget keep theirs; a later entry whose
+    fed latent is a near-copy (cosine >= 0.95, as dedup_soft) of an earlier one takes the earliest such entry's position,
+    and any other later entry the next free position."""
+    vectors = F.normalize(torch.stack(fed, 1), dim=-1)
+    near = (vectors @ vectors.transpose(1, 2)) >= 0.95
+    batch, n = near.shape[:2]
+    slots = torch.arange(1, n + 1, device=near.device).repeat(batch, 1)
+    for j in range(budget, n):
+        earlier = near[:, j, :j]
+        copied = slots.gather(1, earlier.float().argmax(1, keepdim=True))[:, 0]  # argmax: the first near-copy
+        slots[:, j] = torch.where(earlier.any(1), copied, slots[:, :j].max(1).values + 1)
+    return slots
+
+
+def rotate(loop: Loop, cache, first: int, deltas: torch.Tensor):
+    """A new cache whose keys in columns first..first+k-1 are moved by deltas [batch, k] positions (LLaMA's RoPE)."""
+    from transformers.models.llama.modeling_llama import apply_rotary_pos_emb
+
+    rotary = loop.model.model.rotary_emb
+    assert loop.llama and rotary.attention_scaling == 1.0, "a rotation by a position difference needs unscaled RoPE"
+    key = cache[0][0]
+    cos, sin = rotary(key, deltas.to(key.device))
+    columns = slice(first, first + deltas.shape[1])
+    moved = []
+    for key, value in cache:
+        _, turned = apply_rotary_pos_emb(key[:, :, columns], key[:, :, columns], cos, sin)
+        moved.append((torch.cat([key[:, :, :first], turned, key[:, :, columns.stop:]], 2), value))
+    return tuple(moved)
 
 
 def shares(attentions, question: int, n: int, budget: int) -> list[dict]:
@@ -159,6 +194,7 @@ def run(loop: Loop, policy: str, asked: Asked, depths: list[int], budget: int, s
         attention: bool = False) -> list[dict]:
     """One latent loop per row under `policy`, read out at the depths the policy applies to; one dict per row."""
     assert policy in POLICIES, policy
+    assert loop.llama or policy not in ANCHORING, "re-anchoring rotates RoPE keys: LLaMA only"
     batch, question = asked.mask.shape
     device = asked.mask.device
     shift_to = max(depths)
@@ -205,7 +241,12 @@ def run(loop: Loop, policy: str, asked: Asked, depths: list[int], budget: int, s
             n = step
             bias = latent_bias(policy, budget, visible, fed, log_gates) if policy not in COPYING else None
             start = asked.bot + (shift_to if policy == "shift" else step) + 1
-            tokens, att = readout(loop, cache, asked, n, bias, start, attention, budget)
+            answer_cache, slots = cache, None
+            if policy in ANCHORING:
+                slots = anchor_slots(fed, budget)
+                answer_cache = rotate(loop, cache, question, slots - torch.arange(1, n + 1, device=device))
+                start = asked.bot + slots.max(1).values + 1
+            tokens, att = readout(loop, answer_cache, asked, n, bias, start, attention, budget)
             repeats = None
             if policy == "dedup_soft":  # entries whose fed latent is a near-copy (cosine >= 0.95) of an earlier one
                 vectors = F.normalize(torch.stack(fed, 1), dim=-1)
@@ -215,6 +256,8 @@ def run(loop: Loop, policy: str, asked: Asked, depths: list[int], budget: int, s
                 cell = {"tokens": tokens[row], "kept": [j + 1 for j in visible[row].nonzero().flatten().tolist()]}
                 if repeats is not None:
                     cell["repeats"] = [j + 1 for j in repeats[row].nonzero().flatten().tolist()]
+                if slots is not None:
+                    cell["slots"] = slots[row].tolist()
                 if att is not None:
                     cell["attn"] = att[row]
                 results[row][str(step)] = cell

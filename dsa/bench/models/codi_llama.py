@@ -137,15 +137,18 @@ def build_projection(width: int, state: dict) -> nn.Sequential:
 class CODILlama(BenchModel):
     family = "llama"
 
-    def __init__(self, *, checkpoint: str = "codi-llama1b", latent_iterations: int = 6, max_new_tokens: int = 256,
-                 device: str = "auto", name: str | None = None):
+    def __init__(self, *, checkpoint: str = "codi-llama1b", weights: str | Path | None = None, latent_iterations: int = 6,
+                 max_new_tokens: int = 256, device: str = "auto", name: str | None = None):
+        """`weights`: a directory with a fine-tuned pytorch_model.bin in the same layout (partc_train.py), used in place
+        of the published files; `checkpoint` still names the architecture and tokenizer."""
         from transformers import AutoTokenizer, LlamaForCausalLM
         from transformers.modeling_utils import no_init_weights
 
         spec = CHECKPOINTS[checkpoint]
         self.name, self.device = name or checkpoint, resolve_device(device)
         self.latent_iterations, self.max_new_tokens = int(latent_iterations), int(max_new_tokens)
-        backbone, projection = merge_llama_state(read_state(list(fetch(spec).values())))
+        files = [Path(weights) / "pytorch_model.bin"] if weights else list(fetch(spec).values())
+        backbone, projection = merge_llama_state(read_state(files))
         config = llama_config(spec["size"], backbone)
         with no_init_weights():
             self.model = LlamaForCausalLM(config)
@@ -163,7 +166,8 @@ class CODILlama(BenchModel):
         if self.tokenizer.pad_token_id != original:
             raise ValueError(f"tokenizer pad id {self.tokenizer.pad_token_id} is not CODI's {original}")
         self.bot_id, self.eot_id = original + 1, original + 2
-        self._identity = {"weights": f"{spec['repo']}@{spec['revision']}", "lora_merged_fp32": True,
+        self._identity = {"weights": str(weights) if weights else f"{spec['repo']}@{spec['revision']}",
+                          "base": f"{spec['repo']}@{spec['revision']}", "lora_merged_fp32": True,
                           "latent_iterations": self.latent_iterations, "max_new_tokens": self.max_new_tokens,
                           "decoding": "greedy", "dtype": "float32"}
 

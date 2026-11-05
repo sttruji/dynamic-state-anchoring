@@ -7,6 +7,8 @@
 2. k exact copies of a latent entry, each given -log k, give the single entry's logits within 1e-4 (FP32).
    Both run on the first 8 gsm8k_valid questions, batched, after 6 latent steps, at the <eot> query.
 3. `plain` at 6 steps on gsm8k_test is within 3 points of the published GSM8K accuracy.
+4. With --rotation (Amendment 1, E5): moving every cached key 18 positions later by rotation, and the <eot> query with
+   them, gives the same logits within 1e-3: the RoPE rotation re-anchoring uses matches the model's own.
 Exits non-zero on any failure.
 """
 import argparse
@@ -26,6 +28,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--llama", choices=sorted(CHECKPOINTS), required=True)
 parser.add_argument("--published", type=Path, help="a heldout_eval gsm8k_test.jsonl of this model: run check 3 only")
 parser.add_argument("--tolerance", type=float, default=3.0, help="check 3, in accuracy points")
+parser.add_argument("--rotation", action="store_true", help="run check 4 only")
 parser.add_argument("--device", default="cuda")
 parser.add_argument("--data-dir", type=Path, default=None)
 args = parser.parse_args()
@@ -41,7 +44,7 @@ if args.published:
     raise SystemExit
 
 import torch
-from batched import Loop, ask, forward
+from batched import Loop, ask, forward, rotate
 from dsa.bench import data as bench_data
 from dsa.bench.models.codi_llama import CODILlama
 
@@ -66,6 +69,16 @@ with torch.no_grad():
 
     native = codi.model(inputs_embeds=eot, past_key_values=cache, attention_mask=torch.cat([asked.mask, ones(7)], 1),
                         position_ids=where, use_cache=True).logits[:, -1]
+    if args.rotation:
+        later = rotate(loop, cache, 0, torch.full((batch, question + 6), 18, device=codi.device))
+        moved = forward(loop, embeds=eot, cache=later, mask=torch.cat([asked.mask, ones(7)], 1), positions=where + 18).logits[:, -1]
+        gap = float((moved - native).abs().max())
+        agree = int((moved.argmax(-1) == native.argmax(-1)).sum())
+        print(f"check 4: every key and the query 18 positions later: max logit difference {gap:.2e} (argmax agrees on {agree}/{batch})")
+        if gap > 1e-3 or agree < batch:
+            raise SystemExit("E5 check 4 fails")
+        print("E5 check 4 passes")
+        raise SystemExit
     zero = logits(cache, 6, torch.zeros(batch, question + 7, device=codi.device))
     exact = torch.equal(zero, native)
     print(f"check 1: zero bias equals transformers' mask exactly: {exact} (max diff {float((zero - native).abs().max()):.2e})")

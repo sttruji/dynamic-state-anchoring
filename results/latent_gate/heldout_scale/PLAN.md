@@ -4,6 +4,9 @@
 Later changes are amendments made before the affected run, recorded with the previous hash, as in Stage 1. The engineering
 section was completed before freezing, and the notebook refuses to start without `PLAN.sha256`.
 
+**Amended on 4 November 2026** ([Amendment 1](#amendment-1-4-november-2026), at the end). It was written after Parts A and B
+had run and before any run of what it adds, and it changes no earlier rule. The frozen version's sha256 was `9de26988…`.
+
 **Purpose.** Stage 1 fired its stop rule, so the gate's planned Stage 2 does not run. This study tests the diagnosis
 instead, for an analysis paper: running a latent CoT model past its trained depth costs accuracy, and a budget or a
 training-free soft dedup restores it. The claim is tested on untouched data and at a second model scale. One conditional
@@ -190,3 +193,96 @@ Run order: A1 and A2, then B for CODI-1B and SIM-CoT-1B, then 3B if credits rema
   which the near-copy bound in Codex's review says is what should be controlled. A key/value-based variant may be run on
   `gsm8k_valid`, marked exploratory.
 - **The noninferiority margin** is a judgment, fixed here before any data.
+
+## Amendment 1, 4 November 2026
+
+**Why.**
+- **The verdict.** Parts A and B have run ([results](../../../docs/LATENT_GATE_HELDOUT_RESULTS.md)). D2 holds on both GPT-2
+  models and fails on both 1B models.
+- **The cause at 1B.** D4 found that moving the answer 18 positions later costs 2.2 and 2.4 points there. That is most of
+  their loss at 24 steps, and no reweighting policy recovers it.
+- **What this adds.** One training-free test aimed at that cause (B3). It also runs Part C, whose trigger did not fire,
+  at the user's request.
+- **What it leaves alone.** Every earlier rule, result and claim.
+
+### B3. Re-anchoring the answer under RoPE
+
+LLaMA's keys carry their position as a rotation, so a cached key can be moved to another position exactly by rotating it.
+B3 uses that to place the answer right after the latents it reads.
+
+**Policies.** LLaMA only, at depths 12 and 24.
+- **`dedup_anchor`.** The latent loop runs exactly as `dedup_soft`. Before the answer:
+  - entries 1–6 keep their positions;
+  - a later entry whose fed latent has cosine ≥ 0.95 with an earlier entry's takes the position of the earliest such
+    entry;
+  - any other later entry takes the next free position after the last one used.
+
+  The keys are rotated to those positions, `dedup_soft`'s bias is kept, and the answer starts right after the last
+  position used. Exact copies of entry 6 therefore collapse to the 6-step answer.
+- **`anchor`.** The same positions after a `plain` loop, with no bias. It is the control for whether position alone
+  suffices.
+
+**Data.**
+- Both 1B models are scored on `gsm8k_valid`, the primary pool and `svamp`, in one run, with no choice made between
+  policies or depths.
+- `plain`, `dedup_soft` and `shift` come from Part B's records, paired by question. Part B's check-3 rerun matched its
+  held-out predictions on all 1,319 questions, so separate runs pair exactly.
+
+**Checks (E5).** These run before any scoring.
+- **Unit tests** (`tests/test_latent_gate_batched.py`):
+  - moving every key and the query by the same rotation leaves the logits unchanged;
+  - entries 7–10 built as entry 6 rotated to their own positions are moved back, collapse to one entry and give the
+    6-step logits;
+  - a batch equals its rows run alone.
+- **On the real weights** (`check_llama.py --rotation`, both 1B models): the first unit test, within 1e-3 on the logits.
+
+**Rules**, for each 1B model on the primary pool:
+- **R1 (primary).** `dedup_anchor`@24 meets D2's two criteria. It beats `plain`@24 at p < 0.05, and the lower bound of its
+  95% CI against `plain`@6 is above −2 points.
+- **R2.** The same two criteria for `anchor`@24.
+- **G2.** `dedup_anchor`@12 or @24 beats `plain`@6, at p < 0.025 each.
+
+**What it allows.** If R1 holds on a 1B model, the paper may claim that the training-free fix holds across scale once the
+answer is re-anchored. It must say that the policy was designed after D4.
+
+### Part C, run without its trigger
+
+**Status.** Neither trigger fired (`report.txt`). Part C runs at the user's request and is reported as exploratory and
+untriggered.
+
+**Model: SIM-CoT-1B.** It was the nearer of the two to the second trigger:
+
+| Model | `dedup_soft`@12 vs `plain`@6, 4+ problems | Near-copies among entries 7–12 |
+|---|---|---|
+| SIM-CoT-1B | 57 vs 55 | 60% |
+| CODI-1B | 51 vs 52 | 79% |
+
+**Training: a full fine-tune** (`scripts/latent_gate/partc_train.py`).
+- FP32 weights, BF16 autocast, fused AdamW.
+- Each update is Stage 1's batch of 32, accumulated over micro-batches of 8, or of 4 if 8 does not fit. Losses are
+  normalized by the whole batch, so the gradient does not depend on the micro-batch size.
+- The rest of the recipe is Stage 1's: 32,768 GSM8K-Aug problems in Stage 1's seeded order, seed 7, one pass, lr 2e-5,
+  gate lr 1e-3, 3% warmup, budget penalty 0.1, clipping at 2.
+- The trained weights (about 5 GB each) stay on the Colab disk. Gates, logs and evaluations go to Drive.
+
+**Arms.** `ft6`, `ft12` and `gate12_fixed`, each scored on `gsm8k_valid`:
+- `plain` at 6, 12 and 24 for every arm;
+- `gate` and `gate_soft` for `gate12_fixed`.
+
+**Checks** (`tests/test_latent_gate_batched.py`). These ran before any training.
+- On a tiny LLaMA, the trainer's forward, fed the evaluator's own greedy answer, predicts it token for token for `ft12`
+  (`plain`) and `gate12_fixed` (`gate`).
+- Micro-batches give the whole batch's gradient.
+- On Colab, two updates of `gate12_fixed` run before any training, to check memory.
+
+**Rule.** It is the plan's Part C rule, applied to `ft12` (`plain`) and `gate12_fixed` (`gate`). An arm passes if:
+- at 12 steps it beats `ft6` `plain`@6 on the 4+ step problems at p < 0.025;
+- it is not lower overall;
+- it does not drop from 12 to 24 at p < 0.05.
+
+**Held-out confirmation.**
+- A passing arm is scored once on the primary pool and `svamp`, together with `ft6`.
+- A gain is confirmed if the arm at 12 beats both `ft6` `plain`@6 and base `plain`@6 on the primary pool, at p < 0.05.
+
+**Order.** B3 runs first, and its results download before Part C starts.
+`scripts/latent_gate/amendment_report.py` applies both sets of rules.

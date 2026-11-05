@@ -10,9 +10,13 @@ Plan: results/latent_gate/heldout_scale/PLAN.md; the loops are in batched.py. Po
     shift       6 entries, the answer read out at the positions it would have after the deepest depth
     copy_last   6 genuine steps, then exact copies of entry 6's keys and values; copy_pair copies entries 5 and 6 in turn
     gate        the 6 highest-scoring entries (gate.pt); gate_soft: log g on every entry, no eviction
+    anchor      LLaMA only (Amendment 1): a plain loop, then later near-copy entries are moved to their earliest copy's
+                position, other later entries to the next free one, and the answer starts right after them
+    dedup_anchor  the same after a dedup_soft loop, keeping dedup_soft's bias
 
     python scripts/latent_gate/heldout_eval.py --llama codi-llama1b --datasets gsm8k_valid --output-dir <dir>
     python scripts/latent_gate/heldout_eval.py --checkpoint <dir> --datasets gsm8k_test gsm_hard multiarith --output-dir <dir>
+    python scripts/latent_gate/heldout_eval.py --llama simcot-llama1b --weights <partc_train model dir> ...
 
 Writes <output-dir>/<dataset>.jsonl in stage1_eval's record format (per policy and depth: text, prediction, correct, kept,
 plus attention shares with --attention), resuming after the questions already written, and <output-dir>/run.json.
@@ -37,6 +41,7 @@ source = parser.add_mutually_exclusive_group()
 source.add_argument("--llama", choices=sorted(CHECKPOINTS), help="a published CODI-style LLaMA checkpoint")
 source.add_argument("--checkpoint", help="a GPT-2 CODI-format directory (pytorch_model.bin, gate.pt for gated arms); "
                                          "the published CODI GPT-2 if neither is given")
+parser.add_argument("--weights", help="with --llama: a fine-tuned model directory (pytorch_model.bin, gate.pt for gated arms)")
 parser.add_argument("--datasets", nargs="+", required=True)
 parser.add_argument("--output-dir", type=Path, required=True)
 parser.add_argument("--policies", nargs="+", default=["plain", "keep_first", "dedup_soft", "logn", "shift"])
@@ -58,16 +63,18 @@ from gate import Gate, gold_results
 
 unknown = set(args.policies) - set(POLICIES)
 assert not unknown, f"unknown policies {unknown}"
+assert args.llama or not args.weights, "--weights needs --llama"
 if args.llama:
     from dsa.bench.models.codi_llama import CODILlama
 
-    codi = CODILlama(checkpoint=args.llama, max_new_tokens=args.max_new_tokens, device=args.device)
+    codi = CODILlama(checkpoint=args.llama, weights=args.weights, max_new_tokens=args.max_new_tokens, device=args.device)
 else:
     from dsa.bench.models.codi import CODIGPT2
 
     codi = CODIGPT2(checkpoint=args.checkpoint, max_new_tokens=args.max_new_tokens, device=args.device)
 gate = None
-gate_file = Path(args.checkpoint) / "gate.pt" if args.checkpoint else None
+folder = args.checkpoint or args.weights
+gate_file = Path(folder) / "gate.pt" if folder else None
 if gate_file and gate_file.exists():
     saved = torch.load(gate_file, map_location="cpu", weights_only=True)
     gate = Gate(saved["width"]).to(codi.device).eval()
