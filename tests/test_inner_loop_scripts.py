@@ -135,10 +135,32 @@ class ScriptsTest(unittest.TestCase):
             self.assertTrue((folder / "loop_k1/model/loop.pt").exists())
             self.assertFalse((folder / "ft12/model/loop.pt").exists())
 
+    def test_kk_on_the_answer_loss_alone(self):
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            rows = [{"question": f"Sam has {n} cups and breaks 2. How many are left?", "steps": [f"<<{n}-2={n - 2}>>"],
+                     "answer": str(n - 2)} for n in range(3, 11)]
+            (folder / "train.json").write_text(json.dumps(rows))
+            (folder / "base").mkdir()
+            run("train.py", ["--arm", "ft6", "--kk", "--kk-beta", 1, "--step-weight", 0, "--checkpoint", folder / "base",
+                             "--output", folder / "kk", "--train-file", folder / "train.json", "--records", 8,
+                             "--batch", 4, "--device", "cpu"])
+            metrics = [json.loads(x) for x in (folder / "kk/metrics.jsonl").read_text().splitlines()]
+            self.assertIsNotNone(metrics[0]["step"])  # logged, though not trained on
+            self.assertEqual(metrics[0]["loss"], metrics[0]["ce"])
+            self.assertGreater(metrics[-1]["alpha"], 0.0)
+            self.assertTrue((folder / "kk/model/kk.pt").exists())
+            run("eval.py", ["--checkpoint", folder / "kk/model", "--dataset", "gsm8k_valid", "--output",
+                            folder / "kk.jsonl", "--arms", "plain", "nokk", "--limit", 2, "--device", "cpu"])
+            records = [json.loads(x) for x in (folder / "kk.jsonl").read_text().splitlines()]
+            self.assertEqual(len(records), 2)
+            self.assertTrue(all("latent_drift" in r["arms"]["nokk"] for r in records))
+
 
 class ReportTest(unittest.TestCase):
-    def report(self, folder, hits, gate):
-        """Synthetic evaluations of 20 questions with the given correct counts per (eval, arm); returns the output."""
+    def report(self, folder, hits, gate, metrics=None):
+        """Synthetic evaluations of 20 questions with the given correct counts per (eval, arm), and final training
+        metrics per arm; returns the output."""
         import contextlib
         import io
 
@@ -157,6 +179,9 @@ class ReportTest(unittest.TestCase):
             write(name, arms)
         (folder / "arms/loop").mkdir(parents=True)
         (folder / "arms/loop/metrics.jsonl").write_text(json.dumps({"update": 0, "gate": gate}) + "\n")
+        for arm, final in (metrics or {}).items():
+            (folder / "arms" / arm).mkdir(parents=True)
+            (folder / "arms" / arm / "metrics.jsonl").write_text(json.dumps({"update": 0, **final}) + "\n")
         out = io.StringIO()
         old = sys.argv
         sys.argv = ["report.py", str(folder), "--training", str(folder / "arms")]
@@ -179,6 +204,19 @@ class ReportTest(unittest.TestCase):
         hits["loop"]["loop3"] = 9
         with tempfile.TemporaryDirectory() as folder:
             self.assertIn("STOP:", self.report(Path(folder), hits, gate=0.01))
+
+    def test_stage1b(self):
+        hits = {"base-simcot": {"plain": 8}, "ft6_step": {"plain": 5}, "ft6_ce": {"plain": 6},
+                "loop_ce": {"plain": 6, "loop1": 6, "loop3": 6}, "kk_ce": {"plain": 17, "nokk": 8}}
+        metrics = {"loop_ce": {"gate": 0.01}, "kk_ce": {"alpha": 0.2, "alpha_max": 0.5}}
+        with tempfile.TemporaryDirectory() as folder:
+            text = self.report(Path(folder), hits, gate=0.01, metrics=metrics)
+        self.assertIn("no clear difference between the recipes", text)
+        self.assertIn("loop on the answer loss alone: STOP", text)
+        self.assertIn("KK-LSE at 6 steps: GO", text)
+        hits["kk_ce"]["nokk"] = 15  # the gain does not depend on the bias at test time
+        with tempfile.TemporaryDirectory() as folder:
+            self.assertIn("KK-LSE at 6 steps: STOP", self.report(Path(folder), hits, gate=0.01, metrics=metrics))
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
 """Evaluate a CODI-style checkpoint with the inner loop (idea A): Stage 0's checks, and the k sweep of trained loops.
 
 Arms, each at the default --depth or at the depth after "@" (plain@12):
-    plain       GPT-2's own forward per latent step: the reference
+    plain       GPT-2's own forward per latent step: the reference (with the checkpoint's KK-LSE bias, if it has a kk.pt)
+    nokk        plain with the KK-LSE bias switched off: what the bias itself does at test time
     loopK       the inner loop at k passes, with the checkpoint's loop.pt if it has one, else zero loop parameters, in
                 which case every k must reproduce `plain` answer for answer (the identity check)
     dampKxG     training-free: the block re-applied k times with a constant gate G, no re-injection, no LoRA
@@ -26,7 +27,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
-parser.add_argument("--checkpoint", help="a directory holding pytorch_model.bin (and loop.pt for trained loops)")
+parser.add_argument("--checkpoint", help="a directory holding pytorch_model.bin (and loop.pt or kk.pt if trained)")
 parser.add_argument("--dataset", required=True)
 parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--arms", nargs="+", default=["plain", "loop1", "loop2", "loop4"])
@@ -48,17 +49,18 @@ import torch
 from dsa.bench import data as bench_data
 from dsa.bench.models.codi import CODIGPT2
 from dsa.bench.scoring import score
+from kk import load_kk
 from looped import (LoopParams, arithmetic, decode_steps, latent_step, load_loop, load_step_decoder, parse_step,
                     step_targets)
 
-ARM = re.compile(r"^(plain|loop|damp|rerun)(\d*)(?:x([\d.]+))?(?:@(\d+))?$")
+ARM = re.compile(r"^(plain|nokk|loop|damp|rerun)(\d*)(?:x([\d.]+))?(?:@(\d+))?$")
 
 
 def parse_arm(name: str) -> dict:
     match = ARM.match(name)
     assert match, f"unknown arm {name!r}"
     kind, count, gate, depth = match.groups()
-    assert kind == "plain" or count, f"{name}: give a pass count"
+    assert kind in ("plain", "nokk") or count, f"{name}: give a pass count"
     assert (kind == "damp") == (gate is not None), f"{name}: only damp takes a gate"
     return {"kind": kind, "count": int(count or 1), "gate": float(gate or 0), "depth": int(depth or args.depth)}
 
@@ -74,6 +76,9 @@ loop_file = Path(args.checkpoint) / "loop.pt" if args.checkpoint else None
 trained = load_loop(model, loop_file).eval() if loop_file and loop_file.exists() else None
 zero = LoopParams(model, first=args.first, last=args.last, rank=1)  # gate 0: loopK is an identity
 damped = LoopParams(model, first=args.first, last=args.last, rank=1)
+kk_file = Path(args.checkpoint) / "kk.pt" if args.checkpoint else None
+kk = load_kk(model, kk_file).eval() if kk_file and kk_file.exists() else None
+assert kk is not None or not any(a["kind"] == "nokk" for a in arms.values()), "nokk needs a checkpoint with a kk.pt"
 decoder = load_step_decoder(device) if args.decoder else None
 
 
@@ -83,9 +88,11 @@ def chain(arm, asked, first, question):
     loop = trained if trained is not None else zero
     if arm["kind"] == "damp":
         loop = damped.fill(arm["gate"])
+    if kk is not None:  # the latents sit after the question and <bot>
+        kk.start, kk.count, kk.active = question + 1, arm["depth"], arm["kind"] != "nokk"
     for step in range(1, arm["depth"] + 1):
         position = torch.tensor([[question + step]], device=device)
-        if arm["kind"] == "plain":
+        if arm["kind"] in ("plain", "nokk"):
             out = model(inputs_embeds=latent, past_key_values=cache, use_cache=True, output_hidden_states=True,
                         position_ids=position)
             hidden, cache = out.hidden_states[-1], out.past_key_values
@@ -152,6 +159,8 @@ with torch.no_grad(), args.output.open("w") as sink:
     for number, (index, row) in enumerate(indexed, 1):
         encoded = tokenizer.encode(row["question"].strip().replace("  ", " ")) + [codi.bot_id]
         question = len(encoded) - 1  # <bot> sits at this cache index, latent step t at question + t
+        if kk is not None:
+            kk.start = None  # no latents in the question pass
         out = model(input_ids=torch.tensor([encoded], device=device), use_cache=True, output_hidden_states=True)
         asked, first = out.past_key_values, projection(out.hidden_states[-1][:, -1:, :])
         rationale = row.get("rationale", "")

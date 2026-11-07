@@ -3,12 +3,18 @@
     python scripts/inner_loop/report.py <evals dir> [--training <arms dir>]
 
 <evals dir>/<name>/gsm8k_valid.jsonl as eval.py writes them: base-simcot and base-codi for Stage 0; ft6, ft12, loop and
-loop_k1 for Stage 1. <arms dir>/<arm>/metrics.jsonl gives the loop gate's final size.
+loop_k1 for Stage 1; ft6_step, ft6_ce, loop_ce and kk_ce for Stage 1b. <arms dir>/<arm>/metrics.jsonl gives the final
+size of the loop gate and of KK-LSE's alpha.
 
 Stage 1, decided at the preregistered k = 3 on the 500 validation questions:
     go          loop@k3 - max(ft6 plain, ft12 plain@12) >= +10, loop k3 - k1 >= +5 in the same model, and the gate off zero
     ambiguous   a gain of +5 to +9: one more seed of loop and ft12 before deciding
     stop        a gain of +4 or less, a gate at zero, or no rise from k1 to k3
+
+Stage 1b, at batch 128, with the same go / ambiguous / stop thresholds:
+    recipe      ft6_ce (answer loss only) vs ft6_step (with the step loss), reported, no verdict
+    loop        loop_ce@k3 vs ft6_ce, with k3 vs k1 as the second check and the gate off zero
+    KK-LSE      kk_ce vs ft6_ce, with the bias on vs off at test (nokk) as the second check
 """
 from __future__ import annotations
 
@@ -49,6 +55,29 @@ def paired(a, b):
     wins = sum(x and not y for x, y in zip(a, b))
     losses = sum(y and not x for x, y in zip(a, b))
     return sum(a) - sum(b), wins, losses, sign_p(wins, losses)
+
+
+def rule(gain: int, check: int, ok: bool) -> str:
+    """The preregistered pilot rule: GO at a gain of +10 with the second check at +5, AMBIGUOUS at +5 to +9 with the
+    second check above 0, else STOP."""
+    if gain >= 10 and check >= 5 and ok:
+        return "GO"
+    if 5 <= gain <= 9 and check > 0 and ok:
+        return "AMBIGUOUS"
+    return "STOP"
+
+
+def final_metric(arm, key):
+    path = args.training / arm / "metrics.jsonl" if args.training else None
+    if path is None or not path.exists():
+        return None
+    return json.loads(path.read_text().splitlines()[-1]).get(key)
+
+
+def versus(label, a, b):
+    diff, wins, losses, p = paired(a, b)
+    print(f"  {label}: {sum(a)} vs {sum(b)}: {diff:+d} (+{wins}/-{losses}, p={p:.3f})")
+    return diff, p
 
 
 def number(text):
@@ -138,20 +167,46 @@ if stage1["ft6"] and stage1["ft12"] and stage1["loop"]:
     best = max(controls, key=lambda c: sum(controls[c]))
     gain, wins, losses, p = paired(correct(stage1["loop"], k3), controls[best])
     dose, dose_wins, dose_losses, dose_p = paired(correct(stage1["loop"], k3), correct(stage1["loop"], k1))
-    gate = None
-    if args.training and (args.training / "loop/metrics.jsonl").exists():
-        gate = json.loads((args.training / "loop/metrics.jsonl").read_text().splitlines()[-1]).get("gate")
+    gate = final_metric("loop", "gate")
     print(f"\nStage 1 at k={args.k}: loop {sum(correct(stage1['loop'], k3))} vs best control {best} {sum(controls[best])}: "
           f"{gain:+d} (+{wins}/-{losses}, p={p:.3f}); k{args.k} vs k1 {dose:+d} (+{dose_wins}/-{dose_losses}, "
           f"p={dose_p:.3f}); mean |gate| {gate}")
     if stage1["loop_k1"]:
         matched, w, l, mp = paired(correct(stage1["loop"], k3), correct(stage1["loop_k1"], "loop1"))
         print(f"  vs the parameter-matched loop_k1: {matched:+d} (+{w}/-{l}, p={mp:.3f})")
-    gate_open = gate is not None and gate > 1e-3
-    if gain >= 10 and dose >= 5 and gate_open:
-        verdict = "GO: confirm with three seeds on the 1,319-question test set"
-    elif 5 <= gain <= 9 and dose > 0 and gate_open:
-        verdict = "AMBIGUOUS: one more seed of loop and ft12 before deciding"
-    else:
-        verdict = "STOP: test the duo-causal loop once, then write up the null"
+    verdict = {"GO": "GO: confirm with three seeds on the 1,319-question test set",
+               "AMBIGUOUS": "AMBIGUOUS: one more seed of loop and ft12 before deciding",
+               "STOP": "STOP: test the duo-causal loop once, then write up the null"}[
+        rule(gain, dose, gate is not None and gate > 1e-3)]
     print(f"  {verdict}" + ("" if gate is not None else " (gate size unknown: pass --training)"))
+
+stage1b = {name: load(name) for name in ("ft6_step", "ft6_ce", "loop_ce", "kk_ce")}
+for name, records in stage1b.items():
+    if records:
+        table(name, records)
+        decoder_reliability(records, "loop1" if name.startswith("loop") else "plain")
+if stage1b["ft6_ce"]:
+    print("\nStage 1b (batch 128): the recipe check, the loop on the answer loss alone, and KK-LSE at 6 steps")
+    control = correct(stage1b["ft6_ce"], "plain")
+    base = load("base-simcot")
+    if base:
+        versus("ft6_ce vs the SIM-CoT base", control, correct(base, "plain"))
+    if stage1b["ft6_step"]:
+        diff, p = versus("recipe: answer loss only (ft6_ce) vs with the step loss (ft6_step)", control,
+                         correct(stage1b["ft6_step"], "plain"))
+        if p < 0.05:
+            print(f"    the step loss {'costs' if diff > 0 else 'adds'} accuracy at this budget")
+        else:
+            print("    no clear difference between the recipes")
+    if stage1b["loop_ce"]:
+        loop, k3 = stage1b["loop_ce"], f"loop{args.k}"
+        gain, _ = versus(f"loop_ce k={args.k} vs ft6_ce", correct(loop, k3), control)
+        dose, _ = versus(f"loop_ce k={args.k} vs k=1", correct(loop, k3), correct(loop, "loop1"))
+        gate = final_metric("loop_ce", "gate")
+        print(f"    mean |gate| {gate}; loop on the answer loss alone: {rule(gain, dose, gate is not None and gate > 1e-3)}")
+    if stage1b["kk_ce"]:
+        kk = stage1b["kk_ce"]
+        gain, _ = versus("kk_ce vs ft6_ce", correct(kk, "plain"), control)
+        own, _ = versus("kk_ce with the bias vs without it at test (nokk)", correct(kk, "plain"), correct(kk, "nokk"))
+        print(f"    mean |alpha| {final_metric('kk_ce', 'alpha')}, max {final_metric('kk_ce', 'alpha_max')}; "
+              f"KK-LSE at 6 steps: {rule(gain, own, True)}")

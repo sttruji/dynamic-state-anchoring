@@ -9,6 +9,9 @@ same objective: answer cross-entropy plus SIM-CoT's step loss, the frozen step d
     loop      6 steps, the block looped k times, k drawn per batch (1 with --p-k1, else uniform on 2..--k-max)
     loop_k1   6 steps, the loop's LoRA on pass 1 and no loop: rules out "more parameters"
 
+--kk adds idea F's key-to-key bias (kk.py) to any arm, its alpha trained from zero. --step-weight 0 trains on the answer
+alone; the step loss is still computed and logged, as a probe of what the latents hold.
+
     python scripts/inner_loop/train.py --arm loop --checkpoint <simcot dir> --output <dir> --device cuda --bf16
 """
 from __future__ import annotations
@@ -34,7 +37,7 @@ parser.add_argument("--train-file", type=Path,
 parser.add_argument("--records", type=int, default=98_304)
 parser.add_argument("--batch", type=int, default=128)
 parser.add_argument("--lr", type=float, help="default 2e-5 at batch 32, scaled by sqrt(batch / 32)")
-parser.add_argument("--loop-lr", type=float, help="for the loop parameters; 1e-3 at batch 32, scaled the same way")
+parser.add_argument("--loop-lr", type=float, help="for the loop and KK parameters; 1e-3 at batch 32, scaled the same way")
 parser.add_argument("--warmup", type=float, default=0.03)
 parser.add_argument("--step-weight", type=float, default=1.0, help="weight of the step-decoder loss")
 parser.add_argument("--k-max", type=int, default=4)
@@ -42,6 +45,8 @@ parser.add_argument("--p-k1", type=float, default=0.25)
 parser.add_argument("--first", type=int, default=4)
 parser.add_argument("--last", type=int, default=8)
 parser.add_argument("--rank", type=int, default=32)
+parser.add_argument("--kk", action="store_true", help="add the KK-LSE bias on the latent entries (kk.py)")
+parser.add_argument("--kk-beta", type=float, default=14.0)
 parser.add_argument("--max-question-tokens", type=int, default=256)
 parser.add_argument("--seed", type=int, default=7)
 parser.add_argument("--device", default="cuda")
@@ -58,6 +63,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import torch
 import torch.nn.functional as F
 from dsa.bench.models.codi import CODIGPT2
+from kk import KKBias, save_kk
 from looped import LoopParams, latent_step, load_step_decoder, save_loop, step_loss, step_targets
 
 random.seed(args.seed)
@@ -72,6 +78,7 @@ depth = 12 if args.arm == "ft12" else 6
 loop = None
 if args.arm.startswith("loop"):
     loop = LoopParams(model, first=args.first, last=args.last, rank=args.rank, lora_on_first=args.arm == "loop_k1")
+kk = KKBias(model, beta=args.kk_beta) if args.kk else None
 
 # The same seeded sample and order for every arm.
 source = json.loads(args.train_file.read_text())
@@ -92,8 +99,9 @@ ks = [(1 if k_rng.random() < args.p_k1 else k_rng.randint(2, args.k_max)) if arg
       for _ in range(updates)]
 
 groups = [{"params": list(model.parameters()) + list(projection.parameters()), "lr": args.lr}]
-if loop is not None:
-    groups.append({"params": list(loop.parameters()), "lr": args.loop_lr, "weight_decay": 0.0})
+fresh = [p for extra in (loop, kk) if extra is not None for p in extra.parameters()]
+if fresh:
+    groups.append({"params": fresh, "lr": args.loop_lr, "weight_decay": 0.0})
 optimizer = torch.optim.AdamW(groups, weight_decay=0.01)
 warm = max(1, int(args.warmup * updates))
 schedule = torch.optim.lr_scheduler.LambdaLR(
@@ -110,6 +118,8 @@ def train_step(batch, k):
     a_ids = torch.tensor([a + [pad] * (a_len - len(a)) for _, a, _ in batch], device=device)
     a_mask = torch.tensor([[1] * len(a) + [0] * (a_len - len(a)) for _, a, _ in batch], device=device)
     positions = (q_mask.cumsum(1) - 1).clamp(min=0)
+    if kk is not None:
+        kk.start, kk.count = q_len, depth  # the latent entries' place in the cache
 
     out = model(input_ids=q_ids, attention_mask=q_mask, position_ids=positions, use_cache=True, output_hidden_states=True)
     cache, latent = out.past_key_values, projection(out.hidden_states[-1][:, -1:, :])
@@ -126,11 +136,18 @@ def train_step(batch, k):
     ce = F.cross_entropy(out.logits[:, :-1].float().reshape(-1, out.logits.shape[-1]), target.reshape(-1),
                          reduction="none").view(width, -1)
     ce = (ce * keep).sum() / keep.sum()
-    steps = step_loss(decoder, embed, torch.cat(latents, 1), [t for _, _, t in batch], pad=pad)
-    loss = ce if steps is None else ce + args.step_weight * steps
+    targets = [t for _, _, t in batch]
+    if args.step_weight:
+        steps = step_loss(decoder, embed, torch.cat(latents, 1), targets, pad=pad)
+    else:
+        with torch.no_grad():
+            steps = step_loss(decoder, embed, torch.cat(latents, 1).detach(), targets, pad=pad)
+    loss = ce + args.step_weight * steps if args.step_weight and steps is not None else ce
     stats = {"ce": float(ce), "step": float(steps) if steps is not None else None}
     if loop is not None:
         stats.update(gate=float(loop.gate.abs().mean()), inject=float(loop.inject.abs().mean()))
+    if kk is not None:
+        stats.update(alpha=float(kk.alpha.abs().mean()), alpha_max=float(kk.alpha.abs().max()))
     return loss, stats
 
 
@@ -142,6 +159,8 @@ def save_model(folder: Path) -> None:
     torch.save(state, folder / "pytorch_model.bin")
     if loop is not None:
         save_loop(loop, folder / "loop.pt")
+    if kk is not None:
+        save_kk(kk, folder / "kk.pt")
 
 
 args.output.mkdir(parents=True, exist_ok=True)
@@ -153,6 +172,8 @@ if resume.exists():
     projection.load_state_dict(saved["projection"])
     if loop is not None:
         loop.load_state_dict(saved["loop"])
+    if kk is not None:
+        kk.load_state_dict(saved["kk"])
     optimizer.load_state_dict(saved["optimizer"])
     schedule.load_state_dict(saved["schedule"])
     done = saved["done"]
@@ -180,6 +201,7 @@ with (args.output / "metrics.jsonl").open("a") as log:
         if (update + 1) % args.save_every == 0 and update + 1 < updates:
             torch.save({"model": model.state_dict(), "projection": projection.state_dict(),
                         "loop": loop.state_dict() if loop is not None else None,
+                        "kk": kk.state_dict() if kk is not None else None,
                         "optimizer": optimizer.state_dict(), "schedule": schedule.state_dict(), "done": update + 1},
                        resume.with_suffix(".tmp"))
             resume.with_suffix(".tmp").replace(resume)

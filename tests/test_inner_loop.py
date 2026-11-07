@@ -1,6 +1,7 @@
 """Checks of the inner loop (idea A, docs/brainstorm/INNER_LOOP_QUICK_REFERENCE.md) on tiny random GPT-2s: the step equals
-GPT-2's own forward, zero loop parameters reproduce it at every k, the cache grows by one entry per step, and the
-step-decoder helpers."""
+GPT-2's own forward, zero loop parameters reproduce it at every k, the cache grows by one entry per step, the
+step-decoder helpers, and idea F's KK-LSE bias."""
+import math
 import sys
 import unittest
 from pathlib import Path
@@ -11,6 +12,7 @@ from transformers import GPT2Config, GPT2LMHeadModel
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/inner_loop"))
 
+from kk import KKBias, load_kk, multiplicity_bias, save_kk  # noqa: E402
 from looped import (LoopParams, STEP_END, STEP_STARTS, arithmetic, decode_steps, latent_step, load_loop,  # noqa: E402
                     parse_step, save_loop, step_loss, step_targets)
 
@@ -123,6 +125,76 @@ class LatentStepTest(unittest.TestCase):
             again = load_loop(model, Path(folder) / "loop.pt")
         torch.testing.assert_close(again.gate, loop.gate)
         self.assertEqual(again.config(), loop.config())
+
+
+def run_steps(model, cache, mask, position, latent, n=3):
+    """n latent steps with no loop, each fed the last hidden state: their hidden states [batch, n, width]."""
+    out = []
+    for step in range(n):
+        mask = grown(mask)
+        latent, cache = latent_step(model, None, latent, cache, position + step, mask=mask)
+        out.append(latent)
+    return torch.cat(out, 1)
+
+
+class KKTest(unittest.TestCase):
+    def test_copies_weigh_as_one(self):
+        torch.manual_seed(0)
+        a, c = torch.randn(8), torch.randn(8)
+        c = c - (c @ a) / (a @ a) * a  # orthogonal to a
+        keys = torch.stack([a, a, a, c])
+        bias = multiplicity_bias(keys[None, None], torch.ones(1), beta=14.0)[0, 0]
+        torch.testing.assert_close(bias[:3], torch.full((3,), -math.log(3)), rtol=0, atol=1e-5)
+        self.assertGreater(float(bias[3]), -1e-5)  # a distinct key is left alone
+        query = torch.randn(8)
+        weights = (keys @ query + bias).softmax(-1)
+        once = torch.stack([a @ query, c @ query]).softmax(-1)
+        torch.testing.assert_close(weights[:3].sum(), once[0], rtol=0, atol=1e-5)  # three copies weigh as one
+
+    def test_zero_alpha_is_identity(self):
+        model = tiny()
+        cache, mask, position, latent = asked(model)
+        with torch.no_grad():
+            ref = run_steps(model, cache, mask, position, latent)
+            kk = KKBias(model)
+            kk.start, kk.count = cache[0][0].shape[-2], 3
+            same = run_steps(model, cache, mask, position, latent)
+        torch.testing.assert_close(same, ref, rtol=0, atol=0)
+
+    def test_bias_touches_only_latents(self):
+        model = tiny()
+        cache, mask, position, latent = asked(model)
+        start = cache[0][0].shape[-2]
+        with torch.no_grad():
+            ref = run_steps(model, cache, mask, position, latent)
+            kk = KKBias(model, beta=1.0)
+            kk.alpha.fill_(1.0)
+            kk.start, kk.count = start, 3
+            _, _, _, question = asked(model)  # the question pass has no latents to bias
+            moved = run_steps(model, cache, mask, position, latent)
+            kk.detach_hooks()
+            again = run_steps(model, cache, mask, position, latent)
+        torch.testing.assert_close(question, latent, rtol=0, atol=0)
+        torch.testing.assert_close(moved[:, :1], ref[:, :1], rtol=0, atol=0)  # one cached latent: nothing to count
+        self.assertGreater(float((moved[:, 1:] - ref[:, 1:]).abs().max()), 1e-4)
+        torch.testing.assert_close(again, ref, rtol=0, atol=0)  # detach_hooks restores GPT-2's attention
+
+    def test_gradient_reaches_alpha_from_zero_and_save_load(self):
+        import tempfile
+        model = tiny()
+        cache, mask, position, latent = asked(model)
+        kk = KKBias(model, beta=1.0)
+        kk.start, kk.count = cache[0][0].shape[-2], 3
+        run_steps(model, cache, mask, position, latent).pow(2).sum().backward()
+        self.assertGreater(float(kk.alpha.grad.abs().sum()), 0.0)
+        with torch.no_grad():
+            kk.alpha.fill_(0.3)
+        with tempfile.TemporaryDirectory() as folder:
+            save_kk(kk, Path(folder) / "kk.pt")
+            kk.detach_hooks()
+            again = load_kk(model, Path(folder) / "kk.pt")
+        torch.testing.assert_close(again.alpha, kk.alpha.detach())
+        self.assertEqual(again.beta, 1.0)
 
 
 class FakeTokenizer:

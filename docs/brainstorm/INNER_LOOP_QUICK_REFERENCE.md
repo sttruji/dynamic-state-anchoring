@@ -19,8 +19,8 @@ notes are in `research_notes/Looped steps decoding and recursive attention/`.
 - A score computed from one entry at a time can't cancel duplicate entries, because identical copies get identical
   scores. This plausibly explains why the gate failed on CODI.
 - KK-LSE does cancel them. Per head, b_j = −α·log Σ_l exp(β(cos(k_j, k_l) − 1)) over the latent entries. It is minus
-  the log-normalizer of a key-to-key attention, so one attention pass feeds the other. It adds 288 scalars, and α = 0
-  gives the base model.
+  the log-normalizer of a key-to-key attention, so one attention pass feeds the other. As built (`kk.py`), it adds 144
+  scalars (α per layer and head, β fixed at 14), and α = 0 gives the base model.
 - On its own it can only hold the 6-step score. It has a real job only beside a loop that keeps one cache entry per
   iteration (the "duo-causal" cache from Think-at-Hard), because those entries become near-copies as the iterations
   converge.
@@ -44,6 +44,17 @@ calculator test that has to beat gpt2-sft given the same calculator.
 - **Go:** loop@k=3 beats the better of ft6 and ft12 by at least 10/500, k=3 beats k=1 within the loop model by at
   least 5, and the gate moves off zero.
 - **Stop:** a gain of +4 or less, a gate stuck at zero, or no rise from k=1 to k=3.
+- **Result (6 November): STOP.** The loop at k=3 scored 201, tying ft12@12 (201) and below the base (204). Its gate
+  settled at 0.013. Our ft6 (199) also scored 16 below the main line's answer-only ft6 (215, p=0.011).
+  `results/inner_loop/`.
+
+**Stage 1b: the recipe check and KK-LSE at 6 steps, at batch 128.**
+- `ft6_step` is Stage 1's recipe. `ft6_ce` and `loop_ce` train on the answer loss alone: is the null the loop's or the
+  recipe's?
+- `kk_ce` is `ft6_ce` plus KK-LSE, scored with the bias on and off. Does the bias help the readout at 6 steps, where there
+  are no copies to cancel?
+- The thresholds are the same as Stage 1's (+10 go, +5 to +9 ambiguous). The second check is k=3 against k=1 for the
+  loop, and the bias on against off for KK-LSE.
 
 **Stage 2: confirm and extend.**
 - Three seeds on the 1,319-question test set, needing a mean gain of at least +3 with a paired CI that excludes 0.
@@ -137,11 +148,12 @@ Q "\n" <start> <latent> × 78 <end>          (GPT-2 config: 6 blocks × 13 slots
 | File | What it does |
 |---|---|
 | `scripts/inner_loop/looped.py` | The looped step (`latent_step`), the zero-initialized loop parameters, and SIM-CoT's step decoder and step loss |
-| `scripts/inner_loop/eval.py` | Evaluation arms: `plain`, `loopK`, `dampKxG`, `rerunR`, with `@D` for depth; `--decoder` reads every latent back |
-| `scripts/inner_loop/train.py` | Stage 1 arms `ft6`, `ft12`, `loop` and `loop_k1`, trained on answer CE plus the step loss |
-| `scripts/inner_loop/report.py` | Stage 0's identity, decoder and error checks; Stage 1's go/no-go with exact sign tests |
-| `notebooks/DSA_Inner_Loop_Colab.ipynb` | Colab notebook with `STAGE = 0` or `1` |
-| `tests/test_inner_loop.py`, `tests/test_inner_loop_scripts.py` | 12 tests on tiny random GPT-2s, including end-to-end train → eval → report |
+| `scripts/inner_loop/kk.py` | F's KK-LSE bias on the latent entries, patched into GPT-2's eager attention, with α starting at zero |
+| `scripts/inner_loop/eval.py` | Evaluation arms: `plain`, `nokk`, `loopK`, `dampKxG`, `rerunR`, with `@D` for depth; `--decoder` reads every latent back |
+| `scripts/inner_loop/train.py` | Arms `ft6`, `ft12`, `loop` and `loop_k1`, on answer CE plus the step loss (`--step-weight 0` for the answer alone), with `--kk` for KK-LSE; batch 128 by default |
+| `scripts/inner_loop/report.py` | Stage 0's identity, decoder and error checks; the go/no-go rules of Stages 1 and 1b, with exact sign tests |
+| `notebooks/DSA_Inner_Loop_Colab.ipynb` | Colab notebook with `STAGE = 0`, `1` or `"1b"` |
+| `tests/test_inner_loop.py`, `tests/test_inner_loop_scripts.py` | 18 tests on tiny random GPT-2s, including end-to-end train → eval → report |
 
 ## Sources
 
