@@ -1,0 +1,55 @@
+
+results/step_select/stage0/evals/seed1.jsonl: n=500, greedy 204
+  identity: greedy gives the checkpoint's own answer on 500/500 (PASS)
+  choosing among finished chains: any of k sampled chains right, k=1 189.2, k=4 229.1, k=18 261.0; greedy or any of 18 chains 262 (+58)
+  choosing per step: greedy or any of 18 one-step branches 238 (+34 over greedy)
+  per step: rescued (greedy wrong, a branch right) / broken (greedy right, a branch wrong) / answers changed
+    step 1:  19 /  25 / 286/1500
+    step 2:  20 /  21 / 234/1500
+    step 3:  17 /  22 / 194/1500
+    step 4:  11 /  15 / 197/1500
+    step 5:  11 /   9 / 186/1500
+    step 6:   4 /   2 / 108/1500
+  signal in 176 mixed sets: the fixed rule picks a right candidate 90 times, chance 88.0 (p=0.402); it keeps candidate 0 in 148
+    always keeping candidate 0 would be right 94 times; where the rule moves off it (28 sets), its pick is right 12 times and candidate 0 16
+    AUC valid arithmetic: 0.500
+    AUC grounded operands: 0.493
+    AUC decoder confidence: 0.541
+    AUC rule rank: 0.493
+    step 1: 44 mixed sets, rule right 24, chance 21.2
+    step 2: 41 mixed sets, rule right 22, chance 20.0
+    step 3: 39 mixed sets, rule right 22, chance 20.0
+    step 4: 26 mixed sets, rule right 15, chance 14.8
+    step 5: 20 mixed sets, rule right 5, chance 9.5
+    step 6: 6 mixed sets, rule right 2, chance 2.5
+  untrained selector vs greedy 203 vs 204: -1 (+6/-7, p=1.000); vs majority of 4 chains 203 vs 191: +12 (+22/-10, p=0.050); it left candidate 0 somewhere on 268/500 questions
+  majority of 4 chains 191, of 18 chains 199
+
+results/step_select/stage0/evals/seed2.jsonl: n=500, greedy 204
+  identity: greedy gives the checkpoint's own answer on 500/500 (PASS)
+  choosing among finished chains: any of k sampled chains right, k=1 189.8, k=4 228.9, k=18 258.0; greedy or any of 18 chains 259 (+55)
+  choosing per step: greedy or any of 18 one-step branches 234 (+30 over greedy)
+  per step: rescued (greedy wrong, a branch right) / broken (greedy right, a branch wrong) / answers changed
+    step 1:  19 /  23 / 288/1500
+    step 2:  11 /  17 / 235/1500
+    step 3:  19 /  18 / 199/1500
+    step 4:  13 /  18 / 227/1500
+    step 5:  11 /  13 / 178/1500
+    step 6:   6 /   4 / 108/1500
+  signal in 172 mixed sets: the fixed rule picks a right candidate 99 times, chance 88.0 (p=0.038); it keeps candidate 0 in 134
+    always keeping candidate 0 would be right 93 times; where the rule moves off it (38 sets), its pick is right 22 times and candidate 0 16
+    AUC valid arithmetic: 0.501
+    AUC grounded operands: 0.515
+    AUC decoder confidence: 0.507
+    AUC rule rank: 0.516
+    step 1: 42 mixed sets, rule right 22, chance 20.5
+    step 2: 28 mixed sets, rule right 19, chance 16.5
+    step 3: 37 mixed sets, rule right 20, chance 17.8
+    step 4: 31 mixed sets, rule right 17, chance 17.2
+    step 5: 24 mixed sets, rule right 16, chance 12.0
+    step 6: 10 mixed sets, rule right 5, chance 4.0
+  untrained selector vs greedy 201 vs 204: -3 (+3/-6, p=0.508); vs majority of 4 chains 201 vs 193: +8 (+25/-17, p=0.280); it left candidate 0 somewhere on 262/500 questions
+  majority of 4 chains 193, of 18 chains 196
+
+Pooled over 2 run(s): branches cover 6.4% more than greedy; the rule is right in 189 mixed sets against chance 176.0 (p=0.071); untrained selector vs greedy -4 (+9/-13, p=0.523)
+  STOP: choosing per step has too little room, or the decoder cannot tell candidates apart

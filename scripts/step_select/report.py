@@ -125,6 +125,10 @@ for path in args.runs:
     keeps_own = sum(choose(c) == 0 for _, c in sets)
     print(f"  signal in {len(sets)} mixed sets: the fixed rule picks a right candidate {hits} times, chance "
           f"{sum(chances):.1f} (p={upper_tail(chances, hits):.3f}); it keeps candidate 0 in {keeps_own}")
+    moves = [c for _, c in sets if choose(c) != 0]
+    print(f"    always keeping candidate 0 would be right {sum(c[0]['correct'] for _, c in sets)} times; where the rule "
+          f"moves off it ({len(moves)} sets), its pick is right {sum(c[choose(c)]['correct'] for c in moves)} times "
+          f"and candidate 0 {sum(c[0]['correct'] for c in moves)}")
     for name, key in (("valid arithmetic", lambda f: int(f["valid"])), ("grounded operands", lambda f: int(f["grounded"])),
                       ("decoder confidence", lambda f: f["logprob"]), ("rule rank", rank)):
         value = auc([c for _, c in sets], key)
