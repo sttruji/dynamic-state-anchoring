@@ -34,3 +34,15 @@ The run used the 500 validation questions, MC dropout at p = 0.2, 4 candidates p
 - **Branching breaks as much as it rescues.** At steps 1–3, one rerun of a step rescues about 17–20 questions and breaks
   about as many.
 - **Dropout chains have more room but are individually weaker than greedy,** so voting over them lands below greedy.
+
+## Run 1 (planned, frozen before running): the steps 1–3 vote and a hidden-state probe, on the test set
+
+The plan is in `run1/PLAN.md`, pinned by `run1/PLAN.sha256`. It is evaluation only and is the last test of step-level
+selection. It runs greedy plus 7 dropout reruns at each of steps 1–3 on the 1,319 GSM8K test questions, with a 20 G4-minute
+cap. The code is `scripts/step_select/run1.py` and `run1_report.py`, and the notebook is
+`notebooks/DSA_Step_Select_Run1_Colab.ipynb`, opted in with `RUN_TEST`.
+
+| Test | Pass | Otherwise |
+|---|---|---|
+| A. Vote over greedy and the first 3 reruns at steps 1–3 | CONFIRM: net ≥ +8 and question-level p < 0.05 | KILL |
+| B. A hidden-state probe, cross-fitted over 5 question folds | GO: within-set AUC ≥ 0.65, net ≥ +27 and p < 0.05 | REPORT if only the AUC passes; KILL if AUC < 0.65 |

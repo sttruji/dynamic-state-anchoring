@@ -113,6 +113,10 @@ The comparison with the 19 finished answers is reported, but it doesn't gate.
 **Stage 2: confirm.** Three seeds on the 1,319-question test set. Then CODI GPT-2, which needs a step reader other than
 SIM-CoT's decoder, and the comparison with LatentTTS.
 
+**After Stage 0: Run 1.** Stage 0 stopped, and E0 found one small positive. Run 1 is the last test of step-level
+selection, frozen in `results/step_select/run1/PLAN.md`. It runs on the test set and checks two things: the fixed
+steps 1–3 vote, and a hidden-state probe in place of decoder features.
+
 **After the plan: an extension to keep several candidates per step.** It is tested after the stages above and changes
 none of them. A policy may keep extra candidates at a step, and the kept candidates are used in one of two ways:
 - their chains continue and vote at the answer, the "spine plus hedges" design;
