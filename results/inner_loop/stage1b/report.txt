@@ -1,0 +1,76 @@
+
+base-simcot: n=500
+  plain         204 (29/173)
+  step decoder on plain latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 471 consistent, 199 of 494 exact
+    1: 500 parsed, 461 consistent, 100 of 468 exact
+    2: 500 parsed, 461 consistent,  21 of 313 exact
+    3: 500 parsed, 462 consistent,   4 of 173 exact
+    4: 500 parsed, 460 consistent,   2 of 82 exact
+    5: 500 parsed, 457 consistent,   0 of 29 exact
+    6: 500 parsed, 462 consistent,   0 of 11 exact
+  wrong answers on plain: 30 readout (a decoded step holds the answer), 78 arithmetic (a decoded step miscalculates), 188 plan (neither)
+
+ft6_step: n=500
+  plain         209 (29/173)
+  step decoder on plain latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 473 consistent, 194 of 494 exact
+    1: 500 parsed, 455 consistent, 111 of 468 exact
+    2: 500 parsed, 438 consistent,  37 of 313 exact
+    3: 500 parsed, 434 consistent,   6 of 173 exact
+    4: 500 parsed, 444 consistent,   2 of 82 exact
+    5: 500 parsed, 440 consistent,   0 of 29 exact
+    6: 500 parsed, 448 consistent,   0 of 11 exact
+
+ft6_ce: n=500
+  plain         201 (26/173)
+  step decoder on plain latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 470 consistent, 194 of 494 exact
+    1: 500 parsed, 468 consistent,  91 of 468 exact
+    2: 500 parsed, 460 consistent,  20 of 313 exact
+    3: 500 parsed, 460 consistent,   3 of 173 exact
+    4: 500 parsed, 465 consistent,   2 of 82 exact
+    5: 500 parsed, 458 consistent,   0 of 29 exact
+    6: 500 parsed, 459 consistent,   0 of 11 exact
+
+loop_ce: n=500
+  plain         206 (29/173)
+  loop1         206 (29/173)   vs plain +0 (+0/-0, p=1.000), same answer 500, max drift 0.0e+00
+  loop2         208 (29/173)   vs plain +2 (+2/-0, p=0.500), same answer 488, max drift 1.6e+01
+  loop3         210 (30/173)   vs plain +4 (+4/-0, p=0.125), same answer 480, max drift 1.6e+01
+  loop4         210 (30/173)   vs plain +4 (+4/-0, p=0.125), same answer 462, max drift 1.9e+01
+  loop5         210 (29/173)   vs plain +4 (+5/-1, p=0.219), same answer 448, max drift 2.0e+01
+  loop6         210 (29/173)   vs plain +4 (+7/-3, p=0.344), same answer 441, max drift 2.0e+01
+  loop7         210 (29/173)   vs plain +4 (+8/-4, p=0.388), same answer 433, max drift 2.0e+01
+  loop8         210 (29/173)   vs plain +4 (+11/-7, p=0.481), same answer 418, max drift 2.0e+01
+  step decoder on loop1 latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 468 consistent, 195 of 494 exact
+    1: 500 parsed, 458 consistent,  91 of 468 exact
+    2: 500 parsed, 464 consistent,  25 of 313 exact
+    3: 500 parsed, 459 consistent,   4 of 173 exact
+    4: 500 parsed, 457 consistent,   2 of 82 exact
+    5: 500 parsed, 454 consistent,   0 of 29 exact
+    6: 500 parsed, 460 consistent,   0 of 11 exact
+
+kk_ce: n=500
+  plain         204 (30/173)
+  nokk          203 (29/173)   vs plain -1 (+0/-1, p=1.000), same answer 499, max drift 2.0e-01
+  step decoder on plain latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 469 consistent, 196 of 494 exact
+    1: 500 parsed, 466 consistent,  92 of 468 exact
+    2: 500 parsed, 461 consistent,  21 of 313 exact
+    3: 500 parsed, 457 consistent,   4 of 173 exact
+    4: 500 parsed, 457 consistent,   2 of 82 exact
+    5: 500 parsed, 460 consistent,   0 of 29 exact
+    6: 500 parsed, 459 consistent,   0 of 11 exact
+
+Stage 1b (batch 128): the recipe check, the loop on the answer loss alone, and KK-LSE at 6 steps
+  ft6_ce vs the SIM-CoT base: 201 vs 204: -3 (+13/-16, p=0.711)
+  recipe: answer loss only (ft6_ce) vs with the step loss (ft6_step): 201 vs 209: -8 (+10/-18, p=0.185)
+    no clear difference between the recipes
+  loop_ce k=3 vs ft6_ce: 210 vs 201: +9 (+16/-7, p=0.093)
+  loop_ce k=3 vs k=1: 210 vs 206: +4 (+4/-0, p=0.125)
+    mean |gate| 0.00893; loop on the answer loss alone: AMBIGUOUS
+  kk_ce vs ft6_ce: 204 vs 201: +3 (+8/-5, p=0.581)
+  kk_ce with the bias vs without it at test (nokk): 204 vs 203: +1 (+1/-0, p=1.000)
+    mean |alpha| 0.02603, max 0.10774; KK-LSE at 6 steps: STOP

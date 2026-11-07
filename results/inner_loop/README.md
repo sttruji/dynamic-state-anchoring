@@ -42,3 +42,40 @@ Idea A loops GPT-2 layers 4–7 inside each of SIM-CoT GPT-2's six latent steps,
 - Training at 12 steps removes the drift past 6 steps: `ft12`@12 scores 201 against the base's 185 at 12 steps
   (+30/−14, p=0.023). It does not beat 6 steps.
 - Each arm trained in 7–11 minutes, about 14 s per 100 updates for `ft6`. The whole stage took about 50 minutes.
+
+## Stage 1b (G4, batch 128, 768 updates per arm, seed 7, commit `6db4f35`): the recipe check and KK-LSE
+
+Stage 1's `ft6` scored 16 below the main line's answer-only `ft6` (199 vs 215, p=0.011). Stage 1b asks two questions:
+- whether that gap, and the loop's null, came from the step loss;
+- whether idea F's KK-LSE bias helps the readout at 6 steps.
+
+| Arm | Correct /500 | Notes |
+|---|---|---|
+| SIM-CoT base | 204 | |
+| `ft6_step` (answer loss + step loss) | 209 | |
+| `ft6_ce` (answer loss only) | 201 | vs the base −3 (p=0.71); the control for the two arms below |
+| `loop_ce` at k = 1 / 2 / 3 / 4–8 | 206 / 208 / 210 / 210 | k=3 vs `ft6_ce`: +9 (+16/−7, p=0.093); k=3 vs k=1: +4 (+4/−0, p=0.125) |
+| `kk_ce`, bias on / off at test | 204 / 203 | vs `ft6_ce`: +3 (p=0.58); bias on vs off: +1 (1 answer of 500 changes) |
+
+- **Recipe:** the step loss did not cost accuracy. `ft6_step` beat `ft6_ce` by 8 (p=0.19).
+  - The ft6 fine-tunes so far score 199, 201, 209 and 215 across runs.
+  - A single-seed gap of about 8 between runs is therefore within run-to-run noise.
+- **Loop:** AMBIGUOUS under the Stage 1 thresholds.
+  - At k=3 the four answers that change from k=1 are all fixes of an arithmetic slip, and accuracy holds at 210 through
+    k=8.
+  - Most of the +9 is already there at k=1 (206 vs 201).
+  - It is +1 over `ft6_step` (+17/−16).
+  - The gate peaked at 0.011 and ended at 0.009, and the answer loss on matched batches is flat.
+- **KK-LSE:** STOP. α reached a mean |α| of 0.026 (max 0.11), and switching the bias off at test changes 1 answer of 500.
+- Each arm trained in about 3 minutes, and the whole run took about 30 minutes.
+
+### Decision rule for a second seed
+
+This rule was written on 6 November, before seed 8 ran. Seed 8 reruns Stage 1b with `SEED = 8`, which changes the
+dropout and the sampled problems. The loop is **GO** only if all three hold:
+1. Pooled over seeds 7 and 8, `loop_ce`@k3 beats `ft6_ce` by at least +7 per seed on average, with p < 0.05 on the
+   pooled paired sign test (1,000 question-runs).
+2. k3 is at least k1 within `loop_ce` in each seed.
+3. Pooled, `loop_ce`@k3 is at least `ft6_step`.
+
+Anything else is **STOP**: idea A is written up as a null.
