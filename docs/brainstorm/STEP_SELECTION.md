@@ -70,7 +70,9 @@ validation questions, with MC dropout at p = 0.2 (LatentTTS's rate) and two samp
    - For each feature, what is its AUC, the chance it ranks a right candidate above a wrong one?
 5. **A selector with no training:**
    - It generates 4 candidates per step, keeps one by the rule, and continues from it.
-   - Its cost is about the same as 4 chains, so it is compared with majority vote over 4 chains.
+   - It runs as many generator steps as 4 chains, so it is compared with majority vote over 4 chains. Counting the
+     decoder reads as well, it costs about as much as 19 chains ([Keeping several latent candidates per
+     step](MULTI_CANDIDATE_SELECTION.md), section 4.1), so the report also gives majority vote over all 18 chains.
 
 **The fixed decoder rule.** It was set before any run:
 - Each candidate is ranked by two checks, in this order: does its decoded step have correct arithmetic, and are its
@@ -110,6 +112,14 @@ The comparison with the 19 finished answers is reported, but it doesn't gate.
 
 **Stage 2: confirm.** Three seeds on the 1,319-question test set. Then CODI GPT-2, which needs a step reader other than
 SIM-CoT's decoder, and the comparison with LatentTTS.
+
+**After the plan: an extension to keep several candidates per step.** It is tested after the stages above and changes
+none of them. A policy may keep extra candidates at a step, and the kept candidates are used in one of two ways:
+- their chains continue and vote at the answer, the "spine plus hedges" design;
+- or they merge into one state.
+
+It starts with offline checks on Stage 0's records, then trains keep-gates on top of Stage 1's selector. The design study
+and its sources are in [Keeping several latent candidates per step](MULTI_CANDIDATE_SELECTION.md).
 
 ## Stage 0, concretely
 
