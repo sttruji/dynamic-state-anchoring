@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import json
+import math
 import os
 import random
 import sys
@@ -31,9 +32,9 @@ parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--train-file", type=Path,
                     default=Path(os.environ.get("DSA_DATA_DIR", ROOT / "data")) / "gsm_train.json")
 parser.add_argument("--records", type=int, default=98_304)
-parser.add_argument("--batch", type=int, default=32)
-parser.add_argument("--lr", type=float, default=2e-5)
-parser.add_argument("--loop-lr", type=float, default=1e-3, help="for the new loop parameters (untested)")
+parser.add_argument("--batch", type=int, default=128)
+parser.add_argument("--lr", type=float, help="default 2e-5 at batch 32, scaled by sqrt(batch / 32)")
+parser.add_argument("--loop-lr", type=float, help="for the loop parameters; 1e-3 at batch 32, scaled the same way")
 parser.add_argument("--warmup", type=float, default=0.03)
 parser.add_argument("--step-weight", type=float, default=1.0, help="weight of the step-decoder loss")
 parser.add_argument("--k-max", type=int, default=4)
@@ -48,6 +49,9 @@ parser.add_argument("--bf16", action="store_true")
 parser.add_argument("--save-every", type=int, default=200)
 parser.add_argument("--log-every", type=int, default=10)
 args = parser.parse_args()
+# The rates were set at batch 32 (Stage 1); Adam's square-root rule carries them to other batch sizes.
+args.lr = 2e-5 * math.sqrt(args.batch / 32) if args.lr is None else args.lr
+args.loop_lr = 1e-3 * math.sqrt(args.batch / 32) if args.loop_lr is None else args.loop_lr
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 

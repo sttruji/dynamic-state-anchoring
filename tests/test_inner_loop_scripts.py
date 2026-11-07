@@ -1,6 +1,7 @@
 """Smoke test of scripts/inner_loop/train.py and eval.py end to end on tiny random models (no downloads): a loop arm
 trains and saves, its gate leaves zero, and the evaluator's identity arms reproduce `plain` exactly."""
 import json
+import math
 import os
 import runpy
 import sys
@@ -130,6 +131,7 @@ class ScriptsTest(unittest.TestCase):
                                  "--device", "cpu", "--rank", 2])
                 args = json.loads((folder / arm / "args.json").read_text())
                 self.assertEqual(args["depth"], 12 if arm == "ft12" else 6)
+                self.assertAlmostEqual(args["lr"], 2e-5 * math.sqrt(4 / 32))  # scaled from batch 32
             self.assertTrue((folder / "loop_k1/model/loop.pt").exists())
             self.assertFalse((folder / "ft12/model/loop.pt").exists())
 
