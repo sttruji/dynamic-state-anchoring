@@ -1,0 +1,13 @@
+{
+ "dataset": "gsm8k_test",
+ "questions": 1319,
+ "done": 1319,
+ "capped": false,
+ "seconds": 195.28563785552979,
+ "sessions": 2,
+ "reruns": 7,
+ "steps": 3,
+ "p": 0.2,
+ "seed": 3,
+ "identity": 1319
+}

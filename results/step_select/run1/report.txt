@@ -1,0 +1,17 @@
+Run 1: 1319/1319 questions, 3 rerun steps x 7 reruns; greedy 519 (39.3%); greedy matches the reference on 1319/1319
+
+A. Vote over greedy and the first 3 reruns at steps 1-3: 528 vs greedy 519, net +9 (+12/-3, p=0.035)
+  A: CONFIRM
+
+B. Hidden-state probe
+  400 mixed sets of 3957
+  outer fold 0: 277 questions, L2 0.1, margin 1.0 (inner AUC 0.504, inner net +9)
+  outer fold 1: 255 questions, L2 10.0, margin 1.0 (inner AUC 0.486, inner net -2)
+  outer fold 2: 268 questions, L2 10.0, margin 0.0 (inner AUC 0.515, inner net +13)
+  outer fold 3: 260 questions, L2 10.0, margin 0.25 (inner AUC 0.498, inner net +1)
+  outer fold 4: 259 questions, L2 1.0, margin 1.0 (inner AUC 0.486, inner net +3)
+  within-set AUC 0.495 over 400 mixed sets (a candidate-0 detector: 0.499)
+  one-deviation selector at K=4: 518 vs greedy 519, net -1 (+14/-15, p=1.000)
+  learning curve: within-set AUC 0.499 with 40% of the training questions
+  learning curve: within-set AUC 0.498 with 80% of the training questions
+  B: KILL: every selector route ends
