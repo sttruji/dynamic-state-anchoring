@@ -1,0 +1,61 @@
+E0 on 2 run(s), n=500 each. Greedy 204 / 204. Costs in token-forwards: decoded step 8.5, answer 7.0, one chain 13.
+
+O1. Diversity: per (question, step), greedy plus 3 reruns
+  distinct answers per 4-set {1: 2282, 2: 576, 3: 128, 4: 14}; mixed sets with the right answer held by one candidate 57, by two or more 119
+  questions greedy gets wrong with k of 18 branches right (4 = four or more): {1: 12, 2: 4, 3: 6, 4: 12}
+  distinct answers per 4-set {1: 2258, 2: 600, 3: 133, 4: 9}; mixed sets with the right answer held by one candidate 57, by two or more 115
+  questions greedy gets wrong with k of 18 branches right (4 = four or more): {1: 8, 2: 5, 3: 3, 4: 14}
+
+O2. Vote-reachable coverage (the gate): greedy right, or at least 2 branches right
+  pick-reachable 238 (+34), vote-reachable 226 (+22) of 500
+  pick-reachable 234 (+30), vote-reachable 226 (+22) of 500
+  gate: vote-reachable coverage adds 4.4% over greedy (bar 4%) -> PASS: keep-alive multi-select is worth building
+
+O3. Fixed hedging policies, V1 vote, greedy spine (accuracy per seed)
+  (i) all 3 reruns at step 1                           205 / 206   vs greedy +3 (+9/-6, p=0.607); about 52 token-forwards per question
+  (i) all 3 reruns at step 2                           204 / 207   vs greedy +3 (+5/-2, p=0.453); about 49 token-forwards per question
+  (i) all 3 reruns at step 3                           204 / 202   vs greedy -2 (+4/-6, p=0.754); about 46 token-forwards per question
+  (i) all 3 reruns at step 4                           206 / 206   vs greedy +4 (+6/-2, p=0.289); about 43 token-forwards per question
+  (i) all 3 reruns at step 5                           205 / 203   vs greedy +0 (+1/-1, p=1.000); about 40 token-forwards per question
+  (i) all 3 reruns at step 6                           203 / 203   vs greedy -2 (+0/-2, p=0.500); about 37 token-forwards per question
+  (ii) all reruns at steps 1-3                         208 / 211   vs greedy +11 (+12/-1, p=0.003); about 121 token-forwards per question
+  (iii) all 18 reruns                                  206 / 205   vs greedy +3 (+5/-2, p=0.453); about 202 token-forwards per question
+  (iv) reruns whose decoded result differs from greedy's 207 / 206   vs greedy +5 (+5/-0, p=0.062); about 327 token-forwards per question
+  (v) reruns whose rule rank ties or beats candidate 0's 206 / 205   vs greedy +3 (+5/-2, p=0.453); about 388 token-forwards per question
+
+O4. Commit to the rule's pick at one step, or vote over every candidate tied for the rule's best rank
+  step 1: commit to the rule's pick                    203 / 203   vs greedy -2 (+1/-3, p=0.625)
+  step 1: vote over the best-ranked                    205 / 206   vs greedy +3 (+8/-5, p=0.581)
+  step 2: commit to the rule's pick                    205 / 206   vs greedy +3 (+4/-1, p=0.375)
+  step 2: vote over the best-ranked                    203 / 207   vs greedy +2 (+5/-3, p=0.727)
+  step 3: commit to the rule's pick                    204 / 206   vs greedy +2 (+3/-1, p=0.625)
+  step 3: vote over the best-ranked                    203 / 201   vs greedy -4 (+2/-6, p=0.289)
+  step 4: commit to the rule's pick                    204 / 203   vs greedy -1 (+3/-4, p=1.000)
+  step 4: vote over the best-ranked                    204 / 205   vs greedy +1 (+3/-2, p=1.000)
+  step 5: commit to the rule's pick                    200 / 207   vs greedy -1 (+3/-4, p=1.000)
+  step 5: vote over the best-ranked                    205 / 203   vs greedy +0 (+1/-1, p=1.000)
+  step 6: commit to the rule's pick                    204 / 205   vs greedy +1 (+2/-1, p=1.000)
+  step 6: vote over the best-ranked                    204 / 203   vs greedy -1 (+0/-1, p=1.000)
+
+O5. Votes over branches against votes over chains (V1, greedy as spine)
+  greedy + 18 branches                                 206 / 205   vs greedy +3 (+5/-2, p=0.453); about 202 token-forwards per question
+  greedy + 18 chains                                   201 / 200   vs greedy -7 (+27/-34, p=0.443); about 247 token-forwards per question
+  greedy + 15 chains (the branches' cost)              199 / 202   vs greedy -7 (+25/-32, p=0.427); about 208 token-forwards per question
+  one dropout chain alone, expected correct: 189.2 / 189.8
+
+O6. Level-balanced vote (each step's reruns share weight 1) against the flat vote
+  level-balanced, all 18 reruns                        205 / 206   vs greedy +3 (+4/-1, p=0.375)
+
+O7. Decoded results as a consistency signal
+  P(same final answer as greedy | same decoded result) 0.877, | different decoded result 0.858; AUC of 'answer appears among decoded results' in mixed sets 0.474
+  P(same final answer as greedy | same decoded result) 0.867, | different decoded result 0.859; AUC of 'answer appears among decoded results' in mixed sets 0.508
+
+O8. A learned keep-gate from decoder features, fit on one seed and scored on the other
+  fit on seed run 1, scored on run 2: t=0.9: 204 (+0, 0.0 hedges); t=0.7: 204 (+0, 0.4 hedges); t=0.5: 204 (+0, 5.3 hedges); t=0.3: 205 (+1, 13.2 hedges); t=0.1: 205 (+1, 17.4 hedges)
+  fit on seed run 2, scored on run 1: t=0.9: 204 (+0, 0.0 hedges); t=0.7: 204 (+0, 0.3 hedges); t=0.5: 205 (+1, 5.4 hedges); t=0.3: 205 (+1, 13.4 hedges); t=0.1: 206 (+2, 17.4 hedges)
+
+O9. Where to hedge against which candidate to trust (oracles)
+  best single step to hedge, then vote: 212 (+8); best single branch: 238 (+34)
+  best single step to hedge, then vote: 214 (+10); best single branch: 234 (+30)
+
+E0 gate: PASS: keep-alive multi-select is worth building
