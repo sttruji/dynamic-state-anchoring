@@ -1,0 +1,33 @@
+
+base-simcot: n=500
+  plain         204 (29/173)
+  loop1         204 (29/173)   vs plain +0 (+0/-0, p=1.000), same answer 500, max drift 0.0e+00
+  loop2         204 (29/173)   vs plain +0 (+0/-0, p=1.000), same answer 500, max drift 0.0e+00
+  loop4         204 (29/173)   vs plain +0 (+0/-0, p=1.000), same answer 500, max drift 0.0e+00
+  damp2x0.25    203 (30/173)   vs plain -1 (+4/-5, p=1.000), same answer 459, max drift 1.3e+01
+  damp2x0.5     197 (24/173)   vs plain -7 (+6/-13, p=0.167), same answer 430, max drift 1.7e+01
+  damp3x0.25    197 (24/173)   vs plain -7 (+6/-13, p=0.167), same answer 429, max drift 1.6e+01
+  rerun2        139 (15/173)   vs plain -65 (+19/-84, p=0.000), same answer 254, max drift 3.3e+01
+  rerun3        151 (10/173)   vs plain -53 (+22/-75, p=0.000), same answer 253, max drift 3.2e+01
+  plain@12      185 (20/173)   vs plain -19 (+4/-23, p=0.000), same answer 375
+  identity base-simcot loop1: PASS (max drift 0.0e+00)
+  identity base-simcot loop2: PASS (max drift 0.0e+00)
+  identity base-simcot loop4: PASS (max drift 0.0e+00)
+  step decoder on plain latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 471 consistent, 199 of 494 exact
+    1: 500 parsed, 461 consistent, 100 of 468 exact
+    2: 500 parsed, 461 consistent,  21 of 313 exact
+    3: 500 parsed, 462 consistent,   4 of 173 exact
+    4: 500 parsed, 460 consistent,   2 of 82 exact
+    5: 500 parsed, 457 consistent,   0 of 29 exact
+    6: 500 parsed, 462 consistent,   0 of 11 exact
+  wrong answers on plain: 30 readout (a decoded step holds the answer), 78 arithmetic (a decoded step miscalculates), 188 plan (neither)
+
+base-codi: n=500
+  plain         206 (30/173)
+  loop1         206 (30/173)   vs plain +0 (+0/-0, p=1.000), same answer 500, max drift 0.0e+00
+  loop4         206 (30/173)   vs plain +0 (+0/-0, p=1.000), same answer 500, max drift 0.0e+00
+  damp2x0.5     205 (30/173)   vs plain -1 (+8/-9, p=1.000), same answer 416, max drift 1.2e+01
+  rerun2         44 (8/173)   vs plain -162 (+13/-175, p=0.000), same answer 74, max drift 8.7e+01
+  identity base-codi loop1: PASS (max drift 0.0e+00)
+  identity base-codi loop4: PASS (max drift 0.0e+00)

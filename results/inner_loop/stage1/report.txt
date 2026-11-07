@@ -1,0 +1,58 @@
+
+ft6: n=500
+  plain         199 (26/173)
+  step decoder on plain latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 469 consistent, 193 of 494 exact
+    1: 500 parsed, 454 consistent, 120 of 468 exact
+    2: 500 parsed, 445 consistent,  40 of 313 exact
+    3: 500 parsed, 433 consistent,   6 of 173 exact
+    4: 500 parsed, 454 consistent,   1 of 82 exact
+    5: 500 parsed, 434 consistent,   0 of 29 exact
+    6: 500 parsed, 442 consistent,   0 of 11 exact
+
+ft12: n=500
+  plain         196 (24/173)
+  plain@12      201 (23/173)   vs plain +5 (+17/-12, p=0.458), same answer 358
+  step decoder on plain latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 472 consistent, 192 of 494 exact
+    1: 500 parsed, 453 consistent, 118 of 468 exact
+    2: 500 parsed, 445 consistent,  37 of 313 exact
+    3: 500 parsed, 445 consistent,   7 of 173 exact
+    4: 500 parsed, 445 consistent,   2 of 82 exact
+    5: 500 parsed, 451 consistent,   0 of 29 exact
+    6: 500 parsed, 448 consistent,   0 of 11 exact
+
+loop: n=500
+  plain         200 (23/173)
+  loop1         200 (23/173)   vs plain +0 (+0/-0, p=1.000), same answer 500, max drift 0.0e+00
+  loop2         201 (23/173)   vs plain +1 (+3/-2, p=1.000), same answer 479, max drift 2.0e+01
+  loop3         201 (22/173)   vs plain +1 (+6/-5, p=1.000), same answer 453, max drift 2.0e+01
+  loop4         197 (22/173)   vs plain -3 (+6/-9, p=0.607), same answer 439, max drift 2.0e+01
+  loop5         198 (23/173)   vs plain -2 (+7/-9, p=0.804), same answer 425, max drift 2.1e+01
+  loop6         197 (22/173)   vs plain -3 (+8/-11, p=0.648), same answer 409, max drift 2.5e+01
+  loop7         195 (24/173)   vs plain -5 (+11/-16, p=0.442), same answer 392, max drift 2.6e+01
+  loop8         194 (25/173)   vs plain -6 (+11/-17, p=0.345), same answer 376, max drift 2.7e+01
+  step decoder on loop1 latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 471 consistent, 195 of 494 exact
+    1: 500 parsed, 454 consistent, 115 of 468 exact
+    2: 500 parsed, 449 consistent,  36 of 313 exact
+    3: 500 parsed, 433 consistent,   5 of 173 exact
+    4: 500 parsed, 453 consistent,   2 of 82 exact
+    5: 500 parsed, 440 consistent,   0 of 29 exact
+    6: 500 parsed, 444 consistent,   0 of 11 exact
+
+loop_k1: n=500
+  plain         196 (21/173)
+  loop1         200 (25/173)   vs plain +4 (+16/-12, p=0.572), same answer 402, max drift 2.4e+01
+  step decoder on loop1 latents (slot: parsed, consistent of parsed, exact of gold-scored)
+    0: 500 parsed, 473 consistent, 190 of 494 exact
+    1: 500 parsed, 460 consistent, 110 of 468 exact
+    2: 500 parsed, 440 consistent,  41 of 313 exact
+    3: 499 parsed, 439 consistent,   6 of 173 exact
+    4: 500 parsed, 445 consistent,   2 of 82 exact
+    5: 500 parsed, 447 consistent,   0 of 29 exact
+    6: 500 parsed, 445 consistent,   0 of 11 exact
+
+Stage 1 at k=3: loop 201 vs best control ft12@12 201: +0 (+13/-13, p=1.000); k3 vs k1 +1 (+6/-5, p=1.000); mean |gate| 0.01297
+  vs the parameter-matched loop_k1: +1 (+18/-17, p=1.000)
+  STOP: test the duo-causal loop once, then write up the null
