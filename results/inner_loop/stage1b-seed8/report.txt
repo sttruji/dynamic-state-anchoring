@@ -1,0 +1,17 @@
+
+ft6_step: n=500
+  plain         200 (24/173)
+
+ft6_ce: n=500
+  plain         202 (26/173)
+
+loop_ce: n=500
+  loop1         202 (24/173)
+  loop3         205 (25/173)
+
+Stage 1b (batch 128): the recipe check, the loop on the answer loss alone, and KK-LSE at 6 steps
+  recipe: answer loss only (ft6_ce) vs with the step loss (ft6_step): 202 vs 200: +2 (+17/-15, p=0.860)
+    no clear difference between the recipes
+  loop_ce k=3 vs ft6_ce: 205 vs 202: +3 (+15/-12, p=0.701)
+  loop_ce k=3 vs k=1: 205 vs 202: +3 (+5/-2, p=0.453)
+    mean |gate| 0.00936; loop on the answer loss alone: STOP

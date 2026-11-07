@@ -79,3 +79,24 @@ dropout and the sampled problems. The loop is **GO** only if all three hold:
 3. Pooled, `loop_ce`@k3 is at least `ft6_step`.
 
 Anything else is **STOP**: idea A is written up as a null.
+
+## Seed 8 and the pooled verdict: STOP, idea A is a null
+
+Seed 8 ran at commit `ef7a981` in the slim setting: `ft6_step`, `ft6_ce` and `loop_ce` at k = 1 and 3, without the step
+decoder. Its files are in `stage1b-seed8/`, and `pooled.txt` there is the output of `scripts/inner_loop/pool.py` on both
+seeds.
+
+| Comparison | Seed 7 | Seed 8 | Pooled per seed | Rule |
+|---|---|---|---|---|
+| 1. `loop_ce`@k3 vs `ft6_ce` | +9 (210 vs 201) | +3 (205 vs 202) | +6.0 (+31/−19, p=0.119) | fails (needs +7, p < 0.05) |
+| 2. k3 vs k1 within `loop_ce` | +4 | +3 | +3.5 (+9/−2, p=0.065) | holds |
+| 3. `loop_ce`@k3 vs `ft6_step` | +1 (210 vs 209) | +5 (205 vs 200) | +3.0 (p=0.556) | holds |
+| recipe: `ft6_ce` vs `ft6_step` | −8 | +2 | −3.0 (p=0.519) | — |
+
+- **Idea A is a null.** Over two seeds the loop averages 207.5, against 204 for the base and 201.5 and 204.5 for the two
+  ft6 recipes, and no difference is significant.
+- **The loop does help at test time, slightly.** Within each trained loop model, extra passes fix more answers than they
+  break: 9 against 2, pooled. That is about +0.7 points, not significant, and it is a footnote rather than a gain.
+- **The gate never opened.** In all three loop trainings it peaked near 0.011 and ended near 0.009.
+- **Seed noise is as large as the effects tested.** The same `ft6_step` recipe scored 209 at seed 7 and 200 at seed 8.
+  A single-seed pilot on these 500 questions cannot resolve effects smaller than about 10.
