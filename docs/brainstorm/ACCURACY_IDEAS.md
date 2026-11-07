@@ -8,6 +8,18 @@ Brainstorm notes from the dsa-brainstorm session, started 3 November 2026. These
 recommends A first, D as cheap diagnostics, and F paired with a loop that keeps one cache entry per iteration. One
 correction to the list below: 48.24 is PCCoT's 12-latent baseline; PCCoT itself scores 49.48 on GPT-2.
 
+**Update, 6 November: A and F are nulls** (`results/inner_loop/README.md`).
+- Over two seeds, the inner loop beats its control by +6 per seed (p=0.12), short of the preregistered bar, and its gate
+  never opened.
+- KK-LSE at 6 steps changes 1 answer of 500.
+- Seed noise is about 9/500: the same recipe scored 209 and 200 across seeds.
+- B is next, with a twist: SIM-CoT's step decoder as a free verifier for sampled latent chains. Prior work on B (Parallel
+  Test-Time Scaling for Latent Reasoning Models, arXiv 2510.07745, ACL 2026) finds coverage rises but selection is the
+  bottleneck. Its trained latent reward model adds about 1 point, and it states that latents cannot be scored by existing
+  process reward models.
+- On greedy SIM-CoT chains, those whose decoded steps are all arithmetically valid and contain the answer are right 63%
+  of the time, against 36% for the rest. That gap is across questions, though; within a question it is untested.
+
 ## What our evidence says any method must overcome
 
 - **No new work past step 6.** The latents repeat early results: CODI repeats rationale steps 1–2, and SIM-CoT's trailing
