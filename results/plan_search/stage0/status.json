@@ -1,0 +1,13 @@
+{
+ "phase1": {
+  "processed": 5421,
+  "wrong": 1000,
+  "identity_checked": 20,
+  "seconds": 214.96289992332458
+ },
+ "searched": 1000,
+ "capped": false,
+ "search_seconds": 151.86782479286194,
+ "gold_accepted": 676,
+ "wrong_accepted": 478
+}

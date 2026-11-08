@@ -1,0 +1,8 @@
+Phase 1: 5421 training questions, greedy right on 4421 (81.6%), 1000 greedy-wrong; identity checked on 20; 215s
+Phase 2: searched 1000 greedy-wrong questions (152s)
+  gold plans accepted 676 (67.6%); wrong plans accepted 478 (47.8%); both 421, gold only 255, wrong only 57
+  gold: median distance 1.00 of the radius, 858 ended on the boundary, median log-prob gain +1.62
+  wrong: median distance 1.00 of the radius, 875 ended on the boundary, median log-prob gain +1.83
+  base log-prob, median: gold -3.03, wrong -3.81
+
+H Stage 0: KILL (gold under 1.5x wrong): the search writes answers into z1 rather than finding plans, or finds too few

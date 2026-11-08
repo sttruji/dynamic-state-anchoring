@@ -1,0 +1,27 @@
+Starting log-prob gap, gold minus wrong: median +0.13; within 0.5 nats on 620 of 1000; wrong more likely on 294
+Gold against wrong, by how closely the wrong target was matched:
+  all: n=1000, gold 676 (68%), wrong 478 (48%), ratio 1.41; gold only 255, wrong only 57, sign p=4.8e-31
+  gap within 0.25: n=483, gold 274 (57%), wrong 233 (48%), ratio 1.18; gold only 78, wrong only 37, sign p=0.00017
+  gap within 0.5: n=620, gold 374 (60%), wrong 323 (52%), ratio 1.16; gold only 100, wrong only 49, sign p=3.6e-05
+  gap within 1.0: n=725, gold 455 (63%), wrong 392 (54%), ratio 1.16; gold only 117, wrong only 54, sign p=1.6e-06
+  gap within 2.0: n=810, gold 520 (64%), wrong 442 (55%), ratio 1.18; gold only 135, wrong only 57, sign p=1.8e-08
+  wrong at least as likely: n=294, gold 177 (60%), wrong 165 (56%), ratio 1.07; gold only 39, wrong only 27, sign p=0.18
+  gold over 2 nats more likely: n=189, gold 156 (83%), wrong 36 (19%), ratio 4.33; gold only 120, wrong only 0, sign p=1.5e-36
+Acceptance by the target's own starting log-prob:
+  [-inf, -8): gold 10/36 (28%); wrong 11/121 (9%)
+  [-8, -6): gold 20/63 (32%); wrong 20/96 (21%)
+  [-6, -5): gold 23/60 (38%); wrong 26/87 (30%)
+  [-5, -4): gold 69/147 (47%); wrong 53/153 (35%)
+  [-4, -3): gold 124/200 (62%); wrong 98/213 (46%)
+  [-3, -2): gold 203/253 (80%); wrong 167/219 (76%)
+  [-2, -1): gold 210/224 (94%); wrong 103/111 (93%)
+  [-1, 0.01): gold 17/17 (100%); wrong -
+Gold against wrong, by the size of the gold answer:
+  gold in [0, 10): n=130, gold 97 (75%), wrong 86 (66%), ratio 1.13; gold only 16, wrong only 5, sign p=0.027
+  gold in [10, 100): n=458, gold 307 (67%), wrong 260 (57%), ratio 1.18; gold only 86, wrong only 39, sign p=3.2e-05
+  gold in [100, 1000): n=267, gold 179 (67%), wrong 116 (43%), ratio 1.54; gold only 73, wrong only 10, sign p=5.8e-13
+  gold in [1000, inf): n=145, gold 93 (64%), wrong 16 (11%), ratio 5.81; gold only 80, wrong only 3, sign p=2e-20
+Rejected plans:
+  gold: 324, of which 162 still give greedy's answer
+  wrong: 522, of which 226 give greedy's answer and 76 give gold
+Median |wrong target - gold|: 12.0
