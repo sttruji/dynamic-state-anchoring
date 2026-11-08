@@ -1,0 +1,77 @@
+Identity: 500 of 500 validation predictions match the reference
+Training extraction: 9000 of 9000 questions, 343s
+Answer reading point: layer 12, step 6
+Step reading points: c1 at layer 3, step 1, c2 at layer 3, step 2, c3 at layer 3, step 3, c4 at layer 6, step 6, c5 at layer 6, step 6, c6 at layer 12, step 4
+
+train: 9000 questions, greedy right 5940; wrong in scope 2650 (wrong with a non-integer or out-of-range prediction: 246)
+  sensitivity s = 0.087 (gold read exactly on greedy-right questions)
+  wrong questions, reading at the answer point: gold g = 0.023 (g/s = 0.27), own prediction w = 0.026 (w/s = 0.30), other 0.951
+  control at <bot>: gold g0 = 0.018, own prediction w0 = 0.020
+  break profile (3+ steps): right early 0.555 late 0.428 (n=2870); wrong early 0.890 late 0.108 (n=2009); excess early 0.335, late 0.000
+  by step count: n | greedy right | g | w
+    1 | 1386/1500 | 0.07 | 0.06 (wrong 99)
+    2 | 1327/1500 | 0.03 | 0.02 (wrong 149)
+    3 | 1204/1500 | 0.02 | 0.03 (wrong 247)
+    4 | 988/1500 | 0.03 | 0.02 (wrong 454)
+    5 | 627/1500 | 0.02 | 0.02 (wrong 765)
+    6 | 408/1500 | 0.02 | 0.03 (wrong 936)
+  answer exact rate by position at layer 12, right | wrong-reads-gold | wrong-reads-own:
+      <bot>: 0.052 | 0.018 | 0.020
+     step 1: 0.080 | 0.016 | 0.018
+     step 2: 0.085 | 0.022 | 0.022
+     step 3: 0.078 | 0.023 | 0.028
+     step 4: 0.081 | 0.023 | 0.023
+     step 5: 0.083 | 0.024 | 0.028
+     step 6: 0.087 | 0.023 | 0.026
+      <eot>: 0.053 | 0.023 | 0.026
+  step exact rate on greedy-right questions, by position (each step at its reading point's layer):
+    c1 (layer 3, n=5684, 6% literally in the question): 0.03 0.63 0.21 0.24 0.24 0.23 0.21 0.24
+    c2 (layer 3, n=4334, 8% literally in the question): 0.03 0.06 0.43 0.13 0.22 0.16 0.22 0.18
+    c3 (layer 3, n=3059, 8% literally in the question): 0.02 0.05 0.06 0.20 0.11 0.17 0.14 0.11
+    c4 (layer 6, n=1950, 6% literally in the question): 0.03 0.04 0.04 0.05 0.07 0.07 0.09 0.07
+    c5 (layer 6, n=981, 6% literally in the question): 0.03 0.04 0.03 0.04 0.05 0.05 0.06 0.04
+    c6 (layer 12, n=391, 5% literally in the question): 0.04 0.06 0.07 0.07 0.09 0.08 0.08 0.06
+  gold exact rate on greedy-right questions by answer size:
+    [0, 10): 0.157 (n=808)
+    [10, 100): 0.095 (n=2866)
+    [100, 1000): 0.054 (n=1726)
+    [1000, 10000): 0.032 (n=437)
+
+valid: 500 questions, greedy right 204; wrong in scope 241 (wrong with a non-integer or out-of-range prediction: 31)
+  sensitivity s = 0.055 (gold read exactly on greedy-right questions)
+  wrong questions, reading at the answer point: gold g = 0.037 (g/s = 0.68), own prediction w = 0.021 (w/s = 0.38), other 0.942
+  control at <bot>: gold g0 = 0.021, own prediction w0 = 0.029
+  break profile (3+ steps): right early 0.605 late 0.383 (n=81); wrong early 0.902 late 0.093 (n=193); excess early 0.297, late 0.000
+  by step count: n | greedy right | g | w
+    1 | 13/26 | 0.00 | 0.00 (wrong 10)
+    2 | 103/155 | 0.00 | 0.04 (wrong 47)
+    3 | 58/140 | 0.05 | 0.00 (wrong 74)
+    4 | 18/91 | 0.06 | 0.02 (wrong 64)
+    5 | 8/53 | 0.00 | 0.06 (wrong 34)
+    6 | 2/18 | 0.08 | 0.00 (wrong 12)
+  answer exact rate by position at layer 12, right | wrong-reads-gold | wrong-reads-own:
+      <bot>: 0.015 | 0.021 | 0.029
+     step 1: 0.040 | 0.021 | 0.041
+     step 2: 0.015 | 0.029 | 0.029
+     step 3: 0.070 | 0.058 | 0.012
+     step 4: 0.070 | 0.037 | 0.012
+     step 5: 0.045 | 0.041 | 0.012
+     step 6: 0.055 | 0.037 | 0.021
+      <eot>: 0.050 | 0.029 | 0.021
+  step exact rate on greedy-right questions, by position (each step at its reading point's layer):
+    c1 (layer 3, n=199, 6% literally in the question): 0.06 0.64 0.22 0.26 0.30 0.34 0.31 0.35
+    c2 (layer 3, n=186, 3% literally in the question): 0.03 0.05 0.30 0.11 0.22 0.16 0.18 0.15
+    c3 (layer 3, n=85, 5% literally in the question): 0.02 0.05 0.05 0.08 0.05 0.12 0.14 0.06
+    c4 (layer 6, n=28, 0% literally in the question): 0.00 0.00 0.04 0.00 0.04 0.07 0.11 0.04
+    c5 (layer 6, n=11, 9% literally in the question): 0.00 0.00 0.09 0.00 0.00 0.00 0.00 0.00
+    c6 (layer 12, n=3, 0% literally in the question): 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+  gold exact rate on greedy-right questions by answer size:
+    [0, 10): 0.022 (n=45)
+    [10, 100): 0.083 (n=109)
+    [100, 1000): 0.030 (n=33)
+    [1000, 10000): 0.000 (n=12)
+
+Step probe, train: INCONCLUSIVE; break profile EARLY
+Step probe, valid: INCONCLUSIVE; break profile EARLY
+
+Step probe diagnosis (validation): INCONCLUSIVE, break profile EARLY

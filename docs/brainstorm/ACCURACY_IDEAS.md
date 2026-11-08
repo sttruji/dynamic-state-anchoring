@@ -88,6 +88,15 @@ linear probes on SIM-CoT GPT-2's hidden states to ask:
 The code is `scripts/step_probe/` and the notebook is `notebooks/DSA_Step_Probe_Colab.ipynb`. It is evaluation only and
 takes at most 15 G4-minutes.
 
+**The diagnosis is INCONCLUSIVE** (8 November; `results/step_probe/README.md`). Linear probes read the gold answer on
+only 8.7% of right training questions, against the bar of 50%, so readout against compute is unanswered.
+
+The exploratory reads still say something:
+- On right questions, step 1 reads 73–80% of the time and step 2 56–63% (on problems where they are not the last
+  step), but later steps and the answer barely read at all.
+- On wrong questions, steps 1–2 read as gold far less often (35–58% and 22–27%), within each value size.
+- That fits errors that begin at the first steps, but no preregistered rule confirms it.
+
 **C is dropped** (8 November, the user's call, without a run), with the data arm below. Combining problems is data
 augmentation, which is not this line's interest, and MathFusion and Compositional GSM already cover much of it.
 

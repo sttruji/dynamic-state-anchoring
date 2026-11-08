@@ -1,0 +1,500 @@
+{"id": "gsm8k_aug/valid/000001", "steps": 4, "values": [2, 4, 3, 300], "gold": 300, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [true, true, false, false]}
+{"id": "gsm8k_aug/valid/000002", "steps": 3, "values": [3, null, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000003", "steps": 2, "values": [600, 1400], "gold": 1400, "text": "The answer is: 1400", "prediction": "1400", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000004", "steps": 2, "values": [3, 15], "gold": 15, "text": "The answer is: 15", "prediction": "15", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000005", "steps": 2, "values": [600, 240], "gold": 240, "text": "The answer is: 240", "prediction": "240", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000006", "steps": 3, "values": [50, 30, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000007", "steps": 2, "values": [20, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000008", "steps": 6, "values": [24, 4, 12, 40, 20, 2], "gold": 2, "text": "The answer is: 3.33", "prediction": "3.33", "correct": false, "in_question": [false, true, true, false, false, true]}
+{"id": "gsm8k_aug/valid/000009", "steps": 4, "values": [null, 8, 5, 25], "gold": 25, "text": "The answer is: 25", "prediction": "25", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000010", "steps": 2, "values": [32, 8], "gold": 25, "text": "The answer is: 26", "prediction": "26", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000011", "steps": 4, "values": [7, 5, 10, 4], "gold": 4, "text": "The answer is: 1", "prediction": "1", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000012", "steps": 4, "values": [55, 78, 73, 80], "gold": 80, "text": "The answer is: 72", "prediction": "72", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000013", "steps": 2, "values": [120, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, true]}
+{"id": "gsm8k_aug/valid/000014", "steps": 4, "values": [60, 30, 90, 80], "gold": 80, "text": "The answer is: 100", "prediction": "100", "correct": false, "in_question": [false, false, false, true]}
+{"id": "gsm8k_aug/valid/000015", "steps": 3, "values": [20, 56, 28], "gold": 28, "text": "The answer is: 18", "prediction": "18", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000016", "steps": 1, "values": [17], "gold": 20, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000017", "steps": 3, "values": [25, 20, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000018", "steps": 5, "values": [104, 208, 218, 426, 74], "gold": 74, "text": "The answer is: 0", "prediction": "0", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000019", "steps": 4, "values": [30, 270, 120, 390], "gold": 390, "text": "The answer is: 490", "prediction": "490", "correct": false, "in_question": [true, false, false, false]}
+{"id": "gsm8k_aug/valid/000020", "steps": 2, "values": [56, 54], "gold": 54, "text": "The answer is: 54", "prediction": "54", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000021", "steps": 5, "values": [128, 640, 27, 135, 775], "gold": 775, "text": "The answer is: 715", "prediction": "715", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000022", "steps": 4, "values": [5, 4, 20, 4], "gold": 4, "text": "The answer is: 6", "prediction": "6", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000023", "steps": 2, "values": [80, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000024", "steps": 3, "values": [6, 48, 3], "gold": 3, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false, false, true]}
+{"id": "gsm8k_aug/valid/000025", "steps": 3, "values": [null, 8000, null], "gold": 12000, "text": "The answer is: 12000", "prediction": "12000", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000026", "steps": 1, "values": [320], "gold": 320, "text": "The answer is: 320", "prediction": "320", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000027", "steps": 4, "values": [30, 35, 35, 7], "gold": 7, "text": "The answer is: 9", "prediction": "9", "correct": false, "in_question": [false, false, false, true]}
+{"id": "gsm8k_aug/valid/000028", "steps": 4, "values": [21, 31, 22, 53], "gold": 53, "text": "The answer is: 53", "prediction": "53", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000029", "steps": 4, "values": [14, 51, 49, 50], "gold": 50, "text": "The answer is: 57", "prediction": "57", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000030", "steps": 3, "values": [220, 140, 360], "gold": 360, "text": "The answer is: 360", "prediction": "360", "correct": true, "in_question": [true, false, false]}
+{"id": "gsm8k_aug/valid/000031", "steps": 3, "values": [11, 26, 72], "gold": 72, "text": "The answer is: 62", "prediction": "62", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000032", "steps": 4, "values": [56, 140, 150, 1200], "gold": 1200, "text": "The answer is: 224", "prediction": "224", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000033", "steps": 3, "values": [18, 11, 55], "gold": 55, "text": "The answer is: 65", "prediction": "65", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000034", "steps": 3, "values": [50, 768, null], "gold": 15, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000035", "steps": 4, "values": [200, 150, 350, 150], "gold": 150, "text": "The answer is: 150", "prediction": "150", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000036", "steps": 3, "values": [8, 32, 56], "gold": 56, "text": "The answer is: 56", "prediction": "56", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000037", "steps": 3, "values": [60, 20, 80], "gold": 80, "text": "The answer is: 150", "prediction": "150", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000038", "steps": 2, "values": [168, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000039", "steps": 2, "values": [5, 55], "gold": 55, "text": "The answer is: 55", "prediction": "55", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000040", "steps": 2, "values": [3, 15], "gold": 15, "text": "The answer is: 15", "prediction": "15", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000041", "steps": 7, "values": [5, 6, 6, 10, 2, 17, 15], "gold": 15, "text": "The answer is: 14", "prediction": "14", "correct": false, "in_question": [true, false, false, false, true, false, false]}
+{"id": "gsm8k_aug/valid/000042", "steps": 6, "values": [10, 200, 2, 1202, null, 8798], "gold": 8798, "text": "The answer is: 1220", "prediction": "1220", "correct": false, "in_question": [true, false, true, false, false, false]}
+{"id": "gsm8k_aug/valid/000043", "steps": 2, "values": [80, 70], "gold": 70, "text": "The answer is: 80", "prediction": "80", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000044", "steps": 2, "values": [45, 90], "gold": 90, "text": "The answer is: 90", "prediction": "90", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000045", "steps": 2, "values": [80, 8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000046", "steps": 1, "values": [20], "gold": 146, "text": "The answer is: 154.67", "prediction": "154.67", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000047", "steps": 3, "values": [8, 18, 6], "gold": 6, "text": "The answer is: 9", "prediction": "9", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000048", "steps": 3, "values": [30, 90, 1], "gold": 90, "text": "The answer is: 20", "prediction": "20", "correct": false, "in_question": [true, false, true]}
+{"id": "gsm8k_aug/valid/000049", "steps": 4, "values": [15, 5, 55, 17], "gold": 17, "text": "The answer is: 123", "prediction": "123", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000050", "steps": 3, "values": [2, 16, 14], "gold": 14, "text": "The answer is: 2", "prediction": "2", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000051", "steps": 3, "values": [3, 2, 5], "gold": 5, "text": "The answer is: 6", "prediction": "6", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000052", "steps": 2, "values": [90, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, true]}
+{"id": "gsm8k_aug/valid/000053", "steps": 2, "values": [8000, null], "gold": 12000, "text": "The answer is: 12000", "prediction": "12000", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000054", "steps": 2, "values": [784, 6384], "gold": 6384, "text": "The answer is: 6708", "prediction": "6708", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000055", "steps": 2, "values": [10, 13], "gold": 13, "text": "The answer is: 17", "prediction": "17", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000056", "steps": 2, "values": [16, 480], "gold": 480, "text": "The answer is: 480", "prediction": "480", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000057", "steps": 6, "values": [15, 4500, 250, 500, 7000, 3000], "gold": 3000, "text": "The answer is: 1550", "prediction": "1550", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000058", "steps": 2, "values": [8, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000059", "steps": 3, "values": [135, 270, 450], "gold": 450, "text": "The answer is: 186", "prediction": "186", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000060", "steps": 4, "values": [300, 200, 245, 55], "gold": 55, "text": "The answer is: 195", "prediction": "195", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000061", "steps": 3, "values": [23, 19, 6], "gold": 6, "text": "The answer is: 19", "prediction": "19", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000062", "steps": 3, "values": [30, 22, 8], "gold": 8, "text": "The answer is: 52", "prediction": "52", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000063", "steps": 8, "values": [400, 1200, null, 3, 15, 60, 900, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false, false, false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000064", "steps": 1, "values": [2005], "gold": 2000, "text": "The answer is: 17", "prediction": "17", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000065", "steps": 4, "values": [16, 176, 3, 179], "gold": 179, "text": "The answer is: 145", "prediction": "145", "correct": false, "in_question": [false, false, true, false]}
+{"id": "gsm8k_aug/valid/000066", "steps": 3, "values": [1000, null, 50], "gold": 50, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false, false, true]}
+{"id": "gsm8k_aug/valid/000067", "steps": 2, "values": [40, 2040], "gold": 2040, "text": "The answer is: 2040", "prediction": "2040", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000068", "steps": 3, "values": [32, 2, 300], "gold": 300, "text": "The answer is: 24", "prediction": "24", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000069", "steps": 1, "values": [null], "gold": 5000, "text": "The answer is: 500", "prediction": "500", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000070", "steps": 3, "values": [30, 90, 1080], "gold": 1080, "text": "The answer is: 360", "prediction": "360", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000071", "steps": 7, "values": [144, 2, 9, 27, 720, 54, 990], "gold": 990, "text": "The answer is: 1170", "prediction": "1170", "correct": false, "in_question": [false, true, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000072", "steps": 2, "values": [10, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000073", "steps": 3, "values": [90, 30, 60], "gold": 60, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000074", "steps": 4, "values": [40, 100, null, 40], "gold": 40, "text": "The answer is: 50", "prediction": "50", "correct": false, "in_question": [false, true, false, false]}
+{"id": "gsm8k_aug/valid/000075", "steps": 2, "values": [70, 160], "gold": 160, "text": "The answer is: 70", "prediction": "70", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000076", "steps": 4, "values": [16, 32, 160, 40], "gold": 40, "text": "The answer is: 7.5", "prediction": "7.5", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000077", "steps": 4, "values": [44, 46, 13, 59], "gold": 59, "text": "The answer is: 55", "prediction": "55", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000078", "steps": 1, "values": [97], "gold": 97, "text": "The answer is: 89", "prediction": "89", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000079", "steps": 2, "values": [120, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000080", "steps": 2, "values": [9, 45], "gold": 45, "text": "The answer is: 60", "prediction": "60", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000081", "steps": 3, "values": [270, 90, 30], "gold": 30, "text": "The answer is: 3", "prediction": "3", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000082", "steps": 4, "values": [26, 48, 24, 50], "gold": 50, "text": "The answer is: 70", "prediction": "70", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000083", "steps": 5, "values": [100, 240, 230, 30, 360], "gold": 360, "text": "The answer is: 276", "prediction": "276", "correct": false, "in_question": [false, true, false, false, false]}
+{"id": "gsm8k_aug/valid/000084", "steps": 1, "values": [20], "gold": 20, "text": "The answer is: 2", "prediction": "2", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000085", "steps": 2, "values": [100, 10], "gold": 180, "text": "The answer is: 150", "prediction": "150", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000086", "steps": 3, "values": [20, 25, 50], "gold": 50, "text": "The answer is: 90", "prediction": "90", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000087", "steps": 3, "values": [2, 20, 18], "gold": 18, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, true, false]}
+{"id": "gsm8k_aug/valid/000088", "steps": 3, "values": [180, 1320, 220], "gold": 220, "text": "The answer is: 36", "prediction": "36", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000089", "steps": 3, "values": [50, 25, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000090", "steps": 0, "values": [], "gold": 9, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": []}
+{"id": "gsm8k_aug/valid/000091", "steps": 2, "values": [60, 9000], "gold": 9000, "text": "The answer is: 9000", "prediction": "9000", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000092", "steps": 3, "values": [90, 1080, 60], "gold": 60, "text": "The answer is: 90", "prediction": "90", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000093", "steps": 3, "values": [30, 1200, 360], "gold": 360, "text": "The answer is: 720", "prediction": "720", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000094", "steps": 3, "values": [8, 2, 10], "gold": 10, "text": "The answer is: 8", "prediction": "8", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000095", "steps": 2, "values": [60, 40], "gold": 40, "text": "The answer is: 40", "prediction": "40", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000096", "steps": 4, "values": [12, 20, 10, 34], "gold": 34, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000097", "steps": 2, "values": [12, 9], "gold": 9, "text": "The answer is: 6", "prediction": "6", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000098", "steps": 2, "values": [100, 25], "gold": 25, "text": "The answer is: 25", "prediction": "25", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000099", "steps": 3, "values": [2, 10, 16], "gold": 16, "text": "The answer is: 40", "prediction": "40", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000100", "steps": 4, "values": [8, 2, 16, 160], "gold": 160, "text": "The answer is: 80", "prediction": "80", "correct": false, "in_question": [false, true, false, false]}
+{"id": "gsm8k_aug/valid/000101", "steps": 3, "values": [7, 20, 13], "gold": 13, "text": "The answer is: 13", "prediction": "13", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000102", "steps": 5, "values": [90, 70, 135, 70, 205], "gold": 205, "text": "The answer is: 205", "prediction": "205", "correct": true, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000103", "steps": 5, "values": [20, 100, 24, 76, 10], "gold": 10, "text": "The answer is: 7", "prediction": "7", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000104", "steps": 3, "values": [16, 80, 160], "gold": 160, "text": "The answer is: 20", "prediction": "20", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000105", "steps": 3, "values": [90, 45, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000106", "steps": 4, "values": [60, 90, 54, 144], "gold": 144, "text": "The answer is: 108", "prediction": "108", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000107", "steps": 2, "values": [70, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000108", "steps": 3, "values": [9000, 3000, null], "gold": 72000, "text": "The answer is: 21600", "prediction": "21600", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000109", "steps": 2, "values": [60, 80], "gold": 80, "text": "The answer is: 80", "prediction": "80", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000110", "steps": 1, "values": [7], "gold": 7, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000111", "steps": 2, "values": [56, 224], "gold": 224, "text": "The answer is: 224", "prediction": "224", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000112", "steps": 3, "values": [1300, 325, 975], "gold": 975, "text": "The answer is: 975", "prediction": "975", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000113", "steps": 3, "values": [5, 120, 3600], "gold": 3600, "text": "The answer is: 1800", "prediction": "1800", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000114", "steps": 2, "values": [300, 1500], "gold": 1500, "text": "The answer is: 1500", "prediction": "1500", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000115", "steps": 2, "values": [42, 168], "gold": 168, "text": "The answer is: 168", "prediction": "168", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000116", "steps": 2, "values": [9, 27], "gold": 27, "text": "The answer is: 27", "prediction": "27", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000117", "steps": 2, "values": [4, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000118", "steps": 3, "values": [600, 200, 600], "gold": 600, "text": "The answer is: 600", "prediction": "600", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000119", "steps": 3, "values": [102, 72, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000120", "steps": 5, "values": [20, 25, 100, 18, 102], "gold": 102, "text": "The answer is: 50.8", "prediction": "50.8", "correct": false, "in_question": [true, false, false, true, false]}
+{"id": "gsm8k_aug/valid/000121", "steps": 3, "values": [25, 50, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [true, false, false]}
+{"id": "gsm8k_aug/valid/000122", "steps": 4, "values": [50, 100, 200, 25], "gold": 25, "text": "The answer is: 18.75", "prediction": "18.75", "correct": false, "in_question": [false, true, false, false]}
+{"id": "gsm8k_aug/valid/000123", "steps": 2, "values": [4, 24], "gold": 24, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000124", "steps": 2, "values": [7, 22], "gold": 22, "text": "The answer is: 22", "prediction": "22", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000125", "steps": 3, "values": [null, 15, 5], "gold": 5, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000126", "steps": 2, "values": [160, 90], "gold": 90, "text": "The answer is: 950", "prediction": "950", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000127", "steps": 2, "values": [4, 24], "gold": 24, "text": "The answer is: 24", "prediction": "24", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000128", "steps": 2, "values": [2, 8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000129", "steps": 4, "values": [160, 360, 320, 680], "gold": 680, "text": "The answer is: 720", "prediction": "720", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000130", "steps": 3, "values": [300, 36, 56], "gold": 56, "text": "The answer is: 40", "prediction": "40", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000131", "steps": 2, "values": [60, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000132", "steps": 4, "values": [45, 65, 70, 135], "gold": 135, "text": "The answer is: 145", "prediction": "145", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000133", "steps": 3, "values": [6, 6, 2], "gold": 2, "text": "The answer is: 3", "prediction": "3", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000134", "steps": 5, "values": [1800, 40, 10, null, 3000], "gold": 3000, "text": "The answer is: 3000", "prediction": "3000", "correct": true, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000135", "steps": 2, "values": [1300, 1040], "gold": 1040, "text": "The answer is: 1028.57", "prediction": "1028.57", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000136", "steps": 2, "values": [80, 320], "gold": 320, "text": "The answer is: 160", "prediction": "160", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000137", "steps": 5, "values": [8, 6, 0, 3, 17], "gold": 17, "text": "The answer is: 11", "prediction": "11", "correct": false, "in_question": [false, true, false, false, false]}
+{"id": "gsm8k_aug/valid/000138", "steps": 3, "values": [190, 380, 405], "gold": 405, "text": "The answer is: 50", "prediction": "50", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000139", "steps": 2, "values": [48, 108], "gold": 108, "text": "The answer is: 108", "prediction": "108", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000140", "steps": 5, "values": [12, 6, 60, 60, 1], "gold": 1, "text": "The answer is: 1.50", "prediction": "1.50", "correct": false, "in_question": [false, false, false, false, true]}
+{"id": "gsm8k_aug/valid/000141", "steps": 5, "values": [7, 11, 22, 33, 17], "gold": 17, "text": "The answer is: 25", "prediction": "25", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000142", "steps": 2, "values": [24, 8], "gold": 24, "text": "The answer is: 16", "prediction": "16", "correct": false, "in_question": [false, true]}
+{"id": "gsm8k_aug/valid/000143", "steps": 2, "values": [5, 15], "gold": 15, "text": "The answer is: 15", "prediction": "15", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000144", "steps": 3, "values": [12, 48, 55], "gold": 55, "text": "The answer is: 55", "prediction": "55", "correct": true, "in_question": [true, false, false]}
+{"id": "gsm8k_aug/valid/000145", "steps": 2, "values": [38, 8], "gold": 8, "text": "The answer is: 20", "prediction": "20", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000146", "steps": 2, "values": [90, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000147", "steps": 3, "values": [15, 20, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000148", "steps": 4, "values": [2, 10, 13, 52], "gold": 52, "text": "The answer is: 52", "prediction": "52", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000149", "steps": 3, "values": [46, 61, 61], "gold": 61, "text": "The answer is: 61", "prediction": "61", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000150", "steps": 3, "values": [126, 42, 231], "gold": 231, "text": "The answer is: 387", "prediction": "387", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000151", "steps": 2, "values": [null, 12], "gold": 12, "text": "The answer is: 15", "prediction": "15", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000152", "steps": 2, "values": [22, 198], "gold": 198, "text": "The answer is: 198", "prediction": "198", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000153", "steps": 2, "values": [16, 32], "gold": 32, "text": "The answer is: 32", "prediction": "32", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000154", "steps": 3, "values": [50, 100, 2000], "gold": 2000, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000155", "steps": 7, "values": [144, 288, 192, null, 3360, 6720, 140], "gold": 140, "text": "The answer is: 1", "prediction": "1", "correct": false, "in_question": [false, false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000156", "steps": 5, "values": [12, 24, 6, 180, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false, false, true, false, false]}
+{"id": "gsm8k_aug/valid/000157", "steps": 2, "values": [60, 600], "gold": 600, "text": "The answer is: 600", "prediction": "600", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000158", "steps": 4, "values": [16, 160, 300, 640], "gold": 640, "text": "The answer is: 3360", "prediction": "3360", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000159", "steps": 2, "values": [42, 63], "gold": 63, "text": "The answer is: 63", "prediction": "63", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000160", "steps": 3, "values": [5, 14, 25], "gold": 25, "text": "The answer is: 21", "prediction": "21", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000161", "steps": 2, "values": [40, 32], "gold": 20, "text": "The answer is: 19", "prediction": "19", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000162", "steps": 2, "values": [12, 20], "gold": 20, "text": "The answer is: 30", "prediction": "30", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000163", "steps": 3, "values": [10, 70, 7], "gold": 7, "text": "The answer is: 7", "prediction": "7", "correct": true, "in_question": [true, false, false]}
+{"id": "gsm8k_aug/valid/000164", "steps": 4, "values": [30, 40, 50, 60], "gold": 60, "text": "The answer is: 120", "prediction": "120", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000165", "steps": 2, "values": [15, 34], "gold": 34, "text": "The answer is: 22", "prediction": "22", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000166", "steps": 4, "values": [24, 12, 4, 1], "gold": 1, "text": "The answer is: 2", "prediction": "2", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000167", "steps": 3, "values": [150, 20, 170], "gold": 170, "text": "The answer is: 170", "prediction": "170", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000168", "steps": 3, "values": [96, 480, 3360], "gold": 3360, "text": "The answer is: 3360", "prediction": "3360", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000169", "steps": 8, "values": [null, null, null, null, null, null, null, null], "gold": 1860000, "text": "The answer is: 102800", "prediction": "102800", "correct": false, "in_question": [false, false, false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000170", "steps": 5, "values": [null, null, null, 2, 5], "gold": 5, "text": "The answer is: 5.20", "prediction": "5.20", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000171", "steps": 3, "values": [22, 11, 44], "gold": 44, "text": "The answer is: 104", "prediction": "104", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000172", "steps": 3, "values": [32, 48, 1920], "gold": 1920, "text": "The answer is: 1920", "prediction": "1920", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000173", "steps": 3, "values": [24, 12, 36], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000174", "steps": 2, "values": [180, 1320], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000175", "steps": 4, "values": [40, 10, 70, 140], "gold": 140, "text": "The answer is: 210", "prediction": "210", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000176", "steps": 4, "values": [4, 2, 10, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [true, true, false, false]}
+{"id": "gsm8k_aug/valid/000177", "steps": 2, "values": [5, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000178", "steps": 2, "values": [60, 50], "gold": 50, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [true, false]}
+{"id": "gsm8k_aug/valid/000179", "steps": 4, "values": [null, 10, 200, 190], "gold": 190, "text": "The answer is: 950", "prediction": "950", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000180", "steps": 7, "values": [120, 40, 160, 60, 80, 140, 20], "gold": 20, "text": "The answer is: 80", "prediction": "80", "correct": false, "in_question": [false, false, false, false, false, false, true]}
+{"id": "gsm8k_aug/valid/000181", "steps": 4, "values": [45, 48, 18, 66], "gold": 66, "text": "The answer is: 120", "prediction": "120", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000182", "steps": 6, "values": [22, 14, 7, 15, 12, 17], "gold": 17, "text": "The answer is: 29", "prediction": "29", "correct": false, "in_question": [false, false, false, true, false, false]}
+{"id": "gsm8k_aug/valid/000183", "steps": 2, "values": [2520, null], "gold": 10080, "text": "The answer is: 4320", "prediction": "4320", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000184", "steps": 3, "values": [6, 11, 29], "gold": 29, "text": "The answer is: 29", "prediction": "29", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000185", "steps": 1, "values": [21], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000186", "steps": 6, "values": [null, 12, null, 4, 38, 40], "gold": 40, "text": "The answer is: 48.25", "prediction": "48.25", "correct": false, "in_question": [false, false, false, true, false, false]}
+{"id": "gsm8k_aug/valid/000187", "steps": 0, "values": [], "gold": 2000, "text": "The answer is: 40", "prediction": "40", "correct": false, "in_question": []}
+{"id": "gsm8k_aug/valid/000188", "steps": 2, "values": [8, 48], "gold": 48, "text": "The answer is: 48", "prediction": "48", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000189", "steps": 3, "values": [5, 9, 3], "gold": 3, "text": "The answer is: 3.67", "prediction": "3.67", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000190", "steps": 2, "values": [12, 22], "gold": 22, "text": "The answer is: 22", "prediction": "22", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000191", "steps": 4, "values": [210, 90, 300, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000192", "steps": 2, "values": [30, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000193", "steps": 4, "values": [2000, 4000, 3000, 1000], "gold": 5000, "text": "The answer is: 533.33", "prediction": "533.33", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000194", "steps": 4, "values": [150, 1500, 1200, 300], "gold": 300, "text": "The answer is: 270", "prediction": "270", "correct": false, "in_question": [true, false, true, true]}
+{"id": "gsm8k_aug/valid/000195", "steps": 2, "values": [8, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000196", "steps": 2, "values": [18, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000197", "steps": 2, "values": [5, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000198", "steps": 1, "values": [90], "gold": 90, "text": "The answer is: 90", "prediction": "90", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000199", "steps": 6, "values": [300, 6300, 7, 11, null, 9900], "gold": 9900, "text": "The answer is: 21", "prediction": "21", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000200", "steps": 6, "values": [12, 6, 22, 11, 33, 19], "gold": 19, "text": "The answer is: 9", "prediction": "9", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000201", "steps": 3, "values": [20, 10, 30], "gold": 30, "text": "The answer is: 20", "prediction": "20", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000202", "steps": 3, "values": [null, 5000, null], "gold": 30000, "text": "The answer is: 36000", "prediction": "36000", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000203", "steps": 2, "values": [80, 120], "gold": 120, "text": "The answer is: 120", "prediction": "120", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000204", "steps": 3, "values": [40, 38, 28], "gold": 28, "text": "The answer is: 32", "prediction": "32", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000205", "steps": 2, "values": [4, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000206", "steps": 5, "values": [45, 35, 5, 18, 25], "gold": 25, "text": "The answer is: 16", "prediction": "16", "correct": false, "in_question": [false, false, true, false, false]}
+{"id": "gsm8k_aug/valid/000207", "steps": 3, "values": [1800, 30, 15], "gold": 15, "text": "The answer is: 15", "prediction": "15", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000208", "steps": 2, "values": [800, null], "gold": 27200, "text": "The answer is: 28000", "prediction": "28000", "correct": false, "in_question": [true, false]}
+{"id": "gsm8k_aug/valid/000209", "steps": 3, "values": [40, 50, 5], "gold": 5, "text": "The answer is: 3", "prediction": "3", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000210", "steps": 3, "values": [360, 24, 480], "gold": 480, "text": "The answer is: 480", "prediction": "480", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000211", "steps": 5, "values": [3, 21, 3, 21, 35], "gold": 35, "text": "The answer is: 37.25", "prediction": "37.25", "correct": false, "in_question": [true, false, true, false, false]}
+{"id": "gsm8k_aug/valid/000212", "steps": 3, "values": [6, 4, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, true, false]}
+{"id": "gsm8k_aug/valid/000213", "steps": 2, "values": [25, 35], "gold": 35, "text": "The answer is: 115", "prediction": "115", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000214", "steps": 5, "values": [120, 150, 270, 9, 18], "gold": 18, "text": "The answer is: 14", "prediction": "14", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000215", "steps": 1, "values": [2800], "gold": 2800, "text": "The answer is: 2800", "prediction": "2800", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000216", "steps": 3, "values": [6, 12, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000217", "steps": 2, "values": [300, 60], "gold": 60, "text": "The answer is: 69.6", "prediction": "69.6", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000218", "steps": 3, "values": [4000, 4800, 800], "gold": 800, "text": "The answer is: 8", "prediction": "8", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000219", "steps": 3, "values": [6, 6, 3], "gold": 3, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000220", "steps": 1, "values": [6], "gold": 12, "text": "The answer is: 12.67", "prediction": "12.67", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000221", "steps": 5, "values": [10, 40, 10, 30, 18], "gold": 18, "text": "The answer is: 18", "prediction": "18", "correct": true, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000222", "steps": 2, "values": [12, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000223", "steps": 4, "values": [8, 12, 24, 36], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000224", "steps": 1, "values": [21], "gold": 21, "text": "The answer is: 54", "prediction": "54", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000225", "steps": 1, "values": [26], "gold": 220, "text": "The answer is: 208", "prediction": "208", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000226", "steps": 2, "values": [24, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000227", "steps": 4, "values": [7, 28, 9, 40], "gold": 40, "text": "The answer is: 22", "prediction": "22", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000228", "steps": 3, "values": [72, 15, 57], "gold": 57, "text": "The answer is: 27", "prediction": "27", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000229", "steps": 5, "values": [300, 90, 170, 130, 65], "gold": 65, "text": "The answer is: 105", "prediction": "105", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000230", "steps": 4, "values": [45, 60, 180, 240], "gold": 240, "text": "The answer is: 240", "prediction": "240", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000231", "steps": 2, "values": [400, 80], "gold": 80, "text": "The answer is: 79", "prediction": "79", "correct": false, "in_question": [false, true]}
+{"id": "gsm8k_aug/valid/000232", "steps": 3, "values": [6, 9, 18], "gold": 18, "text": "The answer is: 18", "prediction": "18", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000233", "steps": 5, "values": [6, 6, 11, 3, 19], "gold": 19, "text": "The answer is: 35", "prediction": "35", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000234", "steps": 2, "values": [16, 64], "gold": 64, "text": "The answer is: 64", "prediction": "64", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000235", "steps": 2, "values": [82, 98], "gold": 98, "text": "The answer is: 98", "prediction": "98", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000236", "steps": 5, "values": [3, null, 9, null, 23], "gold": 23, "text": "The answer is: 18.75", "prediction": "18.75", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000237", "steps": 2, "values": [8, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000238", "steps": 5, "values": [600, 720, 1020, 480, 1500], "gold": 1500, "text": "The answer is: 1380", "prediction": "1380", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000239", "steps": 3, "values": [78, 24, 42], "gold": 42, "text": "The answer is: 24", "prediction": "24", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000240", "steps": 3, "values": [480, 12, 36], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000241", "steps": 4, "values": [20, 12, 5, 47], "gold": 47, "text": "The answer is: 94", "prediction": "94", "correct": false, "in_question": [true, true, true, false]}
+{"id": "gsm8k_aug/valid/000242", "steps": 2, "values": [60, 58], "gold": 58, "text": "The answer is: 58", "prediction": "58", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000243", "steps": 5, "values": [60, 420, 14, 70, 350], "gold": 350, "text": "The answer is: 442", "prediction": "442", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000244", "steps": 4, "values": [8, 16, 24, 16], "gold": 16, "text": "The answer is: 16", "prediction": "16", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000245", "steps": 3, "values": [25, 75, 125], "gold": 125, "text": "The answer is: 83.33", "prediction": "83.33", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000246", "steps": 2, "values": [21, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000247", "steps": 5, "values": [104, 30, 36, 66, 38], "gold": 38, "text": "The answer is: 34", "prediction": "34", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000248", "steps": 2, "values": [2785, 7060], "gold": 7060, "text": "The answer is: 6990", "prediction": "6990", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000249", "steps": 2, "values": [180, 12], "gold": 12, "text": "The answer is: 168.75", "prediction": "168.75", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000250", "steps": 2, "values": [20, 29], "gold": 29, "text": "The answer is: 29", "prediction": "29", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000251", "steps": 2, "values": [77, 11], "gold": 11, "text": "The answer is: 11", "prediction": "11", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000252", "steps": 3, "values": [null, null, 1500], "gold": 1500, "text": "The answer is: 1500", "prediction": "1500", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000253", "steps": 2, "values": [2400, 600], "gold": 600, "text": "The answer is: 100", "prediction": "100", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000254", "steps": 4, "values": [null, null, null, 6], "gold": 6, "text": "The answer is: 44", "prediction": "44", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000255", "steps": 3, "values": [10, 44, 16], "gold": 16, "text": "The answer is: 16", "prediction": "16", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000256", "steps": 4, "values": [100, 50, 10, 160], "gold": 160, "text": "The answer is: 160", "prediction": "160", "correct": true, "in_question": [false, false, true, false]}
+{"id": "gsm8k_aug/valid/000257", "steps": 2, "values": [15, 32], "gold": 32, "text": "The answer is: 32", "prediction": "32", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000258", "steps": 3, "values": [1500, 3000, 4500], "gold": 4500, "text": "The answer is: 4500", "prediction": "4500", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000259", "steps": 6, "values": [100, 300, 120, 180, 90, 90], "gold": 90, "text": "The answer is: 90", "prediction": "90", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000260", "steps": 2, "values": [800, 8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000261", "steps": 4, "values": [450, 750, 1200, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000262", "steps": 2, "values": [116, 145], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000263", "steps": 3, "values": [48, 22, 15], "gold": 15, "text": "The answer is: 20", "prediction": "20", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000264", "steps": 2, "values": [930, 1330], "gold": 1330, "text": "The answer is: 1460", "prediction": "1460", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000265", "steps": 2, "values": [null, 10], "gold": 10, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000266", "steps": 3, "values": [8, 15, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000267", "steps": 4, "values": [150, 196, 46, 230], "gold": 230, "text": "The answer is: 115", "prediction": "115", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000268", "steps": 2, "values": [3, 15], "gold": 15, "text": "The answer is: 18", "prediction": "18", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000269", "steps": 4, "values": [110, 10, 35, 65], "gold": 65, "text": "The answer is: 65", "prediction": "65", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000270", "steps": 3, "values": [36, 2, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000271", "steps": 2, "values": [17, 34], "gold": 34, "text": "The answer is: 34", "prediction": "34", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000272", "steps": 2, "values": [14, 21], "gold": 21, "text": "The answer is: 21", "prediction": "21", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000273", "steps": 1, "values": [78], "gold": 78, "text": "The answer is: 78", "prediction": "78", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000274", "steps": 2, "values": [12, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000275", "steps": 3, "values": [41, 6, 35], "gold": 35, "text": "The answer is: 31.8", "prediction": "31.8", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000276", "steps": 2, "values": [960, 160], "gold": 160, "text": "The answer is: 160", "prediction": "160", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000277", "steps": 2, "values": [6000, null], "gold": 14000, "text": "The answer is: 14000", "prediction": "14000", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000278", "steps": 6, "values": [20, 50, 15, 15, 20, 5], "gold": 5, "text": "The answer is: 2", "prediction": "2", "correct": false, "in_question": [false, false, false, false, false, true]}
+{"id": "gsm8k_aug/valid/000279", "steps": 3, "values": [30, 43, 7], "gold": 7, "text": "The answer is: 7", "prediction": "7", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000280", "steps": 3, "values": [255, 345, 115], "gold": 115, "text": "The answer is: 115", "prediction": "115", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000281", "steps": 4, "values": [8, 16, 17, 33], "gold": 33, "text": "The answer is: 30", "prediction": "30", "correct": false, "in_question": [true, false, false, false]}
+{"id": "gsm8k_aug/valid/000282", "steps": 4, "values": [10, 30, 2, 52], "gold": 52, "text": "The answer is: 33", "prediction": "33", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000283", "steps": 4, "values": [7, 84, 42, 49], "gold": 49, "text": "The answer is: 49", "prediction": "49", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000284", "steps": 4, "values": [400, 100, 150, 250], "gold": 250, "text": "The answer is: 750", "prediction": "750", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000285", "steps": 4, "values": [3, 2, 1, 6], "gold": 6, "text": "The answer is: 2.83", "prediction": "2.83", "correct": false, "in_question": [true, true, false, true]}
+{"id": "gsm8k_aug/valid/000286", "steps": 2, "values": [75, 225], "gold": 225, "text": "The answer is: 225", "prediction": "225", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000287", "steps": 5, "values": [6, 2, 8, 48, 108], "gold": 108, "text": "The answer is: 180", "prediction": "180", "correct": false, "in_question": [true, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000288", "steps": 2, "values": [18, 36], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [true, false]}
+{"id": "gsm8k_aug/valid/000289", "steps": 3, "values": [20, 40, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000290", "steps": 3, "values": [null, 16, 32], "gold": 32, "text": "The answer is: 28", "prediction": "28", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000291", "steps": 4, "values": [60, 72, 12, 5], "gold": 5, "text": "The answer is: 13.75", "prediction": "13.75", "correct": false, "in_question": [false, false, false, true]}
+{"id": "gsm8k_aug/valid/000292", "steps": 4, "values": [8, 6, 18, 32], "gold": 32, "text": "The answer is: 36", "prediction": "36", "correct": false, "in_question": [false, true, false, false]}
+{"id": "gsm8k_aug/valid/000293", "steps": 1, "values": [30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000294", "steps": 2, "values": [3600, 9], "gold": 9, "text": "The answer is: 3", "prediction": "3", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000295", "steps": 5, "values": [3650, 120, 6240, 6000, null], "gold": 15890, "text": "The answer is: 6120", "prediction": "6120", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000296", "steps": 3, "values": [18, 36, 54], "gold": 54, "text": "The answer is: 27", "prediction": "27", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000297", "steps": 3, "values": [10, 21, 11], "gold": 11, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [true, false, false]}
+{"id": "gsm8k_aug/valid/000298", "steps": 1, "values": [40], "gold": 50, "text": "The answer is: 37.5", "prediction": "37.5", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000299", "steps": 3, "values": [100, 96, 4], "gold": 4, "text": "The answer is: 600", "prediction": "600", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000300", "steps": 2, "values": [2, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000301", "steps": 3, "values": [24, 6, 18], "gold": 18, "text": "The answer is: 18", "prediction": "18", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000302", "steps": 3, "values": [27, 27, 108], "gold": 108, "text": "The answer is: 96", "prediction": "96", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000303", "steps": 2, "values": [39, 13], "gold": 13, "text": "The answer is: 13", "prediction": "13", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000304", "steps": 4, "values": [4, 5, 30, 28], "gold": 28, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000305", "steps": 2, "values": [200, 150], "gold": 150, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000306", "steps": 4, "values": [80, 20, 40, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false, true, false, false]}
+{"id": "gsm8k_aug/valid/000307", "steps": 6, "values": [20, 40, 12, 28, 100, 25], "gold": 25, "text": "The answer is: 13", "prediction": "13", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000308", "steps": 3, "values": [90, 33, 123], "gold": 123, "text": "The answer is: 123", "prediction": "123", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000309", "steps": 4, "values": [40, 60, 37, 97], "gold": 97, "text": "The answer is: 93", "prediction": "93", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000310", "steps": 3, "values": [250, 1000, 2000], "gold": 2000, "text": "The answer is: 3000", "prediction": "3000", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000311", "steps": 3, "values": [360, 18, 342], "gold": 342, "text": "The answer is: 342", "prediction": "342", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000312", "steps": 4, "values": [4000, 160, 4800, 800], "gold": 800, "text": "The answer is: 3200", "prediction": "3200", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000313", "steps": 4, "values": [1200, 950, 1250, 2800], "gold": 2800, "text": "The answer is: 3650", "prediction": "3650", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000314", "steps": 4, "values": [36, 16, 16, 30], "gold": 30, "text": "The answer is: 120", "prediction": "120", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000315", "steps": 3, "values": [4, 25, 68], "gold": 68, "text": "The answer is: 232.86", "prediction": "232.86", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000316", "steps": 4, "values": [114, 194, 57, 605], "gold": 605, "text": "The answer is: 552", "prediction": "552", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000317", "steps": 3, "values": [150, 300, 250], "gold": 300, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000318", "steps": 4, "values": [45, 60, 40, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000319", "steps": 2, "values": [null, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000320", "steps": 5, "values": [18, 26, 19, 21, 3], "gold": 3, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000321", "steps": 3, "values": [60, 40, 80], "gold": 80, "text": "The answer is: 60", "prediction": "60", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000322", "steps": 4, "values": [400, 375, 775, 225], "gold": 225, "text": "The answer is: 125", "prediction": "125", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000323", "steps": 3, "values": [null, null, 28], "gold": 28, "text": "The answer is: 32", "prediction": "32", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000324", "steps": 2, "values": [150, 600], "gold": 600, "text": "The answer is: 600", "prediction": "600", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000325", "steps": 2, "values": [1500, 1600], "gold": 2600, "text": "The answer is: 2500", "prediction": "2500", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000326", "steps": 3, "values": [13, 15, 30], "gold": 30, "text": "The answer is: 25", "prediction": "25", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000327", "steps": 3, "values": [1200, 240, 5], "gold": 5, "text": "The answer is: 80", "prediction": "80", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000328", "steps": 0, "values": [], "gold": 26, "text": "The answer is: 24", "prediction": "24", "correct": false, "in_question": []}
+{"id": "gsm8k_aug/valid/000329", "steps": 3, "values": [160, 16, 176], "gold": 352, "text": "The answer is: 176", "prediction": "176", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000330", "steps": 3, "values": [100, 160, 4800], "gold": 4800, "text": "The answer is: 4800", "prediction": "4800", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000331", "steps": 3, "values": [6, 36, 4], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000332", "steps": 4, "values": [32, 48, 24, 24], "gold": 24, "text": "The answer is: 16", "prediction": "16", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000333", "steps": 3, "values": [30, 60, 40], "gold": 40, "text": "The answer is: 50", "prediction": "50", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000334", "steps": 2, "values": [2, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000335", "steps": 2, "values": [71, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000336", "steps": 3, "values": [1, 4, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000337", "steps": 3, "values": [48, 35, 83], "gold": 83, "text": "The answer is: 83", "prediction": "83", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000338", "steps": 6, "values": [7000, null, null, null, null, null], "gold": 30000, "text": "The answer is: 4,200", "prediction": "4200", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000339", "steps": 1, "values": [200], "gold": 200, "text": "The answer is: 200", "prediction": "200", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000340", "steps": 3, "values": [25, null, null], "gold": 100000, "text": "The answer is: 500000", "prediction": "500000", "correct": false, "in_question": [true, false, false]}
+{"id": "gsm8k_aug/valid/000341", "steps": 2, "values": [75, 25], "gold": 25, "text": "The answer is: 25", "prediction": "25", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000342", "steps": 2, "values": [38, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000343", "steps": 2, "values": [43, 172], "gold": 172, "text": "The answer is: 63", "prediction": "63", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000344", "steps": 5, "values": [40, 45, 35, 120, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, false, false, false, true]}
+{"id": "gsm8k_aug/valid/000345", "steps": 3, "values": [60, 240, 20], "gold": 20, "text": "The answer is: 40", "prediction": "40", "correct": false, "in_question": [false, false, true]}
+{"id": "gsm8k_aug/valid/000346", "steps": 3, "values": [50, 350, 210], "gold": 210, "text": "The answer is: 250", "prediction": "250", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000347", "steps": 5, "values": [800, 80, 60, 20, 4], "gold": 4, "text": "The answer is: 100", "prediction": "100", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000348", "steps": 2, "values": [200, 90], "gold": 90, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false, true]}
+{"id": "gsm8k_aug/valid/000349", "steps": 3, "values": [966, 350, 1316], "gold": 1316, "text": "The answer is: 1296", "prediction": "1296", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000350", "steps": 3, "values": [800, 1100, 2200], "gold": 2200, "text": "The answer is: 2200", "prediction": "2200", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000351", "steps": 5, "values": [100, 15, 10, 150, 250], "gold": 250, "text": "The answer is: 250", "prediction": "250", "correct": true, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000352", "steps": 4, "values": [6, 14, 12, 168], "gold": 168, "text": "The answer is: 24", "prediction": "24", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000353", "steps": 3, "values": [13, 260, 3380], "gold": 3380, "text": "The answer is: 780", "prediction": "780", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000354", "steps": 2, "values": [16, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000355", "steps": 1, "values": [8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000356", "steps": 2, "values": [14, 7], "gold": 7, "text": "The answer is: 7", "prediction": "7", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000357", "steps": 2, "values": [8, 800], "gold": 800, "text": "The answer is: 1200", "prediction": "1200", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000358", "steps": 5, "values": [48, 7, 6, 61, 38], "gold": 38, "text": "The answer is: 41", "prediction": "41", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000359", "steps": 5, "values": [330, 11, 33, 123, 95], "gold": 95, "text": "The answer is: 4.5", "prediction": "4.5", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000360", "steps": 3, "values": [40, 40, 4], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000361", "steps": 2, "values": [240, 3], "gold": 3, "text": "The answer is: 3", "prediction": "3", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000362", "steps": 4, "values": [5, 10, 15, 3], "gold": 3, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [true, false, false, false]}
+{"id": "gsm8k_aug/valid/000363", "steps": 4, "values": [20, 40, 20, 60], "gold": 60, "text": "The answer is: 120", "prediction": "120", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000364", "steps": 4, "values": [6, 4, 4, 6], "gold": 6, "text": "The answer is: 2", "prediction": "2", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000365", "steps": 7, "values": [121, 484, 48, 96, 580, 530, 265], "gold": 265, "text": "The answer is: 340", "prediction": "340", "correct": false, "in_question": [false, false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000366", "steps": 2, "values": [2000, 250], "gold": 250, "text": "The answer is: 250", "prediction": "250", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000367", "steps": 3, "values": [48, 24, 168], "gold": 168, "text": "The answer is: 168", "prediction": "168", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000368", "steps": 4, "values": [100, 50, 150, 75], "gold": 75, "text": "The answer is: 62.5", "prediction": "62.5", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000369", "steps": 2, "values": [3, 67], "gold": 67, "text": "The answer is: 42", "prediction": "42", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000370", "steps": 4, "values": [850, 550, 5, 110], "gold": 110, "text": "The answer is: 50", "prediction": "50", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000371", "steps": 1, "values": [6], "gold": 3, "text": "The answer is: 3", "prediction": "3", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000372", "steps": 3, "values": [18, 15, 41], "gold": 41, "text": "The answer is: 41", "prediction": "41", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000373", "steps": 7, "values": [7, 20, 20, 67, 63, 21, 3], "gold": 3, "text": "The answer is: 3.43", "prediction": "3.43", "correct": false, "in_question": [true, false, false, false, false, false, true]}
+{"id": "gsm8k_aug/valid/000374", "steps": 5, "values": [12, 18, 18, 36, 66], "gold": 66, "text": "The answer is: 66", "prediction": "66", "correct": true, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000375", "steps": 1, "values": [80], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000376", "steps": 4, "values": [48, 51, 72, 6], "gold": 6, "text": "The answer is: 6.25", "prediction": "6.25", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000377", "steps": 4, "values": [24, 30, 15, 20], "gold": 20, "text": "The answer is: 17", "prediction": "17", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000378", "steps": 2, "values": [3, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000379", "steps": 4, "values": [10, 18, 54, 99], "gold": 99, "text": "The answer is: 68", "prediction": "68", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000380", "steps": 4, "values": [2, 375, 125, 250], "gold": 250, "text": "The answer is: 375", "prediction": "375", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000381", "steps": 4, "values": [308, 34, 17, 17], "gold": 17, "text": "The answer is: 14", "prediction": "14", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000382", "steps": 7, "values": [120, 240, 160, 320, 560, 1680, 42], "gold": 42, "text": "The answer is: 16", "prediction": "16", "correct": false, "in_question": [false, false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000383", "steps": 5, "values": [200, 100, 300, 30, 270], "gold": 270, "text": "The answer is: 330", "prediction": "330", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000384", "steps": 5, "values": [4, 24, 44, 220, null], "gold": 11000, "text": "The answer is: 6120", "prediction": "6120", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000385", "steps": 4, "values": [2400, 600, 3000, 2000], "gold": 2000, "text": "The answer is: 800", "prediction": "800", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000386", "steps": 4, "values": [3000, 2700, 300, 3450], "gold": 3450, "text": "The answer is: 2700", "prediction": "2700", "correct": false, "in_question": [true, false, false, false]}
+{"id": "gsm8k_aug/valid/000387", "steps": 4, "values": [24, 456, 306, 102], "gold": 102, "text": "The answer is: 118", "prediction": "118", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000388", "steps": 5, "values": [56, 4, 42, 18, 22], "gold": 22, "text": "The answer is: 20", "prediction": "20", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000389", "steps": 2, "values": [180, 20], "gold": 20, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000390", "steps": 2, "values": [163, 78], "gold": 78, "text": "The answer is: 83", "prediction": "83", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000391", "steps": 6, "values": [600, 168, 450, null, null, null], "gold": 25200, "text": "The answer is: 468000", "prediction": "468000", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000392", "steps": 2, "values": [9, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000393", "steps": 2, "values": [7, 4], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [true, false]}
+{"id": "gsm8k_aug/valid/000394", "steps": 3, "values": [21, 42, 38], "gold": 38, "text": "The answer is: 33", "prediction": "33", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000395", "steps": 4, "values": [30, 90, 45, 135], "gold": 135, "text": "The answer is: 180", "prediction": "180", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000396", "steps": 1, "values": [10], "gold": 4, "text": "The answer is: 3", "prediction": "3", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000397", "steps": 4, "values": [364, 182, 168, 224], "gold": 4, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000398", "steps": 3, "values": [24, 12, 36], "gold": 36, "text": "The answer is: 18", "prediction": "18", "correct": false, "in_question": [false, true, false]}
+{"id": "gsm8k_aug/valid/000399", "steps": 4, "values": [135, 120, 170, 605], "gold": 605, "text": "The answer is: 708.33", "prediction": "708.33", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000400", "steps": 7, "values": [12, 36, 6, 18, 64, 32, 96], "gold": 96, "text": "The answer is: 119", "prediction": "119", "correct": false, "in_question": [false, false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000401", "steps": 2, "values": [9, 3], "gold": 3, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000402", "steps": 2, "values": [35, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000403", "steps": 3, "values": [120, 72, 100], "gold": 1920, "text": "The answer is: 7200", "prediction": "7200", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000404", "steps": 6, "values": [32, 18, 256, 54, 4, 314], "gold": 314, "text": "The answer is: 472", "prediction": "472", "correct": false, "in_question": [false, false, false, false, true, false]}
+{"id": "gsm8k_aug/valid/000405", "steps": 5, "values": [8, 16, 32, 60, 20], "gold": 20, "text": "The answer is: 60", "prediction": "60", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000406", "steps": 5, "values": [10, 400, 1600, 100, 1100], "gold": 1100, "text": "The answer is: 3100", "prediction": "3100", "correct": false, "in_question": [false, true, false, false, false]}
+{"id": "gsm8k_aug/valid/000407", "steps": 2, "values": [150, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [true, false]}
+{"id": "gsm8k_aug/valid/000408", "steps": 2, "values": [560, 121], "gold": 121, "text": "The answer is: 81", "prediction": "81", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000409", "steps": 5, "values": [20, 160, 800, 4, 1], "gold": 1, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false, false, false, true, false]}
+{"id": "gsm8k_aug/valid/000410", "steps": 3, "values": [8, 6, 14], "gold": 14, "text": "The answer is: 14", "prediction": "14", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000411", "steps": 5, "values": [24, 48, 4, 16, 64], "gold": 66, "text": "The answer is: 44", "prediction": "44", "correct": false, "in_question": [false, false, true, false, false]}
+{"id": "gsm8k_aug/valid/000412", "steps": 0, "values": [], "gold": 32, "text": "The answer is: 32", "prediction": "32", "correct": true, "in_question": []}
+{"id": "gsm8k_aug/valid/000413", "steps": 6, "values": [45, 9, 270, null, null, 50], "gold": 50, "text": "The answer is: 42", "prediction": "42", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000414", "steps": 4, "values": [5, 100, 125, 225], "gold": 225, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000415", "steps": 2, "values": [84, 95], "gold": 95, "text": "The answer is: 95", "prediction": "95", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000416", "steps": 5, "values": [20, 60, 180, 240, 4], "gold": 4, "text": "The answer is: 3.5", "prediction": "3.5", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000417", "steps": 2, "values": [24, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000418", "steps": 2, "values": [300, 200], "gold": 200, "text": "The answer is: 200", "prediction": "200", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000419", "steps": 5, "values": [27, 24, 120, 24, 144], "gold": 144, "text": "The answer is: 167.8", "prediction": "167.8", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000420", "steps": 3, "values": [120, 200, 320], "gold": 320, "text": "The answer is: 287.5", "prediction": "287.5", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000421", "steps": 1, "values": [4], "gold": 4, "text": "The answer is: 3", "prediction": "3", "correct": false, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000422", "steps": 4, "values": [60, 12, 180, 88], "gold": 88, "text": "The answer is: 16", "prediction": "16", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000423", "steps": 2, "values": [16, 8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000424", "steps": 3, "values": [100, 120, 60], "gold": 60, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000425", "steps": 3, "values": [100, 25, 75], "gold": 75, "text": "The answer is: 75", "prediction": "75", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000426", "steps": 4, "values": [12, 32, 16, 68], "gold": 68, "text": "The answer is: 60", "prediction": "60", "correct": false, "in_question": [false, false, true, false]}
+{"id": "gsm8k_aug/valid/000427", "steps": 3, "values": [100, 110, 11], "gold": 11, "text": "The answer is: 11", "prediction": "11", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000428", "steps": 2, "values": [20, 10], "gold": 10, "text": "The answer is: 8", "prediction": "8", "correct": false, "in_question": [true, true]}
+{"id": "gsm8k_aug/valid/000429", "steps": 3, "values": [20, 60, 90], "gold": 90, "text": "The answer is: 90", "prediction": "90", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000430", "steps": 3, "values": [10, 6, 26], "gold": 26, "text": "The answer is: 56", "prediction": "56", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000431", "steps": 2, "values": [30, 150], "gold": 150, "text": "The answer is: 750", "prediction": "750", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000432", "steps": 2, "values": [30, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [true, false]}
+{"id": "gsm8k_aug/valid/000433", "steps": 2, "values": [14, 7], "gold": 7, "text": "The answer is: 7", "prediction": "7", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000434", "steps": 5, "values": [10, 15, 5, 10, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, true, false, false]}
+{"id": "gsm8k_aug/valid/000435", "steps": 2, "values": [99, 33], "gold": 33, "text": "The answer is: 33", "prediction": "33", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000436", "steps": 4, "values": [10, 40, 50, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [true, false, false, false]}
+{"id": "gsm8k_aug/valid/000437", "steps": 3, "values": [60, 70, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false, true]}
+{"id": "gsm8k_aug/valid/000438", "steps": 3, "values": [25, 34, 17], "gold": 17, "text": "The answer is: 27", "prediction": "27", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000439", "steps": 2, "values": [6, 450], "gold": 450, "text": "The answer is: 450", "prediction": "450", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000440", "steps": 4, "values": [600, 1200, 1800, 18], "gold": 18, "text": "The answer is: 18", "prediction": "18", "correct": true, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000441", "steps": 6, "values": [32, 12, 28, 24, 48, 6], "gold": 6, "text": "The answer is: 3", "prediction": "3", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000442", "steps": 1, "values": [20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000443", "steps": 4, "values": [120, 300, 420, 80], "gold": 80, "text": "The answer is: 300", "prediction": "300", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000444", "steps": 3, "values": [13, 39, 36], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000445", "steps": 3, "values": [12, 42, 6], "gold": 6, "text": "The answer is: 16", "prediction": "16", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000446", "steps": 0, "values": [], "gold": 15, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": []}
+{"id": "gsm8k_aug/valid/000447", "steps": 2, "values": [60, 180], "gold": 180, "text": "The answer is: 180", "prediction": "180", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000448", "steps": 6, "values": [240, 2400, 240, 180, 420, 105], "gold": 105, "text": "The answer is: 90", "prediction": "90", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000449", "steps": 1, "values": [24], "gold": 150, "text": "The answer is: 150", "prediction": "150", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000450", "steps": 5, "values": [18, 9, 12, 6, 15], "gold": 15, "text": "The answer is: 6", "prediction": "6", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000451", "steps": 5, "values": [null, null, 20, 2, 22], "gold": 22, "text": "The answer is: 78", "prediction": "78", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000452", "steps": 5, "values": [6, 6, 24, 21, 51], "gold": 51, "text": "The answer is: 48", "prediction": "48", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000453", "steps": 2, "values": [30, 90], "gold": 90, "text": "The answer is: 90", "prediction": "90", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000454", "steps": 2, "values": [18, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000455", "steps": 5, "values": [16, 28, 14, 11, 57], "gold": 57, "text": "The answer is: 77", "prediction": "77", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000456", "steps": 5, "values": [null, 48, 384, 16, 24], "gold": 24, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000457", "steps": 3, "values": [4200, 500, 852], "gold": 852, "text": "The answer is: 2200", "prediction": "2200", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000458", "steps": 6, "values": [40, 60, 15, 15, 30, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000459", "steps": 5, "values": [24, 360, 12, 372, 72], "gold": 72, "text": "The answer is: 48", "prediction": "48", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000460", "steps": 3, "values": [137, 158, 295], "gold": 295, "text": "The answer is: 310", "prediction": "310", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000461", "steps": 3, "values": [200, 2, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000462", "steps": 5, "values": [120, 240, 480, 880, 780], "gold": 780, "text": "The answer is: 3000", "prediction": "3000", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000463", "steps": 6, "values": [84, 21, 63, 27, 36, 32], "gold": 32, "text": "The answer is: 8", "prediction": "8", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000464", "steps": 5, "values": [6, 36, 30, 66, 264], "gold": 264, "text": "The answer is: 144", "prediction": "144", "correct": false, "in_question": [true, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000465", "steps": 3, "values": [200, 800, 550], "gold": 550, "text": "The answer is: 150", "prediction": "150", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000466", "steps": 3, "values": [4, 4, 2], "gold": 2, "text": "The answer is: 6", "prediction": "6", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000467", "steps": 5, "values": [13, 6, 9, 6, 26], "gold": 26, "text": "The answer is: 31", "prediction": "31", "correct": false, "in_question": [false, true, false, true, false]}
+{"id": "gsm8k_aug/valid/000468", "steps": 8, "values": [50, 10, 84, 100, 12, 5, 117, 201], "gold": 201, "text": "The answer is: 151", "prediction": "151", "correct": false, "in_question": [false, true, false, false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000469", "steps": 0, "values": [], "gold": 1000, "text": "The answer is: 2000", "prediction": "2000", "correct": false, "in_question": []}
+{"id": "gsm8k_aug/valid/000470", "steps": 1, "values": [29], "gold": 29, "text": "The answer is: 29", "prediction": "29", "correct": true, "in_question": [false]}
+{"id": "gsm8k_aug/valid/000471", "steps": 2, "values": [11, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000472", "steps": 2, "values": [6185, 5200], "gold": 5200, "text": "The answer is: 1242", "prediction": "1242", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000473", "steps": 3, "values": [100, 50, 100], "gold": 100, "text": "The answer is: 100", "prediction": "100", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000474", "steps": 2, "values": [756, 378], "gold": 378, "text": "The answer is: 375", "prediction": "375", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000475", "steps": 5, "values": [4, 1, 4, 11, 9], "gold": 9, "text": "The answer is: 2", "prediction": "2", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000476", "steps": 5, "values": [5, 3, 2, 11, 22], "gold": 22, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000477", "steps": 3, "values": [12, 10, 4], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000478", "steps": 2, "values": [12, 8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000479", "steps": 4, "values": [30, 20, 10, 60], "gold": 60, "text": "The answer is: 180", "prediction": "180", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000480", "steps": 2, "values": [24, 18], "gold": 18, "text": "The answer is: 18", "prediction": "18", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000481", "steps": 2, "values": [30, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000482", "steps": 4, "values": [2600, 6, 156, 2756], "gold": 2756, "text": "The answer is: 5408", "prediction": "5408", "correct": false, "in_question": [false, true, false, false]}
+{"id": "gsm8k_aug/valid/000483", "steps": 2, "values": [24, 5], "gold": 5, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000484", "steps": 3, "values": [8, 40, 22], "gold": 22, "text": "The answer is: 22", "prediction": "22", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000485", "steps": 4, "values": [8, 24, 12, 44], "gold": 44, "text": "The answer is: 44", "prediction": "44", "correct": true, "in_question": [true, false, false, false]}
+{"id": "gsm8k_aug/valid/000486", "steps": 5, "values": [15, 7, 15, 22, 2], "gold": 2, "text": "The answer is: 3.5", "prediction": "3.5", "correct": false, "in_question": [false, false, false, false, false]}
+{"id": "gsm8k_aug/valid/000487", "steps": 4, "values": [21, 38, 76, 19], "gold": 19, "text": "The answer is: 5.25", "prediction": "5.25", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000488", "steps": 2, "values": [40, 8], "gold": 8, "text": "The answer is: 32", "prediction": "32", "correct": false, "in_question": [true, false]}
+{"id": "gsm8k_aug/valid/000489", "steps": 2, "values": [45, 2], "gold": 2, "text": "The answer is: 8", "prediction": "8", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000490", "steps": 3, "values": [12, 8, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000491", "steps": 2, "values": [197, 247], "gold": 247, "text": "The answer is: 237", "prediction": "237", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000492", "steps": 2, "values": [105, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000493", "steps": 2, "values": [null, 1], "gold": 1, "text": "The answer is: 50", "prediction": "50", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000494", "steps": 4, "values": [6, 12, 4, 10], "gold": 10, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false, false, false]}
+{"id": "gsm8k_aug/valid/000495", "steps": 3, "values": [84, 25, 109], "gold": 109, "text": "The answer is: 144", "prediction": "144", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000496", "steps": 2, "values": [24, 8], "gold": 8, "text": "The answer is: 36", "prediction": "36", "correct": false, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000497", "steps": 3, "values": [30, 11, 41], "gold": 41, "text": "The answer is: 11", "prediction": "11", "correct": false, "in_question": [true, false, false]}
+{"id": "gsm8k_aug/valid/000498", "steps": 3, "values": [40, 25, 15], "gold": 15, "text": "The answer is: 35", "prediction": "35", "correct": false, "in_question": [false, false, false]}
+{"id": "gsm8k_aug/valid/000499", "steps": 2, "values": [9, 24], "gold": 24, "text": "The answer is: 24", "prediction": "24", "correct": true, "in_question": [false, false]}
+{"id": "gsm8k_aug/valid/000500", "steps": 2, "values": [11, 9], "gold": 9, "text": "The answer is: 7", "prediction": "7", "correct": false, "in_question": [false, false]}

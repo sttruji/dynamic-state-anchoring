@@ -1,0 +1,500 @@
+{"index": 187246, "steps": 5, "values": [10, 12, 6, 18, 28], "gold": 28, "text": "The answer is: 33", "prediction": "33", "correct": false, "in_question": [false, false, true, false, false]}
+{"index": 348258, "steps": 6, "values": [40, 400, 100, 300, 1200, 1500], "gold": 1500, "text": "The answer is: 3000", "prediction": "3000", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 59120, "steps": 1, "values": [12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false]}
+{"index": 166252, "steps": 2, "values": [60, 180], "gold": 180, "text": "The answer is: 180", "prediction": "180", "correct": true, "in_question": [false, false]}
+{"index": 50794, "steps": 3, "values": [70, 130, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false, true]}
+{"index": 137263, "steps": 4, "values": [10, 180, 50, 230], "gold": 230, "text": "The answer is: 230", "prediction": "230", "correct": true, "in_question": [true, false, false, false]}
+{"index": 247151, "steps": 5, "values": [250, 750, null, 75, null], "gold": 88, "text": "The answer is: 88", "prediction": "88", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 243111, "steps": 6, "values": [null, null, 4, null, null, null], "gold": 135000, "text": "The answer is: 112500", "prediction": "112500", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 26939, "steps": 1, "values": [100], "gold": 100, "text": "The answer is: 100.05", "prediction": "100.05", "correct": false, "in_question": [false]}
+{"index": 186947, "steps": 2, "values": [40, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false]}
+{"index": 220220, "steps": 3, "values": [60, 240, 290], "gold": 290, "text": "The answer is: 290", "prediction": "290", "correct": true, "in_question": [false, false, false]}
+{"index": 10834, "steps": 4, "values": [360, 300, 660, 340], "gold": 340, "text": "The answer is: 340", "prediction": "340", "correct": true, "in_question": [false, false, false, false]}
+{"index": 16333, "steps": 5, "values": [35, 15, 25, 10, 35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [false, false, false, true, false]}
+{"index": 197422, "steps": 6, "values": [40, 24, 16, 24, 48, 72], "gold": 72, "text": "The answer is: 192", "prediction": "192", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 356970, "steps": 1, "values": [480], "gold": 480, "text": "The answer is: 480", "prediction": "480", "correct": true, "in_question": [false]}
+{"index": 75323, "steps": 2, "values": [60, 40], "gold": 40, "text": "The answer is: 40", "prediction": "40", "correct": true, "in_question": [false, false]}
+{"index": 146530, "steps": 3, "values": [48, 228, 308], "gold": 308, "text": "The answer is: 308", "prediction": "308", "correct": true, "in_question": [false, false, false]}
+{"index": 374203, "steps": 4, "values": [6, 2, 8, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, true, false, false]}
+{"index": 120878, "steps": 5, "values": [null, 27, 216, 100, 316], "gold": 316, "text": "The answer is: 293", "prediction": "293", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 260543, "steps": 6, "values": [150, 3000, 350, null, 880, 3880], "gold": 3880, "text": "The answer is: 487.5", "prediction": "487.5", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 43126, "steps": 1, "values": [null], "gold": 14, "text": "The answer is: 14", "prediction": "14", "correct": true, "in_question": [false]}
+{"index": 304596, "steps": 2, "values": [315, 35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [false, false]}
+{"index": 367838, "steps": 3, "values": [10, 40, 240], "gold": 240, "text": "The answer is: 240", "prediction": "240", "correct": true, "in_question": [false, false, false]}
+{"index": 328802, "steps": 4, "values": [50, null, 40, null], "gold": 4, "text": "The answer is: 2", "prediction": "2", "correct": false, "in_question": [false, false, false, false]}
+{"index": 311783, "steps": 5, "values": [70, 7, 77, 10, 87], "gold": 87, "text": "The answer is: 87", "prediction": "87", "correct": true, "in_question": [false, false, false, true, false]}
+{"index": 307715, "steps": 6, "values": [45, 105, 42, 63, null, 32], "gold": 32, "text": "The answer is: 32", "prediction": "32", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 107339, "steps": 1, "values": [900], "gold": 900, "text": "The answer is: 900", "prediction": "900", "correct": true, "in_question": [false]}
+{"index": 321057, "steps": 2, "values": [1000, 7000], "gold": 7000, "text": "The answer is: 7000", "prediction": "7000", "correct": true, "in_question": [false, false]}
+{"index": 41646, "steps": 3, "values": [75, 45, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false, false]}
+{"index": 281837, "steps": 4, "values": [50, 100, 200, 300], "gold": 300, "text": "The answer is: 450", "prediction": "450", "correct": false, "in_question": [true, false, false, false]}
+{"index": 324098, "steps": 5, "values": [52, 40, 60, 112, 56], "gold": 56, "text": "The answer is: 56", "prediction": "56", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 318807, "steps": 6, "values": [100, 150, 50, 3000, 1000, 4000], "gold": 4000, "text": "The answer is: 6500", "prediction": "6500", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 183954, "steps": 1, "values": [225], "gold": 225, "text": "The answer is: 225", "prediction": "225", "correct": true, "in_question": [false]}
+{"index": 174291, "steps": 2, "values": [1000, 3500], "gold": 3500, "text": "The answer is: 3500", "prediction": "3500", "correct": true, "in_question": [false, false]}
+{"index": 315658, "steps": 3, "values": [3000, null, 4000], "gold": 4000, "text": "The answer is: 4000", "prediction": "4000", "correct": true, "in_question": [false, false, false]}
+{"index": 133103, "steps": 4, "values": [8, 3, 6, 17], "gold": 17, "text": "The answer is: 17", "prediction": "17", "correct": true, "in_question": [false, true, false, false]}
+{"index": 329828, "steps": 5, "values": [50, 105, 155, 465, 620], "gold": 620, "text": "The answer is: 760", "prediction": "760", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 295968, "steps": 6, "values": [16, 24, 20, 32, 16, 10], "gold": 10, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 245757, "steps": 1, "values": [35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [false]}
+{"index": 122338, "steps": 2, "values": [30, 1800], "gold": 1800, "text": "The answer is: 1800", "prediction": "1800", "correct": true, "in_question": [false, false]}
+{"index": 120717, "steps": 3, "values": [21, 28, 7], "gold": 7, "text": "The answer is: 7", "prediction": "7", "correct": true, "in_question": [false, false, true]}
+{"index": 39175, "steps": 4, "values": [30, 80, 150, 260], "gold": 260, "text": "The answer is: 260", "prediction": "260", "correct": true, "in_question": [false, false, false, false]}
+{"index": 380294, "steps": 5, "values": [200, 10, 300, 15, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 47090, "steps": 6, "values": [50, null, null, 12, 33, 45], "gold": 45, "text": "The answer is: 44", "prediction": "44", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 231853, "steps": 1, "values": [180], "gold": 180, "text": "The answer is: 180", "prediction": "180", "correct": true, "in_question": [false]}
+{"index": 345014, "steps": 2, "values": [20, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false]}
+{"index": 233045, "steps": 3, "values": [300, 450, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false, false, false]}
+{"index": 72570, "steps": 4, "values": [12, 24, 30, 15], "gold": 15, "text": "The answer is: 15", "prediction": "15", "correct": true, "in_question": [false, false, false, false]}
+{"index": 317909, "steps": 5, "values": [30, null, null, 39, 69], "gold": 69, "text": "The answer is: 69", "prediction": "69", "correct": true, "in_question": [true, false, false, false, false]}
+{"index": 113629, "steps": 6, "values": [250, 50, 200, 80, 16, 3200], "gold": 3200, "text": "The answer is: 3200", "prediction": "3200", "correct": true, "in_question": [false, true, false, false, false, false]}
+{"index": 23799, "steps": 1, "values": [1000], "gold": 1000, "text": "The answer is: 1000", "prediction": "1000", "correct": true, "in_question": [false]}
+{"index": 379266, "steps": 2, "values": [11, 13], "gold": 13, "text": "The answer is: 13", "prediction": "13", "correct": true, "in_question": [false, false]}
+{"index": 340637, "steps": 3, "values": [35, 21, 56], "gold": 56, "text": "The answer is: 56", "prediction": "56", "correct": true, "in_question": [false, false, false]}
+{"index": 334471, "steps": 4, "values": [6, 22, 44, 51], "gold": 51, "text": "The answer is: 65", "prediction": "65", "correct": false, "in_question": [false, false, false, false]}
+{"index": 182520, "steps": 5, "values": [720, 81, 87, 341, 379], "gold": 379, "text": "The answer is: 479", "prediction": "479", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 178623, "steps": 6, "values": [6, 2, 24, 40, 70, 134], "gold": 134, "text": "The answer is: 112", "prediction": "112", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 28851, "steps": 1, "values": [12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [true]}
+{"index": 290952, "steps": 2, "values": [5, 15], "gold": 15, "text": "The answer is: 15", "prediction": "15", "correct": true, "in_question": [false, false]}
+{"index": 201231, "steps": 3, "values": [15, 12, 27], "gold": 27, "text": "The answer is: 27", "prediction": "27", "correct": true, "in_question": [false, false, false]}
+{"index": 84778, "steps": 4, "values": [50, 100, 200, 375], "gold": 375, "text": "The answer is: 375", "prediction": "375", "correct": true, "in_question": [false, false, false, false]}
+{"index": 143350, "steps": 5, "values": [42, 84, 350, 420, 504], "gold": 504, "text": "The answer is: 572", "prediction": "572", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 361595, "steps": 6, "values": [6, 2, 8, 40, 80, 4], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [false, true, false, false, false, false]}
+{"index": 170449, "steps": 1, "values": [16], "gold": 16, "text": "The answer is: 16", "prediction": "16", "correct": true, "in_question": [false]}
+{"index": 368084, "steps": 2, "values": [70, 420], "gold": 420, "text": "The answer is: 840", "prediction": "840", "correct": false, "in_question": [false, false]}
+{"index": 111796, "steps": 3, "values": [7, 10, 25], "gold": 25, "text": "The answer is: 25", "prediction": "25", "correct": true, "in_question": [false, true, false]}
+{"index": 287634, "steps": 4, "values": [25, 25, null, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, false, false, false]}
+{"index": 215216, "steps": 5, "values": [60, 90, 30, 60, 150], "gold": 150, "text": "The answer is: 180", "prediction": "180", "correct": false, "in_question": [false, false, true, false, false]}
+{"index": 227594, "steps": 6, "values": [40, 15, 55, 95, 5, 19], "gold": 19, "text": "The answer is: 17", "prediction": "17", "correct": false, "in_question": [false, false, false, false, true, false]}
+{"index": 230141, "steps": 1, "values": [4], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [true]}
+{"index": 178120, "steps": 2, "values": [8, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, false]}
+{"index": 33768, "steps": 3, "values": [6, 18, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, false, false]}
+{"index": 351410, "steps": 4, "values": [6, 6, 5, 17], "gold": 17, "text": "The answer is: 17", "prediction": "17", "correct": true, "in_question": [false, false, true, false]}
+{"index": 312034, "steps": 5, "values": [750, 45, 540, 1290, 430], "gold": 430, "text": "The answer is: 450", "prediction": "450", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 227334, "steps": 6, "values": [5, 45, 9, 36, 9, 27], "gold": 27, "text": "The answer is: 27", "prediction": "27", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 255732, "steps": 1, "values": [null], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false]}
+{"index": 334979, "steps": 2, "values": [40, 200], "gold": 200, "text": "The answer is: 200", "prediction": "200", "correct": true, "in_question": [false, false]}
+{"index": 353954, "steps": 3, "values": [5, 10, 6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false, true, false]}
+{"index": 352246, "steps": 4, "values": [50, 36, 14, null], "gold": 2, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false, false, false]}
+{"index": 341382, "steps": 5, "values": [80, 280, 8, 88, 368], "gold": 368, "text": "The answer is: 352", "prediction": "352", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 270082, "steps": 6, "values": [9, 270, 90, 540, 270, 810], "gold": 810, "text": "The answer is: 810", "prediction": "810", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 271635, "steps": 1, "values": [22], "gold": 22, "text": "The answer is: 22", "prediction": "22", "correct": true, "in_question": [false]}
+{"index": 332322, "steps": 2, "values": [42, 14], "gold": 14, "text": "The answer is: 14", "prediction": "14", "correct": true, "in_question": [false, false]}
+{"index": 112114, "steps": 3, "values": [30, 70, 14], "gold": 14, "text": "The answer is: 14", "prediction": "14", "correct": true, "in_question": [false, false, false]}
+{"index": 157008, "steps": 4, "values": [null, null, null, 250], "gold": 250, "text": "The answer is: 250", "prediction": "250", "correct": true, "in_question": [false, false, false, false]}
+{"index": 242255, "steps": 5, "values": [60, 240, 540, 470, 1010], "gold": 1010, "text": "The answer is: 1010", "prediction": "1010", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 52453, "steps": 6, "values": [null, 4, 1, null, 12, 42], "gold": 42, "text": "The answer is: 90", "prediction": "90", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 380917, "steps": 1, "values": [72], "gold": 72, "text": "The answer is: 72", "prediction": "72", "correct": true, "in_question": [false]}
+{"index": 1679, "steps": 2, "values": [165, null], "gold": 181, "text": "The answer is: 181.5", "prediction": "181.5", "correct": false, "in_question": [false, false]}
+{"index": 317217, "steps": 3, "values": [10, 15, 25], "gold": 25, "text": "The answer is: 25", "prediction": "25", "correct": true, "in_question": [false, false, false]}
+{"index": 306605, "steps": 4, "values": [25, 75, 100, 110], "gold": 110, "text": "The answer is: 110", "prediction": "110", "correct": true, "in_question": [true, false, true, false]}
+{"index": 375511, "steps": 5, "values": [20, 80, 144, 64, 208], "gold": 208, "text": "The answer is: 256", "prediction": "256", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 308816, "steps": 6, "values": [16, 10, 8, 14, 32, 16], "gold": 16, "text": "The answer is: 16", "prediction": "16", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 286797, "steps": 1, "values": [10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false]}
+{"index": 181983, "steps": 2, "values": [15, 3], "gold": 3, "text": "The answer is: 3", "prediction": "3", "correct": true, "in_question": [false, true]}
+{"index": 26690, "steps": 3, "values": [140, 130, 270], "gold": 270, "text": "The answer is: 250", "prediction": "250", "correct": false, "in_question": [false, false, false]}
+{"index": 308569, "steps": 4, "values": [19, 95, 6, 101], "gold": 101, "text": "The answer is: 91", "prediction": "91", "correct": false, "in_question": [false, false, false, false]}
+{"index": 330315, "steps": 5, "values": [150, 3, 90, 9, 99], "gold": 99, "text": "The answer is: 99", "prediction": "99", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 376117, "steps": 6, "values": [90, 450, 900, 4, 360, 1260], "gold": 1260, "text": "The answer is: 2700", "prediction": "2700", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 35710, "steps": 1, "values": [10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false]}
+{"index": 293250, "steps": 2, "values": [5000, 2500], "gold": 2500, "text": "The answer is: 2500", "prediction": "2500", "correct": true, "in_question": [false, false]}
+{"index": 19491, "steps": 3, "values": [60, 40, 35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [true, false, false]}
+{"index": 271551, "steps": 4, "values": [null, null, null, 63], "gold": 63, "text": "The answer is: 63", "prediction": "63", "correct": true, "in_question": [false, false, false, false]}
+{"index": 91413, "steps": 5, "values": [9, 48, 36, 10, 94], "gold": 94, "text": "The answer is: 94", "prediction": "94", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 255737, "steps": 6, "values": [60, 15, 45, 15, 60, 6], "gold": 6, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 253698, "steps": 1, "values": [null], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [false]}
+{"index": 341101, "steps": 2, "values": [36, 59], "gold": 59, "text": "The answer is: 59", "prediction": "59", "correct": true, "in_question": [false, false]}
+{"index": 341825, "steps": 3, "values": [6, 4, 22], "gold": 22, "text": "The answer is: 44", "prediction": "44", "correct": false, "in_question": [false, false, false]}
+{"index": 70002, "steps": 4, "values": [15, 4, 16, 31], "gold": 31, "text": "The answer is: 31", "prediction": "31", "correct": true, "in_question": [false, true, false, false]}
+{"index": 75618, "steps": 5, "values": [null, null, 34, 25, 115], "gold": 115, "text": "The answer is: 107", "prediction": "107", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 247217, "steps": 6, "values": [30, 40, 60, 240, 180, 90], "gold": 90, "text": "The answer is: 0", "prediction": "0", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 365139, "steps": 1, "values": [50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false]}
+{"index": 359460, "steps": 2, "values": [90, 30], "gold": 30, "text": "The answer is: 40", "prediction": "40", "correct": false, "in_question": [false, false]}
+{"index": 93580, "steps": 3, "values": [240, 270, 510], "gold": 510, "text": "The answer is: 510", "prediction": "510", "correct": true, "in_question": [false, false, false]}
+{"index": 249945, "steps": 4, "values": [54, 89, 339, 61], "gold": 61, "text": "The answer is: 61", "prediction": "61", "correct": true, "in_question": [false, false, false, false]}
+{"index": 347990, "steps": 5, "values": [8, 5, 13, 6, 19], "gold": 19, "text": "The answer is: 19", "prediction": "19", "correct": true, "in_question": [true, true, false, false, false]}
+{"index": 278881, "steps": 6, "values": [21, 3, 9, 9, null, 7], "gold": 7, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false, false, false, false, false, true]}
+{"index": 363795, "steps": 1, "values": [39], "gold": 39, "text": "The answer is: 48", "prediction": "48", "correct": false, "in_question": [false]}
+{"index": 347470, "steps": 2, "values": [24, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false, false]}
+{"index": 157879, "steps": 3, "values": [null, null, 24], "gold": 24, "text": "The answer is: 24", "prediction": "24", "correct": true, "in_question": [false, false, false]}
+{"index": 222001, "steps": 4, "values": [45, 90, 9, 81], "gold": 81, "text": "The answer is: 81", "prediction": "81", "correct": true, "in_question": [false, false, false, false]}
+{"index": 176850, "steps": 5, "values": [30, 50, 80, 45, 35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [false, true, false, false, false]}
+{"index": 155825, "steps": 6, "values": [6, 8, 10, 12, 14, 16], "gold": 16, "text": "The answer is: 14", "prediction": "14", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 188826, "steps": 1, "values": [56], "gold": 56, "text": "The answer is: 56", "prediction": "56", "correct": true, "in_question": [false]}
+{"index": 260308, "steps": 2, "values": [150, 135], "gold": 135, "text": "The answer is: 135", "prediction": "135", "correct": true, "in_question": [false, false]}
+{"index": 109296, "steps": 3, "values": [20, 10, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false, false]}
+{"index": 233729, "steps": 4, "values": [40, 60, 12, 132], "gold": 132, "text": "The answer is: 132", "prediction": "132", "correct": true, "in_question": [false, false, false, false]}
+{"index": 242018, "steps": 5, "values": [45, 36, 135, 108, 243], "gold": 243, "text": "The answer is: 243", "prediction": "243", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 369490, "steps": 6, "values": [null, null, 30, null, 11, 71], "gold": 71, "text": "The answer is: 60", "prediction": "60", "correct": false, "in_question": [false, false, true, false, false, false]}
+{"index": 126200, "steps": 1, "values": [5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false]}
+{"index": 210189, "steps": 2, "values": [15, 35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [false, false]}
+{"index": 337254, "steps": 3, "values": [75, 450, 1125], "gold": 1125, "text": "The answer is: 1125", "prediction": "1125", "correct": true, "in_question": [false, false, false]}
+{"index": 61028, "steps": 4, "values": [120, 200, 100, 420], "gold": 420, "text": "The answer is: 420", "prediction": "420", "correct": true, "in_question": [false, false, false, false]}
+{"index": 246095, "steps": 5, "values": [45, 40, 60, 2, 58], "gold": 58, "text": "The answer is: 50", "prediction": "50", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 1032, "steps": 6, "values": [20, 40, 20, 5, 10, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [true, false, true, true, false, false]}
+{"index": 264956, "steps": 1, "values": [32], "gold": 32, "text": "The answer is: 32", "prediction": "32", "correct": true, "in_question": [false]}
+{"index": 141073, "steps": 2, "values": [12, 84], "gold": 84, "text": "The answer is: 84", "prediction": "84", "correct": true, "in_question": [false, false]}
+{"index": 38542, "steps": 3, "values": [40, 6, 34], "gold": 34, "text": "The answer is: 34", "prediction": "34", "correct": true, "in_question": [false, false, false]}
+{"index": 325204, "steps": 4, "values": [120, 60, 420, 100], "gold": 100, "text": "The answer is: 52", "prediction": "52", "correct": false, "in_question": [false, false, false, false]}
+{"index": 249074, "steps": 5, "values": [5, 10, 10, 300, 600], "gold": 600, "text": "The answer is: 600", "prediction": "600", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 100204, "steps": 6, "values": [15, 750, 300, 10, 750, 0], "gold": 0, "text": "The answer is: 0", "prediction": "0", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 344898, "steps": 1, "values": [6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false]}
+{"index": 301048, "steps": 2, "values": [180, 36], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [false, false]}
+{"index": 219788, "steps": 3, "values": [9000, 4500, 9500], "gold": 9500, "text": "The answer is: 4500", "prediction": "4500", "correct": false, "in_question": [false, false, false]}
+{"index": 187861, "steps": 4, "values": [7, 3500, 125, 3375], "gold": 3375, "text": "The answer is: 3125", "prediction": "3125", "correct": false, "in_question": [false, false, false, false]}
+{"index": 277549, "steps": 5, "values": [18, 15, 63, 96, null], "gold": 3, "text": "The answer is: 3", "prediction": "3", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 230250, "steps": 6, "values": [60, 100, null, 10, 76, 152], "gold": 152, "text": "The answer is: 121", "prediction": "121", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 171175, "steps": 1, "values": [200], "gold": 200, "text": "The answer is: 200", "prediction": "200", "correct": true, "in_question": [false]}
+{"index": 260834, "steps": 2, "values": [100, 500], "gold": 500, "text": "The answer is: 500", "prediction": "500", "correct": true, "in_question": [false, false]}
+{"index": 240027, "steps": 3, "values": [15, 20, 35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [false, false, false]}
+{"index": 51447, "steps": 4, "values": [300, null, 540, 840], "gold": 840, "text": "The answer is: 844", "prediction": "844", "correct": false, "in_question": [false, false, false, false]}
+{"index": 187682, "steps": 5, "values": [12, 19, 57, 76, 152], "gold": 152, "text": "The answer is: 152", "prediction": "152", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 316881, "steps": 6, "values": [7, 3, 36, 36, 18, 90], "gold": 90, "text": "The answer is: 96", "prediction": "96", "correct": false, "in_question": [false, true, false, false, false, false]}
+{"index": 62038, "steps": 1, "values": [45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false]}
+{"index": 335116, "steps": 2, "values": [6, 90], "gold": 90, "text": "The answer is: 90", "prediction": "90", "correct": true, "in_question": [false, false]}
+{"index": 21361, "steps": 3, "values": [12, 3, 21], "gold": 21, "text": "The answer is: 21", "prediction": "21", "correct": true, "in_question": [false, false, false]}
+{"index": 371701, "steps": 4, "values": [2550, 1600, 4150, 166], "gold": 166, "text": "The answer is: 166", "prediction": "166", "correct": true, "in_question": [false, false, false, false]}
+{"index": 382388, "steps": 5, "values": [10, 4, 4, 22, 26], "gold": 26, "text": "The answer is: 26", "prediction": "26", "correct": true, "in_question": [true, false, false, false, false]}
+{"index": 214103, "steps": 6, "values": [null, 19, null, 13, 9, 4], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 279740, "steps": 1, "values": [null], "gold": 25, "text": "The answer is: 20", "prediction": "20", "correct": false, "in_question": [false]}
+{"index": 336224, "steps": 2, "values": [7, 28], "gold": 28, "text": "The answer is: 28", "prediction": "28", "correct": true, "in_question": [false, false]}
+{"index": 125095, "steps": 3, "values": [30, 17, 13], "gold": 13, "text": "The answer is: 13", "prediction": "13", "correct": true, "in_question": [false, false, false]}
+{"index": 67605, "steps": 4, "values": [10, 30, 30, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false, false, false, false]}
+{"index": 230148, "steps": 5, "values": [300, null, 429, null, 858], "gold": 858, "text": "The answer is: 1333.33", "prediction": "1333.33", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 224496, "steps": 6, "values": [110, 90, 270, 570, 600, 30], "gold": 30, "text": "The answer is: 70", "prediction": "70", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 69703, "steps": 1, "values": [3], "gold": 3, "text": "The answer is: 3", "prediction": "3", "correct": true, "in_question": [false]}
+{"index": 74988, "steps": 2, "values": [8, 2], "gold": 2, "text": "The answer is: 1.5", "prediction": "1.5", "correct": false, "in_question": [false, true]}
+{"index": 148644, "steps": 3, "values": [6, 5, 11], "gold": 11, "text": "The answer is: 11", "prediction": "11", "correct": true, "in_question": [false, true, false]}
+{"index": 226210, "steps": 4, "values": [138, 92, 2, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, true, false]}
+{"index": 94560, "steps": 5, "values": [100, 200, 250, 550, 450], "gold": 450, "text": "The answer is: 450", "prediction": "450", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 240555, "steps": 6, "values": [10, 15, 20, 25, 30, 5], "gold": 5, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 193904, "steps": 1, "values": [45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false]}
+{"index": 14255, "steps": 2, "values": [10, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [true, true]}
+{"index": 289366, "steps": 3, "values": [2, 14, 16], "gold": 16, "text": "The answer is: 16", "prediction": "16", "correct": true, "in_question": [true, false, false]}
+{"index": 356237, "steps": 4, "values": [null, null, null, 34], "gold": 34, "text": "The answer is: 34", "prediction": "34", "correct": true, "in_question": [false, false, false, false]}
+{"index": 15041, "steps": 5, "values": [1600, null, 1400, 9800, null], "gold": 21000, "text": "The answer is: 22400", "prediction": "22400", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 231150, "steps": 6, "values": [100, 300, 60, 240, 40, 200], "gold": 200, "text": "The answer is: 200", "prediction": "200", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 156293, "steps": 1, "values": [60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false]}
+{"index": 26360, "steps": 2, "values": [900, 960], "gold": 960, "text": "The answer is: 990", "prediction": "990", "correct": false, "in_question": [false, false]}
+{"index": 311939, "steps": 3, "values": [1125, 1200, 2325], "gold": 2325, "text": "The answer is: 2325", "prediction": "2325", "correct": true, "in_question": [false, false, false]}
+{"index": 57220, "steps": 4, "values": [21, 75, 18, 114], "gold": 114, "text": "The answer is: 114", "prediction": "114", "correct": true, "in_question": [false, false, false, false]}
+{"index": 25685, "steps": 5, "values": [15, 8, 3, 12, 21], "gold": 21, "text": "The answer is: 21", "prediction": "21", "correct": true, "in_question": [false, false, true, false, false]}
+{"index": 313530, "steps": 6, "values": [120, 130, 670, null, 335, 335], "gold": 335, "text": "The answer is: 370", "prediction": "370", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 344639, "steps": 1, "values": [72], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [false]}
+{"index": 53656, "steps": 2, "values": [14, 42], "gold": 42, "text": "The answer is: 42", "prediction": "42", "correct": true, "in_question": [false, false]}
+{"index": 137649, "steps": 3, "values": [56, 38, 24], "gold": 24, "text": "The answer is: 24", "prediction": "24", "correct": true, "in_question": [false, false, false]}
+{"index": 202879, "steps": 4, "values": [75, 225, 300, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false, false, false]}
+{"index": 68649, "steps": 5, "values": [72, 48, 18, 16, 34], "gold": 34, "text": "The answer is: 34", "prediction": "34", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 9349, "steps": 6, "values": [40, 160, 40, 120, 60, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 248442, "steps": 1, "values": [60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false]}
+{"index": 223448, "steps": 2, "values": [50, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false]}
+{"index": 353578, "steps": 3, "values": [80, 120, 380], "gold": 380, "text": "The answer is: 380", "prediction": "380", "correct": true, "in_question": [false, false, false]}
+{"index": 189, "steps": 4, "values": [160, 80, 240, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false, false, false, false]}
+{"index": 194612, "steps": 5, "values": [32, 15, 47, 4, 51], "gold": 51, "text": "The answer is: 51", "prediction": "51", "correct": true, "in_question": [false, false, false, true, false]}
+{"index": 4799, "steps": 6, "values": [20, 60, 55, 70, 35, 25], "gold": 25, "text": "The answer is: 22.5", "prediction": "22.5", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 144068, "steps": 1, "values": [300], "gold": 300, "text": "The answer is: 300", "prediction": "300", "correct": true, "in_question": [false]}
+{"index": 252814, "steps": 2, "values": [null, null], "gold": 70000, "text": "The answer is: 70000", "prediction": "70000", "correct": true, "in_question": [false, false]}
+{"index": 220311, "steps": 3, "values": [48, 16, 64], "gold": 64, "text": "The answer is: 72", "prediction": "72", "correct": false, "in_question": [false, false, false]}
+{"index": 32875, "steps": 4, "values": [null, 1, null, null], "gold": 7, "text": "The answer is: 7.5", "prediction": "7.5", "correct": false, "in_question": [false, true, false, false]}
+{"index": 381327, "steps": 5, "values": [15, 10, 25, 250, 1000], "gold": 1000, "text": "The answer is: 1000", "prediction": "1000", "correct": true, "in_question": [false, true, false, false, false]}
+{"index": 267594, "steps": 6, "values": [6, 6, 12, 3, 12, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false, false, true, false, false]}
+{"index": 133631, "steps": 1, "values": [800], "gold": 800, "text": "The answer is: 800", "prediction": "800", "correct": true, "in_question": [false]}
+{"index": 349033, "steps": 2, "values": [38, 76], "gold": 76, "text": "The answer is: 76", "prediction": "76", "correct": true, "in_question": [false, false]}
+{"index": 32829, "steps": 3, "values": [7500, 1800, 180], "gold": 180, "text": "The answer is: 180", "prediction": "180", "correct": true, "in_question": [false, false, false]}
+{"index": 55509, "steps": 4, "values": [20, 25, 45, 55], "gold": 55, "text": "The answer is: 55", "prediction": "55", "correct": true, "in_question": [false, false, false, false]}
+{"index": 206769, "steps": 5, "values": [16, 64, 6, 54, 118], "gold": 118, "text": "The answer is: 118", "prediction": "118", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 82875, "steps": 6, "values": [20, 50, 1000, 40, 120, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 349827, "steps": 1, "values": [138], "gold": 138, "text": "The answer is: 138", "prediction": "138", "correct": true, "in_question": [false]}
+{"index": 263729, "steps": 2, "values": [25, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false, false]}
+{"index": 267068, "steps": 3, "values": [20, 30, 450], "gold": 450, "text": "The answer is: 450", "prediction": "450", "correct": true, "in_question": [false, false, false]}
+{"index": 316122, "steps": 4, "values": [null, 6000, 7200, 1200], "gold": 1200, "text": "The answer is: 1200", "prediction": "1200", "correct": true, "in_question": [false, false, false, true]}
+{"index": 87438, "steps": 5, "values": [20, 160, 280, 320, 16], "gold": 16, "text": "The answer is: 16", "prediction": "16", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 334086, "steps": 6, "values": [null, null, null, null, null, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, false, false, false, false, true]}
+{"index": 316825, "steps": 1, "values": [10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false]}
+{"index": 263688, "steps": 2, "values": [8, 480], "gold": 480, "text": "The answer is: 480", "prediction": "480", "correct": true, "in_question": [false, false]}
+{"index": 127634, "steps": 3, "values": [40, 200, 520], "gold": 520, "text": "The answer is: 520", "prediction": "520", "correct": true, "in_question": [false, false, false]}
+{"index": 242554, "steps": 4, "values": [8, 4, 2, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, true, false, false]}
+{"index": 132500, "steps": 5, "values": [40, null, null, null, null], "gold": 15, "text": "The answer is: 17", "prediction": "17", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 293561, "steps": 6, "values": [36, 144, 80, 24, 96, 320], "gold": 320, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 5956, "steps": 1, "values": [63], "gold": 63, "text": "The answer is: 63", "prediction": "63", "correct": true, "in_question": [false]}
+{"index": 179559, "steps": 2, "values": [100, 3], "gold": 3, "text": "The answer is: 3", "prediction": "3", "correct": true, "in_question": [false, false]}
+{"index": 265057, "steps": 3, "values": [10, 3650, null], "gold": 10950, "text": "The answer is: 120", "prediction": "120", "correct": false, "in_question": [false, false, false]}
+{"index": 352291, "steps": 4, "values": [100, 50, 150, 350], "gold": 350, "text": "The answer is: 350", "prediction": "350", "correct": true, "in_question": [false, false, false, false]}
+{"index": 27731, "steps": 5, "values": [750, null, 375, null, null], "gold": 33750, "text": "The answer is: 65625", "prediction": "65625", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 207706, "steps": 6, "values": [20, 40, null, 200, 4000, null], "gold": 20000, "text": "The answer is: 24000", "prediction": "24000", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 72105, "steps": 1, "values": [60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false]}
+{"index": 112817, "steps": 2, "values": [15, 11], "gold": 11, "text": "The answer is: 8", "prediction": "8", "correct": false, "in_question": [false, false]}
+{"index": 272052, "steps": 3, "values": [120, 105, 165], "gold": 165, "text": "The answer is: 135", "prediction": "135", "correct": false, "in_question": [false, false, false]}
+{"index": 33233, "steps": 4, "values": [25, 500, 1000, 1500], "gold": 1500, "text": "The answer is: 1500", "prediction": "1500", "correct": true, "in_question": [false, false, false, false]}
+{"index": 90201, "steps": 5, "values": [2, 4, 8, 16, 31], "gold": 31, "text": "The answer is: 31", "prediction": "31", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 116129, "steps": 6, "values": [400, 100, 200, 600, 600, 1200], "gold": 1200, "text": "The answer is: 1400", "prediction": "1400", "correct": false, "in_question": [false, false, true, false, false, false]}
+{"index": 265302, "steps": 1, "values": [50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false]}
+{"index": 233882, "steps": 2, "values": [15, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [true, true]}
+{"index": 196272, "steps": 3, "values": [1200, 520, 1720], "gold": 1720, "text": "The answer is: 1720", "prediction": "1720", "correct": true, "in_question": [false, false, false]}
+{"index": 371767, "steps": 4, "values": [4, 6, 2, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [true, false, true, true]}
+{"index": 43825, "steps": 5, "values": [900, 4, 8, 480, 1680], "gold": 1680, "text": "The answer is: 1620", "prediction": "1620", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 16550, "steps": 6, "values": [2500, null, null, null, 1250, null], "gold": 23750, "text": "The answer is: 27750", "prediction": "27750", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 266726, "steps": 1, "values": [null], "gold": 4, "text": "The answer is: 4", "prediction": "4", "correct": true, "in_question": [false]}
+{"index": 156649, "steps": 2, "values": [15, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, false]}
+{"index": 215261, "steps": 3, "values": [180, 85, 95], "gold": 95, "text": "The answer is: 95", "prediction": "95", "correct": true, "in_question": [false, false, false]}
+{"index": 226974, "steps": 4, "values": [20, 15, 45, 90], "gold": 90, "text": "The answer is: 90", "prediction": "90", "correct": true, "in_question": [false, false, false, false]}
+{"index": 222669, "steps": 5, "values": [100, 300, 150, 450, 950], "gold": 950, "text": "The answer is: 1050", "prediction": "1050", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 68219, "steps": 6, "values": [15, 65, null, null, null, 17], "gold": 17, "text": "The answer is: 11", "prediction": "11", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 157537, "steps": 1, "values": [10], "gold": 10, "text": "The answer is: 38", "prediction": "38", "correct": false, "in_question": [true]}
+{"index": 350194, "steps": 2, "values": [60, 240], "gold": 240, "text": "The answer is: 240", "prediction": "240", "correct": true, "in_question": [false, false]}
+{"index": 64652, "steps": 3, "values": [120, 40, 160], "gold": 160, "text": "The answer is: 160", "prediction": "160", "correct": true, "in_question": [false, false, false]}
+{"index": 252943, "steps": 4, "values": [9, 18, 36, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, true, false, true]}
+{"index": 316536, "steps": 5, "values": [null, null, 27, 42, 21], "gold": 21, "text": "The answer is: 28", "prediction": "28", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 300996, "steps": 6, "values": [12, null, 18, 6, 9, 27], "gold": 33, "text": "The answer is: 22", "prediction": "22", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 272974, "steps": 1, "values": [64], "gold": 64, "text": "The answer is: 64", "prediction": "64", "correct": true, "in_question": [false]}
+{"index": 156077, "steps": 2, "values": [80, 560], "gold": 560, "text": "The answer is: 560", "prediction": "560", "correct": true, "in_question": [false, false]}
+{"index": 339356, "steps": 3, "values": [75, 55, 20], "gold": 20, "text": "The answer is: 30", "prediction": "30", "correct": false, "in_question": [false, false, true]}
+{"index": 140775, "steps": 4, "values": [360, null, 45, 67], "gold": 67, "text": "The answer is: 135", "prediction": "135", "correct": false, "in_question": [false, false, false, false]}
+{"index": 104859, "steps": 5, "values": [80, 150, 160, 450, 610], "gold": 610, "text": "The answer is: 610", "prediction": "610", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 289530, "steps": 6, "values": [20, 120, 220, 66, 154, 374], "gold": 374, "text": "The answer is: 238", "prediction": "238", "correct": false, "in_question": [true, false, false, false, false, false]}
+{"index": 280248, "steps": 1, "values": [105], "gold": 105, "text": "The answer is: 105", "prediction": "105", "correct": true, "in_question": [false]}
+{"index": 61678, "steps": 2, "values": [5, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false]}
+{"index": 131223, "steps": 3, "values": [21, null, 18], "gold": 18, "text": "The answer is: 17", "prediction": "17", "correct": false, "in_question": [false, false, false]}
+{"index": 263175, "steps": 4, "values": [150, 150, 350, 200], "gold": 200, "text": "The answer is: 200", "prediction": "200", "correct": true, "in_question": [true, true, false, true]}
+{"index": 291711, "steps": 5, "values": [2, null, null, null, 9], "gold": 9, "text": "The answer is: 13", "prediction": "13", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 292804, "steps": 6, "values": [80, 120, 40, 400, 600, 1000], "gold": 1000, "text": "The answer is: 1100", "prediction": "1100", "correct": false, "in_question": [false, false, true, false, false, false]}
+{"index": 255462, "steps": 1, "values": [144], "gold": 144, "text": "The answer is: 144", "prediction": "144", "correct": true, "in_question": [false]}
+{"index": 249397, "steps": 2, "values": [24, 19], "gold": 19, "text": "The answer is: 19", "prediction": "19", "correct": true, "in_question": [false, false]}
+{"index": 244114, "steps": 3, "values": [14, 10, 32], "gold": 32, "text": "The answer is: 32", "prediction": "32", "correct": true, "in_question": [false, false, false]}
+{"index": 186485, "steps": 4, "values": [19, 21, 8, 29], "gold": 29, "text": "The answer is: 29", "prediction": "29", "correct": true, "in_question": [false, false, false, false]}
+{"index": 249891, "steps": 5, "values": [30, 90, 20, 30, 60], "gold": 60, "text": "The answer is: 80", "prediction": "80", "correct": false, "in_question": [false, false, false, false, true]}
+{"index": 296708, "steps": 6, "values": [400, 800, null, null, 250, 550], "gold": 550, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 141637, "steps": 1, "values": [12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false]}
+{"index": 159015, "steps": 2, "values": [40, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, false]}
+{"index": 360900, "steps": 3, "values": [24, 25, null], "gold": 8, "text": "The answer is: 5", "prediction": "5", "correct": false, "in_question": [false, false, false]}
+{"index": 214140, "steps": 4, "values": [null, 20, 18, 32], "gold": 32, "text": "The answer is: 28", "prediction": "28", "correct": false, "in_question": [false, false, false, false]}
+{"index": 76813, "steps": 5, "values": [100, 450, 75, 425, 25], "gold": 25, "text": "The answer is: 25", "prediction": "25", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 165340, "steps": 6, "values": [192, 11, 132, 288, 264, 552], "gold": 552, "text": "The answer is: 612", "prediction": "612", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 14304, "steps": 1, "values": [36], "gold": 36, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false]}
+{"index": 374526, "steps": 2, "values": [140, 1680], "gold": 1680, "text": "The answer is: 1680", "prediction": "1680", "correct": true, "in_question": [false, false]}
+{"index": 80673, "steps": 3, "values": [9, 27, 36], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [false, false, false]}
+{"index": 331600, "steps": 4, "values": [80, 90, 30, 200], "gold": 200, "text": "The answer is: 200", "prediction": "200", "correct": true, "in_question": [false, false, true, false]}
+{"index": 279045, "steps": 5, "values": [30, 30, 20, 20, 100], "gold": 100, "text": "The answer is: 100", "prediction": "100", "correct": true, "in_question": [false, false, true, true, false]}
+{"index": 184754, "steps": 6, "values": [1000, 50, 5, 250, 1250, null], "gold": 3, "text": "The answer is: 3", "prediction": "3", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 348133, "steps": 1, "values": [5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false]}
+{"index": 127972, "steps": 2, "values": [45, 5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false, false]}
+{"index": 158712, "steps": 3, "values": [20, 60, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false, false, false]}
+{"index": 238937, "steps": 4, "values": [1, 3, 21, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [true, false, false, false]}
+{"index": 32384, "steps": 5, "values": [null, null, null, null, null], "gold": 17000, "text": "The answer is: 17000", "prediction": "17000", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 91970, "steps": 6, "values": [5, 60, 180, 120, 300, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false, false, true, false]}
+{"index": 21896, "steps": 1, "values": [73], "gold": 73, "text": "The answer is: 73", "prediction": "73", "correct": true, "in_question": [false]}
+{"index": 337692, "steps": 2, "values": [75, 175], "gold": 175, "text": "The answer is: 175", "prediction": "175", "correct": true, "in_question": [false, false]}
+{"index": 310184, "steps": 3, "values": [15, 20, 35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [false, false, false]}
+{"index": 86672, "steps": 4, "values": [10, 20, 15, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [true, false, false, false]}
+{"index": 10254, "steps": 5, "values": [105, 630, 45, 270, 900], "gold": 900, "text": "The answer is: 675", "prediction": "675", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 241026, "steps": 6, "values": [21, 15, 6, 15, 9, 24], "gold": 24, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 188916, "steps": 1, "values": [3600], "gold": 3600, "text": "The answer is: 3600", "prediction": "3600", "correct": true, "in_question": [false]}
+{"index": 354101, "steps": 2, "values": [20, 120], "gold": 120, "text": "The answer is: 120", "prediction": "120", "correct": true, "in_question": [false, false]}
+{"index": 198349, "steps": 3, "values": [15, 30, 45], "gold": 45, "text": "The answer is: 45", "prediction": "45", "correct": true, "in_question": [false, false, false]}
+{"index": 251621, "steps": 4, "values": [null, 5000, null, 0], "gold": 0, "text": "The answer is: 0", "prediction": "0", "correct": true, "in_question": [false, false, false, false]}
+{"index": 168739, "steps": 5, "values": [1, null, 12, 2, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 27140, "steps": 6, "values": [120, 140, 160, 180, 200, 220], "gold": 220, "text": "The answer is: 220", "prediction": "220", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 283106, "steps": 1, "values": [375], "gold": 375, "text": "The answer is: 375", "prediction": "375", "correct": true, "in_question": [false]}
+{"index": 349810, "steps": 2, "values": [45, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false]}
+{"index": 61360, "steps": 3, "values": [20, 2, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, false, true]}
+{"index": 330570, "steps": 4, "values": [40, 75, 115, 345], "gold": 345, "text": "The answer is: 375", "prediction": "375", "correct": false, "in_question": [false, false, false, false]}
+{"index": 306130, "steps": 5, "values": [30, 40, 70, 25, 5], "gold": 5, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false, false, false, false, true]}
+{"index": 218819, "steps": 6, "values": [45, 315, null, 162, 75, 552], "gold": 552, "text": "The answer is: 547", "prediction": "547", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 44790, "steps": 1, "values": [null], "gold": 800, "text": "The answer is: 800", "prediction": "800", "correct": true, "in_question": [false]}
+{"index": 83762, "steps": 2, "values": [400, 750], "gold": 750, "text": "The answer is: 750", "prediction": "750", "correct": true, "in_question": [false, false]}
+{"index": 366879, "steps": 3, "values": [8, 40, 32], "gold": 32, "text": "The answer is: 32", "prediction": "32", "correct": true, "in_question": [false, false, false]}
+{"index": 162412, "steps": 4, "values": [23, 69, 10, 117], "gold": 117, "text": "The answer is: 127", "prediction": "127", "correct": false, "in_question": [false, false, false, false]}
+{"index": 83392, "steps": 5, "values": [12, 600, 6, 480, 120], "gold": 120, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 182326, "steps": 6, "values": [24, 45, 15, 32, 116, 580], "gold": 580, "text": "The answer is: 565", "prediction": "565", "correct": false, "in_question": [false, false, true, false, false, false]}
+{"index": 36927, "steps": 1, "values": [48], "gold": 48, "text": "The answer is: 48", "prediction": "48", "correct": true, "in_question": [false]}
+{"index": 383914, "steps": 2, "values": [1000, 4000], "gold": 4000, "text": "The answer is: 4000", "prediction": "4000", "correct": true, "in_question": [false, false]}
+{"index": 49503, "steps": 3, "values": [50, 60, 110], "gold": 110, "text": "The answer is: 110", "prediction": "110", "correct": true, "in_question": [false, false, false]}
+{"index": 128352, "steps": 4, "values": [2, 3, 1, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [true, true, true, true]}
+{"index": 40780, "steps": 5, "values": [20, 2, 5, 7, 13], "gold": 13, "text": "The answer is: 9", "prediction": "9", "correct": false, "in_question": [true, false, true, false, false]}
+{"index": 230139, "steps": 6, "values": [12, 3, 6, 3, 1, 2], "gold": 2, "text": "The answer is: 0", "prediction": "0", "correct": false, "in_question": [false, false, true, false, false, false]}
+{"index": 318066, "steps": 1, "values": [20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false]}
+{"index": 363982, "steps": 2, "values": [36, 9], "gold": 9, "text": "The answer is: 9", "prediction": "9", "correct": true, "in_question": [false, false]}
+{"index": 105724, "steps": 3, "values": [21, null, 8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false, false]}
+{"index": 169630, "steps": 4, "values": [250, 200, 450, 550], "gold": 550, "text": "The answer is: 550", "prediction": "550", "correct": true, "in_question": [false, false, false, false]}
+{"index": 156206, "steps": 5, "values": [null, 208, 312, 312, 624], "gold": 624, "text": "The answer is: 624", "prediction": "624", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 76872, "steps": 6, "values": [25, 25, 50, 250, 300, 275], "gold": 275, "text": "The answer is: 175", "prediction": "175", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 303859, "steps": 1, "values": [175], "gold": 175, "text": "The answer is: 175", "prediction": "175", "correct": true, "in_question": [false]}
+{"index": 137078, "steps": 2, "values": [6, 11], "gold": 11, "text": "The answer is: 11", "prediction": "11", "correct": true, "in_question": [true, false]}
+{"index": 145863, "steps": 3, "values": [150, 75, 125], "gold": 125, "text": "The answer is: 125", "prediction": "125", "correct": true, "in_question": [false, false, false]}
+{"index": 130057, "steps": 4, "values": [25, 75, 100, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [true, false, true, false]}
+{"index": 95306, "steps": 5, "values": [null, 1200, 3200, null, null], "gold": 62400, "text": "The answer is: 93600", "prediction": "93600", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 45304, "steps": 6, "values": [100, 300, 60, 240, 40, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false, false, false, true]}
+{"index": 271719, "steps": 1, "values": [120], "gold": 120, "text": "The answer is: 120", "prediction": "120", "correct": true, "in_question": [false]}
+{"index": 340265, "steps": 2, "values": [75, 900], "gold": 900, "text": "The answer is: 900", "prediction": "900", "correct": true, "in_question": [false, false]}
+{"index": 15826, "steps": 3, "values": [96, null, null], "gold": 144000, "text": "The answer is: 432000", "prediction": "432000", "correct": false, "in_question": [false, false, false]}
+{"index": 182667, "steps": 4, "values": [15, 30, 35, 65], "gold": 65, "text": "The answer is: 75", "prediction": "75", "correct": false, "in_question": [false, false, false, false]}
+{"index": 154805, "steps": 5, "values": [90, 30, 60, 180, null], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 44104, "steps": 6, "values": [7, 42, 7, 32, 24, 31], "gold": 31, "text": "The answer is: 49", "prediction": "49", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 37440, "steps": 1, "values": [14], "gold": 14, "text": "The answer is: 14", "prediction": "14", "correct": true, "in_question": [false]}
+{"index": 350813, "steps": 2, "values": [1260, 420], "gold": 420, "text": "The answer is: 420", "prediction": "420", "correct": true, "in_question": [false, false]}
+{"index": 6238, "steps": 3, "values": [25, null, 8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false, false]}
+{"index": 230616, "steps": 4, "values": [150, 180, 330, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false, false, false]}
+{"index": 237046, "steps": 5, "values": [160, 320, 80, 240, 240], "gold": 240, "text": "The answer is: 240", "prediction": "240", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 373714, "steps": 6, "values": [150, 180, 60, 240, 300, 480], "gold": 480, "text": "The answer is: 450", "prediction": "450", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 376684, "steps": 1, "values": [18], "gold": 18, "text": "The answer is: 18", "prediction": "18", "correct": true, "in_question": [false]}
+{"index": 228686, "steps": 2, "values": [30, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [false, true]}
+{"index": 62865, "steps": 3, "values": [45, 20, 65], "gold": 65, "text": "The answer is: 65", "prediction": "65", "correct": true, "in_question": [false, false, false]}
+{"index": 340145, "steps": 4, "values": [30, 25, 65, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false, false, false, false]}
+{"index": 98497, "steps": 5, "values": [null, 7, null, null, null], "gold": 15, "text": "The answer is: 17", "prediction": "17", "correct": false, "in_question": [false, true, false, false, false]}
+{"index": 128026, "steps": 6, "values": [120, 100, 200, 100, 500, 920], "gold": 920, "text": "The answer is: 645", "prediction": "645", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 1215, "steps": 1, "values": [80], "gold": 80, "text": "The answer is: 80", "prediction": "80", "correct": true, "in_question": [false]}
+{"index": 117950, "steps": 2, "values": [12, 17], "gold": 17, "text": "The answer is: 17", "prediction": "17", "correct": true, "in_question": [false, false]}
+{"index": 43384, "steps": 3, "values": [60, 10, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false, false, false]}
+{"index": 304916, "steps": 4, "values": [160, 640, 1690, 310], "gold": 310, "text": "The answer is: 130", "prediction": "130", "correct": false, "in_question": [false, false, false, false]}
+{"index": 231371, "steps": 5, "values": [30, 15, 60, 119, 181], "gold": 181, "text": "The answer is: 171", "prediction": "171", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 208876, "steps": 6, "values": [60, 6, 6, 12, 54, 66], "gold": 66, "text": "The answer is: 55", "prediction": "55", "correct": false, "in_question": [false, true, true, false, false, false]}
+{"index": 61559, "steps": 1, "values": [180], "gold": 180, "text": "The answer is: 180", "prediction": "180", "correct": true, "in_question": [false]}
+{"index": 121026, "steps": 2, "values": [20, 95], "gold": 95, "text": "The answer is: 95", "prediction": "95", "correct": true, "in_question": [false, false]}
+{"index": 126967, "steps": 3, "values": [120, 24, 96], "gold": 96, "text": "The answer is: 96", "prediction": "96", "correct": true, "in_question": [false, false, false]}
+{"index": 183945, "steps": 4, "values": [15, 60, 150, 75], "gold": 75, "text": "The answer is: 75", "prediction": "75", "correct": true, "in_question": [false, true, false, false]}
+{"index": 86318, "steps": 5, "values": [5, 5, 25, 35, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [true, true, false, false, false]}
+{"index": 143597, "steps": 6, "values": [14, 7, 21, null, 9, 30], "gold": 30, "text": "The answer is: 28", "prediction": "28", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 64867, "steps": 1, "values": [21], "gold": 21, "text": "The answer is: 23", "prediction": "23", "correct": false, "in_question": [false]}
+{"index": 61703, "steps": 2, "values": [48, 72], "gold": 72, "text": "The answer is: 72", "prediction": "72", "correct": true, "in_question": [false, false]}
+{"index": 245038, "steps": 3, "values": [160, 180, 340], "gold": 340, "text": "The answer is: 340", "prediction": "340", "correct": true, "in_question": [false, false, false]}
+{"index": 335264, "steps": 4, "values": [4, 80, 20, 100], "gold": 100, "text": "The answer is: 60", "prediction": "60", "correct": false, "in_question": [false, false, true, false]}
+{"index": 166286, "steps": 5, "values": [84, 58, 30, 28, 58], "gold": 58, "text": "The answer is: 46", "prediction": "46", "correct": false, "in_question": [false, false, true, false, false]}
+{"index": 354062, "steps": 6, "values": [200, 3, 150, 15, 135, 65], "gold": 65, "text": "The answer is: 50", "prediction": "50", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 79936, "steps": 1, "values": [7000], "gold": 7000, "text": "The answer is: 7000", "prediction": "7000", "correct": true, "in_question": [false]}
+{"index": 226125, "steps": 2, "values": [600, 15], "gold": 15, "text": "The answer is: 15", "prediction": "15", "correct": true, "in_question": [false, false]}
+{"index": 313883, "steps": 3, "values": [450, 500, 950], "gold": 950, "text": "The answer is: 950", "prediction": "950", "correct": true, "in_question": [false, false, false]}
+{"index": 209505, "steps": 4, "values": [35, null, null, 8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false, false, false, false]}
+{"index": 109841, "steps": 5, "values": [24, 504, null, 504, 1008], "gold": 1008, "text": "The answer is: 1066", "prediction": "1066", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 139031, "steps": 6, "values": [250, 750, 250, 500, 250, 250], "gold": 250, "text": "The answer is: 250", "prediction": "250", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 327462, "steps": 1, "values": [8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false]}
+{"index": 362210, "steps": 2, "values": [40, 160], "gold": 160, "text": "The answer is: 160", "prediction": "160", "correct": true, "in_question": [false, false]}
+{"index": 255767, "steps": 3, "values": [12, 60, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false]}
+{"index": 166649, "steps": 4, "values": [200, 400, 800, 1600], "gold": 1600, "text": "The answer is: 1600", "prediction": "1600", "correct": true, "in_question": [false, false, false, false]}
+{"index": 255196, "steps": 5, "values": [5, 25, 1000, 5, 10], "gold": 10, "text": "The answer is: 12.5", "prediction": "12.5", "correct": false, "in_question": [true, false, true, true, false]}
+{"index": 176380, "steps": 6, "values": [180, 60, 35, 53, 159, 194], "gold": 194, "text": "The answer is: 315", "prediction": "315", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 20112, "steps": 1, "values": [40], "gold": 40, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false]}
+{"index": 98217, "steps": 2, "values": [35, 60], "gold": 60, "text": "The answer is: 45", "prediction": "45", "correct": false, "in_question": [false, false]}
+{"index": 185380, "steps": 3, "values": [20, 7, 13], "gold": 13, "text": "The answer is: 13", "prediction": "13", "correct": true, "in_question": [false, false, false]}
+{"index": 248733, "steps": 4, "values": [48, 96, 25, 71], "gold": 71, "text": "The answer is: 187", "prediction": "187", "correct": false, "in_question": [false, false, false, false]}
+{"index": 154083, "steps": 5, "values": [432, 288, 216, 72, 432], "gold": 432, "text": "The answer is: 432", "prediction": "432", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 1797, "steps": 6, "values": [2, 3, 4, 5, 6, 21], "gold": 21, "text": "The answer is: 21", "prediction": "21", "correct": true, "in_question": [false, false, false, false, true, false]}
+{"index": 87098, "steps": 1, "values": [75], "gold": 75, "text": "The answer is: 75", "prediction": "75", "correct": true, "in_question": [false]}
+{"index": 339654, "steps": 2, "values": [80, 320], "gold": 320, "text": "The answer is: 320", "prediction": "320", "correct": true, "in_question": [false, false]}
+{"index": 135177, "steps": 3, "values": [48, 16, 100], "gold": 100, "text": "The answer is: 100", "prediction": "100", "correct": true, "in_question": [false, false, false]}
+{"index": 171731, "steps": 4, "values": [50, 60, 60, 170], "gold": 170, "text": "The answer is: 170", "prediction": "170", "correct": true, "in_question": [true, false, false, false]}
+{"index": 254214, "steps": 5, "values": [20, 40, 300, 80, 1234], "gold": 1234, "text": "The answer is: 1294", "prediction": "1294", "correct": false, "in_question": [false, true, false, false, false]}
+{"index": 136358, "steps": 6, "values": [3200, 1280, 1920, 3840, 7680, null], "gold": 11520, "text": "The answer is: 19120", "prediction": "19120", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 179286, "steps": 1, "values": [18], "gold": 18, "text": "The answer is: 18", "prediction": "18", "correct": true, "in_question": [false]}
+{"index": 139917, "steps": 2, "values": [800, 2200], "gold": 2200, "text": "The answer is: 2200", "prediction": "2200", "correct": true, "in_question": [false, false]}
+{"index": 66042, "steps": 3, "values": [30, 48, 78], "gold": 78, "text": "The answer is: 92", "prediction": "92", "correct": false, "in_question": [false, false, false]}
+{"index": 92381, "steps": 4, "values": [15, 10, 25, 100], "gold": 100, "text": "The answer is: 100", "prediction": "100", "correct": true, "in_question": [false, false, false, false]}
+{"index": 192101, "steps": 5, "values": [60, 120, 2, 30, 220], "gold": 220, "text": "The answer is: 885", "prediction": "885", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 54991, "steps": 6, "values": [200, 50, 100, 300, 100, 400], "gold": 400, "text": "The answer is: 600", "prediction": "600", "correct": false, "in_question": [false, true, true, false, true, false]}
+{"index": 292105, "steps": 1, "values": [32], "gold": 32, "text": "The answer is: 32", "prediction": "32", "correct": true, "in_question": [false]}
+{"index": 28464, "steps": 2, "values": [144, 96], "gold": 96, "text": "The answer is: 96", "prediction": "96", "correct": true, "in_question": [false, false]}
+{"index": 47270, "steps": 3, "values": [2, 8, 24], "gold": 24, "text": "The answer is: 24", "prediction": "24", "correct": true, "in_question": [false, false, false]}
+{"index": 367256, "steps": 4, "values": [40, 5, 15, 60], "gold": 60, "text": "The answer is: 63", "prediction": "63", "correct": false, "in_question": [false, true, false, false]}
+{"index": 10134, "steps": 5, "values": [2, 4, 10, 180, 1800], "gold": 1800, "text": "The answer is: 3600", "prediction": "3600", "correct": false, "in_question": [false, true, false, false, false]}
+{"index": 114181, "steps": 6, "values": [210, 140, null, null, null, 56], "gold": 56, "text": "The answer is: 56", "prediction": "56", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 114477, "steps": 1, "values": [40], "gold": 40, "text": "The answer is: 40", "prediction": "40", "correct": true, "in_question": [false]}
+{"index": 304445, "steps": 2, "values": [30, 60], "gold": 60, "text": "The answer is: 60", "prediction": "60", "correct": true, "in_question": [false, false]}
+{"index": 92410, "steps": 3, "values": [4, 10, 14], "gold": 14, "text": "The answer is: 14", "prediction": "14", "correct": true, "in_question": [true, false, false]}
+{"index": 122837, "steps": 4, "values": [2500, 1050, 3550, null], "gold": 14200, "text": "The answer is: 13000", "prediction": "13000", "correct": false, "in_question": [false, false, false, false]}
+{"index": 5499, "steps": 5, "values": [14, 6, 90, 104, 4160], "gold": 4160, "text": "The answer is: 6840", "prediction": "6840", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 282016, "steps": 6, "values": [16, 3, 9, 2, 4, 29], "gold": 29, "text": "The answer is: 55", "prediction": "55", "correct": false, "in_question": [false, false, false, false, true, false]}
+{"index": 79555, "steps": 1, "values": [1400], "gold": 1400, "text": "The answer is: 1400", "prediction": "1400", "correct": true, "in_question": [false]}
+{"index": 324729, "steps": 2, "values": [700, null], "gold": 16, "text": "The answer is: 14", "prediction": "14", "correct": false, "in_question": [false, false]}
+{"index": 50998, "steps": 3, "values": [5, 20, 0], "gold": 0, "text": "The answer is: 0", "prediction": "0", "correct": true, "in_question": [false, true, false]}
+{"index": 53170, "steps": 4, "values": [3000, 3000, 2000, 8000], "gold": 8000, "text": "The answer is: 8000", "prediction": "8000", "correct": true, "in_question": [false, false, false, false]}
+{"index": 97496, "steps": 5, "values": [47, 329, 9, 27, 356], "gold": 356, "text": "The answer is: 356", "prediction": "356", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 64152, "steps": 6, "values": [17, 10, 21, null, 10, 40], "gold": 40, "text": "The answer is: 36", "prediction": "36", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 290124, "steps": 1, "values": [6], "gold": 6, "text": "The answer is: 6", "prediction": "6", "correct": true, "in_question": [false]}
+{"index": 255773, "steps": 2, "values": [5, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, true]}
+{"index": 215248, "steps": 3, "values": [90, 80, 170], "gold": 170, "text": "The answer is: 170", "prediction": "170", "correct": true, "in_question": [false, false, false]}
+{"index": 332423, "steps": 4, "values": [250, 210, 750, 1210], "gold": 1210, "text": "The answer is: 1210", "prediction": "1210", "correct": true, "in_question": [false, false, false, false]}
+{"index": 194087, "steps": 5, "values": [48, 20, 25, 12, 105], "gold": 105, "text": "The answer is: 91.5", "prediction": "91.5", "correct": false, "in_question": [false, false, false, true, false]}
+{"index": 365234, "steps": 6, "values": [4, 4, 240, 40, 320, 560], "gold": 560, "text": "The answer is: 1360", "prediction": "1360", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 43012, "steps": 1, "values": [28], "gold": 28, "text": "The answer is: 28", "prediction": "28", "correct": true, "in_question": [false]}
+{"index": 18559, "steps": 2, "values": [24, 36], "gold": 36, "text": "The answer is: 36", "prediction": "36", "correct": true, "in_question": [false, false]}
+{"index": 323427, "steps": 3, "values": [85, null, 1], "gold": 1, "text": "The answer is: 2", "prediction": "2", "correct": false, "in_question": [false, false, false]}
+{"index": 297126, "steps": 4, "values": [300, 75, 30, 405], "gold": 405, "text": "The answer is: 405", "prediction": "405", "correct": true, "in_question": [false, false, true, false]}
+{"index": 360408, "steps": 5, "values": [7, 9, 4, 11, 20], "gold": 20, "text": "The answer is: 20", "prediction": "20", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 269082, "steps": 6, "values": [150, 80, 30, 110, 55, 55], "gold": 55, "text": "The answer is: 65", "prediction": "65", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 20464, "steps": 1, "values": [48], "gold": 48, "text": "The answer is: 48", "prediction": "48", "correct": true, "in_question": [false]}
+{"index": 26351, "steps": 2, "values": [14, 21], "gold": 21, "text": "The answer is: 21", "prediction": "21", "correct": true, "in_question": [false, false]}
+{"index": 156862, "steps": 3, "values": [10, 50, 80], "gold": 80, "text": "The answer is: 80", "prediction": "80", "correct": true, "in_question": [false, false, false]}
+{"index": 107462, "steps": 4, "values": [100, 250, 350, 650], "gold": 650, "text": "The answer is: 650", "prediction": "650", "correct": true, "in_question": [false, false, false, false]}
+{"index": 214846, "steps": 5, "values": [7, 9, 11, 32, 16], "gold": 16, "text": "The answer is: 11", "prediction": "11", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 136264, "steps": 6, "values": [3, 18, 10, 30, 48, 24], "gold": 24, "text": "The answer is: 29", "prediction": "29", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 80228, "steps": 1, "values": [35], "gold": 35, "text": "The answer is: 35", "prediction": "35", "correct": true, "in_question": [false]}
+{"index": 275864, "steps": 2, "values": [80, 80], "gold": 80, "text": "The answer is: 80", "prediction": "80", "correct": true, "in_question": [false, false]}
+{"index": 237796, "steps": 3, "values": [120, null, 40], "gold": 40, "text": "The answer is: 40", "prediction": "40", "correct": true, "in_question": [false, false, false]}
+{"index": 120245, "steps": 4, "values": [135, 180, 360, 540], "gold": 540, "text": "The answer is: 540", "prediction": "540", "correct": true, "in_question": [false, false, false, false]}
+{"index": 283836, "steps": 5, "values": [6, 9, 3, 12, null], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, false, true, false, false]}
+{"index": 159305, "steps": 6, "values": [12, 960, 2, 9, 1260, 2220], "gold": 2220, "text": "The answer is: 1680", "prediction": "1680", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 354401, "steps": 1, "values": [40], "gold": 40, "text": "The answer is: 40", "prediction": "40", "correct": true, "in_question": [false]}
+{"index": 151154, "steps": 2, "values": [6, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false]}
+{"index": 69624, "steps": 3, "values": [600, 60, 10], "gold": 10, "text": "The answer is: 10", "prediction": "10", "correct": true, "in_question": [true, false, true]}
+{"index": 312239, "steps": 4, "values": [50, 950, 665, 285], "gold": 285, "text": "The answer is: 445", "prediction": "445", "correct": false, "in_question": [false, false, false, false]}
+{"index": 339722, "steps": 5, "values": [95, 100, 105, 200, 100], "gold": 100, "text": "The answer is: 100", "prediction": "100", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 114198, "steps": 6, "values": [6, 24, 2, 6, 24, 48], "gold": 48, "text": "The answer is: 48", "prediction": "48", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 352408, "steps": 1, "values": [8], "gold": 8, "text": "The answer is: 8", "prediction": "8", "correct": true, "in_question": [false]}
+{"index": 304497, "steps": 2, "values": [24, 21], "gold": 21, "text": "The answer is: 21", "prediction": "21", "correct": true, "in_question": [false, false]}
+{"index": 82838, "steps": 3, "values": [100, 90, 190], "gold": 190, "text": "The answer is: 190", "prediction": "190", "correct": true, "in_question": [false, false, false]}
+{"index": 329754, "steps": 4, "values": [40, 20, 80, 120], "gold": 120, "text": "The answer is: 120", "prediction": "120", "correct": true, "in_question": [false, true, false, false]}
+{"index": 106204, "steps": 5, "values": [null, null, 7, 25, 18], "gold": 18, "text": "The answer is: 19", "prediction": "19", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 322903, "steps": 6, "values": [36, 3, 9, 8, 22, 14], "gold": 14, "text": "The answer is: 12", "prediction": "12", "correct": false, "in_question": [false, true, false, false, false, false]}
+{"index": 179657, "steps": 1, "values": [30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false]}
+{"index": 126523, "steps": 2, "values": [15, 225], "gold": 225, "text": "The answer is: 225", "prediction": "225", "correct": true, "in_question": [true, false]}
+{"index": 272151, "steps": 3, "values": [50, 250, 1000], "gold": 1000, "text": "The answer is: 1000", "prediction": "1000", "correct": true, "in_question": [false, false, false]}
+{"index": 268460, "steps": 4, "values": [50, 150, 75, 75], "gold": 75, "text": "The answer is: 75", "prediction": "75", "correct": true, "in_question": [false, false, false, false]}
+{"index": 214118, "steps": 5, "values": [36, 72, 360, 250, 110], "gold": 110, "text": "The answer is: 110", "prediction": "110", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 28071, "steps": 6, "values": [35, 15, 50, 10, 60, 90], "gold": 90, "text": "The answer is: 96", "prediction": "96", "correct": false, "in_question": [false, false, false, false, false, false]}
+{"index": 222466, "steps": 1, "values": [75], "gold": 75, "text": "The answer is: 75", "prediction": "75", "correct": true, "in_question": [false]}
+{"index": 171705, "steps": 2, "values": [10, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false]}
+{"index": 373889, "steps": 3, "values": [165, null, 220], "gold": 220, "text": "The answer is: 3000", "prediction": "3000", "correct": false, "in_question": [false, false, false]}
+{"index": 132412, "steps": 4, "values": [4, 360, 6, 2], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false, false, false, false]}
+{"index": 259127, "steps": 5, "values": [5, 15, 6, 9, 525], "gold": 525, "text": "The answer is: 325", "prediction": "325", "correct": false, "in_question": [true, true, false, false, false]}
+{"index": 17159, "steps": 6, "values": [25, 22, 6, 14, 36, 46], "gold": 46, "text": "The answer is: 46", "prediction": "46", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 380905, "steps": 1, "values": [15], "gold": 15, "text": "The answer is: 15", "prediction": "15", "correct": true, "in_question": [false]}
+{"index": 27351, "steps": 2, "values": [21, 16], "gold": 16, "text": "The answer is: 16", "prediction": "16", "correct": true, "in_question": [false, false]}
+{"index": 361253, "steps": 3, "values": [150, 200, 50], "gold": 50, "text": "The answer is: 50", "prediction": "50", "correct": true, "in_question": [false, false, false]}
+{"index": 304423, "steps": 4, "values": [4, 9, 4, 17], "gold": 17, "text": "The answer is: 17", "prediction": "17", "correct": true, "in_question": [true, false, true, false]}
+{"index": 15520, "steps": 5, "values": [2, 4, 800, 200, 1000], "gold": 1000, "text": "The answer is: 1000", "prediction": "1000", "correct": true, "in_question": [false, false, false, true, false]}
+{"index": 129454, "steps": 6, "values": [5, 5, 20, 100, 30, 130], "gold": 130, "text": "The answer is: 144", "prediction": "144", "correct": false, "in_question": [false, false, true, false, false, false]}
+{"index": 48098, "steps": 1, "values": [12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false]}
+{"index": 186285, "steps": 2, "values": [null, 100], "gold": 100, "text": "The answer is: 100", "prediction": "100", "correct": true, "in_question": [false, false]}
+{"index": 230163, "steps": 3, "values": [360, 1080, 216], "gold": 216, "text": "The answer is: 216", "prediction": "216", "correct": true, "in_question": [false, false, false]}
+{"index": 272163, "steps": 4, "values": [50, 140, 40, 80], "gold": 80, "text": "The answer is: 110", "prediction": "110", "correct": false, "in_question": [false, false, false, false]}
+{"index": 304015, "steps": 5, "values": [15, 105, 210, 15, 195], "gold": 195, "text": "The answer is: 225", "prediction": "225", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 142913, "steps": 6, "values": [9, 21, 1200, 20, 420, 1620], "gold": 1620, "text": "The answer is: 1620", "prediction": "1620", "correct": true, "in_question": [false, false, false, false, false, false]}
+{"index": 372169, "steps": 1, "values": [7], "gold": 7, "text": "The answer is: 7", "prediction": "7", "correct": true, "in_question": [false]}
+{"index": 154983, "steps": 2, "values": [75, 100], "gold": 100, "text": "The answer is: 100", "prediction": "100", "correct": true, "in_question": [false, false]}
+{"index": 173891, "steps": 3, "values": [11, 33, 34], "gold": 34, "text": "The answer is: 32", "prediction": "32", "correct": false, "in_question": [false, false, false]}
+{"index": 277327, "steps": 4, "values": [60, 450, 600, 1050], "gold": 1050, "text": "The answer is: 1050", "prediction": "1050", "correct": true, "in_question": [false, false, false, false]}
+{"index": 41800, "steps": 5, "values": [20, 180, 10, 190, 370], "gold": 370, "text": "The answer is: 350", "prediction": "350", "correct": false, "in_question": [false, false, true, false, false]}
+{"index": 260620, "steps": 6, "values": [18, 24, 72, 5, 77, 123], "gold": 123, "text": "The answer is: 101", "prediction": "101", "correct": false, "in_question": [false, false, false, true, false, false]}
+{"index": 63066, "steps": 1, "values": [null], "gold": 2, "text": "The answer is: 2", "prediction": "2", "correct": true, "in_question": [false]}
+{"index": 278659, "steps": 2, "values": [132, 528], "gold": 528, "text": "The answer is: 528", "prediction": "528", "correct": true, "in_question": [false, false]}
+{"index": 54289, "steps": 3, "values": [75, 18, 18], "gold": 18, "text": "The answer is: 17.5", "prediction": "17.5", "correct": false, "in_question": [false, false, false]}
+{"index": 242805, "steps": 4, "values": [6, 60, 18, 78], "gold": 78, "text": "The answer is: 78", "prediction": "78", "correct": true, "in_question": [false, false, false, false]}
+{"index": 147464, "steps": 5, "values": [40, 200, 20, null, 50], "gold": 50, "text": "The answer is: 200", "prediction": "200", "correct": false, "in_question": [false, false, true, false, true]}
+{"index": 25770, "steps": 6, "values": [70, 55, 30, 10, 45, 15], "gold": 15, "text": "The answer is: 10", "prediction": "10", "correct": false, "in_question": [false, false, false, false, false, true]}
+{"index": 169685, "steps": 1, "values": [200], "gold": 200, "text": "The answer is: 200", "prediction": "200", "correct": true, "in_question": [false]}
+{"index": 248464, "steps": 2, "values": [990, 297], "gold": 297, "text": "The answer is: 297", "prediction": "297", "correct": true, "in_question": [false, false]}
+{"index": 219549, "steps": 3, "values": [70, 120, 1680], "gold": 1680, "text": "The answer is: 1680", "prediction": "1680", "correct": true, "in_question": [false, false, false]}
+{"index": 15648, "steps": 4, "values": [90, 360, 1800, 30], "gold": 30, "text": "The answer is: 30", "prediction": "30", "correct": true, "in_question": [false, false, false, true]}
+{"index": 124622, "steps": 5, "values": [30, 10, 17, 51, 113], "gold": 113, "text": "The answer is: 112", "prediction": "112", "correct": false, "in_question": [false, false, false, false, false]}
+{"index": 133484, "steps": 6, "values": [100, 20, 120, 80, 40, 2], "gold": 2, "text": "The answer is: 4", "prediction": "4", "correct": false, "in_question": [false, true, false, false, true, true]}
+{"index": 301465, "steps": 1, "values": [16], "gold": 16, "text": "The answer is: 16", "prediction": "16", "correct": true, "in_question": [false]}
+{"index": 41451, "steps": 2, "values": [null, 122], "gold": 122, "text": "The answer is: 122", "prediction": "122", "correct": true, "in_question": [false, false]}
+{"index": 598, "steps": 3, "values": [40, 80, 320], "gold": 320, "text": "The answer is: 320", "prediction": "320", "correct": true, "in_question": [false, false, false]}
+{"index": 251820, "steps": 4, "values": [45, 39, 10, null], "gold": 4, "text": "The answer is: 3", "prediction": "3", "correct": false, "in_question": [false, false, true, false]}
+{"index": 343916, "steps": 5, "values": [30, 60, 120, 240, 465], "gold": 465, "text": "The answer is: 465", "prediction": "465", "correct": true, "in_question": [false, false, false, false, false]}
+{"index": 249745, "steps": 6, "values": [24, 720, 3, 36, 1080, 1800], "gold": 1800, "text": "The answer is: 900", "prediction": "900", "correct": false, "in_question": [false, false, true, false, false, false]}
+{"index": 150862, "steps": 1, "values": [5], "gold": 5, "text": "The answer is: 5", "prediction": "5", "correct": true, "in_question": [false]}
+{"index": 329904, "steps": 2, "values": [24, 12], "gold": 12, "text": "The answer is: 12", "prediction": "12", "correct": true, "in_question": [false, false]}
+{"index": 258142, "steps": 3, "values": [102, 62, 96], "gold": 96, "text": "The answer is: 96", "prediction": "96", "correct": true, "in_question": [false, false, false]}
+{"index": 80481, "steps": 4, "values": [4, 28, 36, 1008], "gold": 1008, "text": "The answer is: 1008", "prediction": "1008", "correct": true, "in_question": [false, false, false, false]}
+{"index": 160596, "steps": 5, "values": [50, 60, 110, 75, 15], "gold": 15, "text": "The answer is: 9", "prediction": "9", "correct": false, "in_question": [true, false, false, false, false]}
+{"index": 164387, "steps": 6, "values": [30, 35, 40, 45, 50, 225], "gold": 225, "text": "The answer is: 210", "prediction": "210", "correct": false, "in_question": [false, false, false, false, false, false]}

@@ -1,0 +1,18 @@
+{
+ "valid": {
+  "questions": 500,
+  "right": 204,
+  "identity_matched": 500,
+  "seconds": 20.54078769683838
+ },
+ "train": {
+  "selected": 9000,
+  "done": 9000,
+  "seconds": 343.06679677963257,
+  "capped": false
+ },
+ "probes": {
+  "seconds": 15.825489282608032,
+  "train_questions": 9000
+ }
+}
