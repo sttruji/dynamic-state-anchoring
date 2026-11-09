@@ -1,0 +1,28 @@
+SPARSE-0 on /content/drive/MyDrive/dynamic-state-anchoring/ffn-sparsity/run: 500 validation questions
+R0, identity: ID matched the reference on 500 of 500
+  B (ID's score) = 204
+
+  arm    right          vs ID      p <=3 steps 4+ steps same ans  active/token  FLOPs
+  ID       204                             175       29      500   85.06M 100%   100%
+  O50      200   -4 (+10/-14)  0.541       172       28      381    56.73M 67%    67%
+  O25      183  -21 (+14/-35)  0.004       159       24      292    42.56M 50%    50%
+  S50       60 -144 (+4/-148)  0.000        53        7       76    56.73M 67%    67%
+  S25        0 -204 (+0/-204)  0.000         0        0        0    42.56M 50%    50%
+  O25-T    203     -1 (+8/-9)  1.000       176       27      422    42.56M 50%    95%
+  O25-Q    192  -12 (+13/-25)  0.073       171       21      330    42.56M 50%    60%
+  active/token: active non-embedding params at a sparsified position; FLOPs: per question, at ID's positions
+
+R1, no headroom: O50 = 200 against B - 20 = 184: does not fire
+  O50 - S50 = +140 (+144/-4, p=0.000)
+  O25 - S25 = +183 (+183/-0, p=0.000)
+R2, no routing value: both gaps under +10: does not fire
+R4, phase: O25-T - O25-Q = +11 (+25/-14, p=0.108)
+
+Overlap of the oracle's kept sets between neighbouring positions (Jaccard; random sets give f / (2 - f))
+  50% (random 0.33): Q 0.44 0.40 0.41 0.42 0.42 0.44 0.45 0.45 0.47 0.50 0.50 0.54
+                   T 0.63 0.50 0.52 0.54 0.53 0.54 0.53 0.51 0.52 0.53 0.55 0.60
+  25% (random 0.14): Q 0.27 0.24 0.24 0.25 0.29 0.30 0.34 0.33 0.36 0.33 0.34 0.34
+                   T 0.45 0.38 0.37 0.36 0.38 0.38 0.38 0.35 0.35 0.34 0.36 0.39
+  one column per layer, 1 to 12
+
+SPARSE-0 verdict: GO (R3): D1-R at 50%. Phase (R4): no phase asymmetry at 25%.

@@ -1,0 +1,19 @@
+Right answers by the rationale's step count
+  steps     n     ID    O50    O25    S50    S25  O25-T  O25-Q
+  0-2     187    117    119    109     39      0    118    115
+  3       140     58     53     50     14      0     58     56
+  4        91     18     20     18      5      0     18     15
+  5+       82     11      8      6      2      0      9      6
+
+On problems with 4 or more steps, each 25% oracle arm against ID
+  O25: -5 (+4/-9, p=0.267) of 173
+  O25-T: -2 (+2/-4, p=0.688) of 173
+  O25-Q: -8 (+1/-9, p=0.021) of 173
+
+How the static arms fail: answers that run to the 256-token cap, and right answers among the rest
+  ID: 0 capped; 204 right of 500 uncapped
+  S50: 245 capped; 60 right of 255 uncapped
+  S25: 500 capped; 0 right of 0 uncapped
+
+Positions per question under ID: question tokens, thinking positions, answer positions
+  54.6 / 7.0 / 6.2: thinking is 10.3% of positions, reading 80.5%
