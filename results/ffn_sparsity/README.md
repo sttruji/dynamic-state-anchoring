@@ -76,3 +76,6 @@ GO means D1-R at 50% gets its own frozen plan. Section 7 of the review gives its
   capacity".
 
 D2's trained phase arm does not run, because R4 did not find the thoughts to be the sensitive phase.
+
+**Outcome:** D1-R ran (commit `1e48763`) and was NEGATIVE by its early kill. MoE-50 at seed 7 scored 179, against
+`ft6_step`'s 209. The MoE line is closed. See `d1r/README.md`.

@@ -1,0 +1,9 @@
+{
+ "arm": "prune",
+ "checkpoint": "/content/drive/MyDrive/dynamic-state-anchoring/checkpoints/simcot-gpt2",
+ "questions": 100,
+ "right": 11,
+ "seconds": 46.90549397468567,
+ "matched": 100,
+ "reference": "results/ffn_sparsity/run/evals/S50.jsonl"
+}

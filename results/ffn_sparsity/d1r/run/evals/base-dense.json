@@ -1,0 +1,9 @@
+{
+ "arm": "dense",
+ "checkpoint": "/content/drive/MyDrive/dynamic-state-anchoring/checkpoints/simcot-gpt2",
+ "questions": 500,
+ "right": 204,
+ "seconds": 19.76484775543213,
+ "matched": 500,
+ "reference": "results/step_select/stage0/evals/seed1.jsonl"
+}

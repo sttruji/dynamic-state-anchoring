@@ -1,0 +1,26 @@
+D1-R on /content/drive/MyDrive/dynamic-state-anchoring/d1r/run
+R0a, the evaluation path: base SIM-CoT matched step selection's greedy answers on 500 of 500
+R0b, the conversion: Prune-50 untrained matched SPARSE-0's S50 on 100 of 100
+R0c, the training path: dense losses within 0.02 of Stage 1b's ft6_step at updates [0, 10, 20, 30, 40, 50]: max gap 0.0
+
+Training-free (converted, not fine-tuned):
+  moe-0: 26 of 100
+  hash-0: 13 of 100
+  prune-0: 11 of 100
+
+Fine-tuned, per seed (ft6_step is the dense control):
+  seed 7: ft6 209; moe 179; prune -; hash -
+  seed 8: ft6 200; moe -; prune -; hash -
+
+How often the chosen experts are among the oracle's top 4, mean over layers (chance 0.33):
+  moe-0: Q 0.75, T 0.79, A 0.82
+  hash-0: Q 0.33, T 0.32, A 0.35
+  moe-s7: Q 0.75, T 0.77, A 0.81
+
+Active params per token, non-embedding (and with the embeddings):
+  dense: 85.06M, 100.0% (124.4M, 100.0%)
+  moe  : 57.93M, 68.1% (97.3M, 78.2%)
+  prune: 56.73M, 66.7% (96.1M, 77.2%)
+  hash : 56.73M, 66.7% (96.1M, 77.2%)
+
+D1-R verdict: NEGATIVE, early kill: MoE at seed 7 scored 179 <= 192.
