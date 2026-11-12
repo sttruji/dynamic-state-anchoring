@@ -2,6 +2,12 @@
 ## Anchoring-only research specification and coding-agent handoff
 Revision 4 | 12 October 2026 | Status: proposed model; tested reference preprocessing
 
+> **Status, 12 November 2026: superseded.** This is the original DSA specification, kept as the record of what the
+> project set out to build. It was implemented and tested on GPT-2, and the learned write controller never learned when
+> to write; no write policy beat writing nothing ([FINDINGS.md](FINDINGS.md)). The project then tested the premise on
+> published latent CoT checkpoints and reframed DSA as a gate over latent cache entries; see the
+> [README](../README.md) for where it ended.
+
 ## 1. Start here: the research decision
 
 Implement one focused hypothesis: selectively writing intermediate conclusions into a persistent latent anchor improves the reliability of a looped transformer's subsequent computation, particularly beyond its training depth.

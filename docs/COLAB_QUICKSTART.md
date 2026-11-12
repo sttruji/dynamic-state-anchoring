@@ -1,5 +1,9 @@
 # Colab quickstart
 
+**Status, 12 November 2026.** This quickstart covers the original DSA design's notebooks, and both runs it describes
+have finished: the K=8 pilot and the data-scale run are reported in [FINDINGS.md](FINDINGS.md) sections 2 and 3. The
+notebooks for later stages are listed in the [README](../README.md#reproduce).
+
 For the **next test**, open [DSA_FLT_DataScale.ipynb](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_FLT_DataScale.ipynb), select **T4 GPU**, and **Run all**. It trains four FLT write-policy controls on 512 selected records for 1,024 updates each, evaluates all 500 validation questions, caps training diagnostics, and exports one small review ZIP. See [FLT_DATA_SCALE.md](FLT_DATA_SCALE.md) for the frozen settings, approximate budget and backup behavior.
 
 The instructions below describe the earlier **32-record optimization pilot**.

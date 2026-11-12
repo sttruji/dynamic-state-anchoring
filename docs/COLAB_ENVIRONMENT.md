@@ -1,5 +1,10 @@
 # Colab runtime and persistence contract
 
+**Status, 12 November 2026.** This was written for the original 32-record pilot notebook. Every later notebook in
+`notebooks/` uses the same setup (`requirements-colab.txt` installed into `/content/dsa-venv` by
+`scripts/setup_colab.py`), so the dependency policy below still applies to them. The persistence and verification
+sections describe the pilot as of October; most later notebooks describe their own resume behaviour in their first cell.
+
 The Colab notebook is a small GPT-2 implementation pilot. It prepares pinned
 LOTUS data, trains a selected subset, resumes saved work, and evaluates held-out
 validation questions. Running this notebook is a prerequisite to larger

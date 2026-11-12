@@ -125,6 +125,11 @@ overfit32, dev64 and validation ran on MPS with torch 2.7.1, the other five on a
 and no set ran on both. On GSM8K test they score 42.3 (`gpt2-sft`) and 42.5 (`codi`). Leave DSA
 checkpoints off the held-out sets until their final numbers.
 
+The later depth studies keep their records outside the leaderboard: the CODI trail's harness sweep is in
+[`results/codi_trail/sweep`](../results/codi_trail/sweep), and the latent-gate studies, which score the published CODI
+and SIM-CoT checkpoints with their own evaluators in `scripts/latent_gate/`, are in
+[`results/latent_gate/`](../results/latent_gate).
+
 **`csqa` is a floor for these rows.** None of the three was trained on CommonsenseQA: `gpt2-sft` and
 `codi` were trained on GSM8K math, and `gpt2-vanilla` on no task at all. The only published CODI GPT-2
 weights (`zen-E/CODI-gpt2`) are the GSM8K ones. These numbers are not the CommonsenseQA results

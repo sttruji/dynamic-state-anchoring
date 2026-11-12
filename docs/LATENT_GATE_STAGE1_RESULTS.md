@@ -12,6 +12,9 @@ Status, 3 November 2026: Stage 1 has run on SIM-CoT GPT-2, and its planned repli
   marked exploratory, what the gates kept and some extra paired comparisons.
 - **Background.** The idea is in [LATENT_GATE_IDEA.md](LATENT_GATE_IDEA.md) and the literature in
   [LATENT_GATE_LITERATURE.md](LATENT_GATE_LITERATURE.md).
+- **Later results.** The [held-out and scale study](LATENT_GATE_HELDOUT_RESULTS.md) retested this diagnosis on untouched
+  data and at 1B. Soft dedup holds the 6-step score on both GPT-2 models but not on the 1B models, where the answer's
+  RoPE position causes most of the loss, and the gate with its tie bug fixed still fails on CODI.
 
 ## The models in the tables
 
@@ -154,7 +157,8 @@ with a cheap fix, replicated on two checkpoints:
    continuous CoT from scratch with 12 latents and reports it "much better than using 6" under its own recipe
    ([arXiv 2506.18582](https://arxiv.org/abs/2506.18582), Appendix C.2).
 4. **The learned gate is not a contribution.** The mechanism is prior art (TRIM-KV and others), it adds nothing over soft
-   dedup on SIM-CoT, and its CODI result is confounded by a training bug.
+   dedup on SIM-CoT, and its CODI result is confounded by a training bug. (Update, 4 November: with the bug fixed, it
+   still fails on CODI.)
 
 Point 3 is what the literature predicted: every published method that stabilizes a loop past its trained depth preserved
 peak accuracy without exceeding it. On novelty, the literature review proposed soft dedup and found no source that tests
@@ -171,10 +175,13 @@ it. Its nearest relatives are key-similarity eviction rules for text caches, suc
     matches the large cost of hard eviction on CODI. This is unconfirmed: checking it needs the trained gate's weights.
   - **The fix.** A stable top-6 cut with the gate computed at full precision. Codex's review drafted the cut; it has not been
     applied.
+  - **Update, 4 November.** The fix was applied as `gate12_fixed` in the held-out study, and the gate still fails on CODI
+    ([held-out results](LATENT_GATE_HELDOUT_RESULTS.md#the-fixed-gate-a2)).
 - **One seed.**
   - Arms differ by about 10 answers from noise alone: the SIM-CoT 6-step model trained on twice the data scored 206, not 215.
   - The SIM-CoT 6-step model's +11 over the base model is not significant either (p = 0.10).
 - **Validation only.** `gsm8k_valid` has been used for discovery throughout. The held-out sets are not scored yet.
+  Update, 4 November: they were scored in the [held-out and scale study](LATENT_GATE_HELDOUT_RESULTS.md).
 - **Exploratory comparisons.** Everything here except the planned decision rules is exploratory. Claims that accuracy holds
   at depth still need paired confidence intervals rather than non-significant p-values.
 - **A weak rival.** The `logscale` rival sharpens attention by only about 3% at 24 steps, because its key count includes the

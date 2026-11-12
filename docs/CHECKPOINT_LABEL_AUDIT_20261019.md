@@ -131,7 +131,8 @@ rows 207,002 / 288,908 / 305,659 with three independently reviewed supported row
 new derivative. Hash-ordering, rather than model performance, chose replacements.
 No derivative training dataset has been emitted or used. This is a curated small
 fixture, not a correction to the official GSM8K benchmark or a label-only causal
-ablation against the old membership.
+ablation against the old membership. (Update, 12 November 2026: the fixture was
+later built as `overfit32`; see [BENCHMARK.md](BENCHMARK.md).)
 
 The next experiments are specified in `MPS_CONTROLLED_EXPERIMENTS_20261019.md`.
 

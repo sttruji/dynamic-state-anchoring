@@ -1,5 +1,15 @@
 # CODI past its trained depth: what the latent trail does
 
+**Update, 12 November 2026.** Later tests changed how section 5 reads. SIM-CoT GPT-2, whose latents settle and keep
+their question content, loses as many answers past 6 steps. Appending exact copies of CODI's last cache entry or last
+pair, which adds no new content, reproduces about a third to a half of CODI's loss, with the rest coming from the
+changing content of its new entries ([LATENT_GATE_IDEA.md](LATENT_GATE_IDEA.md),
+[copy test report](../results/latent_gate/copy_test/report.txt)). So the content decay measured here is
+only part of the cause; repeated entries also dilute the answer's attention. A training-free soft dedup later held CODI
+at 201 of 500 at 24 steps ([Stage 1 results](LATENT_GATE_STAGE1_RESULTS.md)). The
+[held-out study](LATENT_GATE_HELDOUT_RESULTS.md) then used `gsm8k_test`, GSM-Hard and MultiArith, and confirmed that the
+answer's position costs GPT-2 almost nothing, while at 1B, under RoPE, it is most of the loss.
+
 Added 2 November 2026. These are no-training measurements of the published CODI GPT-2 weights (`zen-E/CODI-gpt2@fd641b3`, the `codi` row in the [benchmark](BENCHMARK.md)). They ask whether CODI's latent loop drifts when run past the 6 steps it was trained on, which is the premise of Dynamic State Anchoring, and what the trail carries. Decoding is greedy with 256 tokens, on Apple MPS. The sets are `gsm8k_valid` (500 questions) and SVAMP (1,000). `gsm8k_test` was not used.
 
 Records are in [results/codi_trail](../results/codi_trail), report outputs in [results/codi_trail/reports](../results/codi_trail/reports) and scripts in [scripts/codi_trail](../scripts/codi_trail). The probe's texts at 3, 6, 12 and 24 steps match the harness sweep on all 500 validation questions. Its 6-step texts match the committed `codi` rows: 500/500 on validation and 1,000/1,000 against the A100 SVAMP row. The dynamics run's 6 and 12 step texts match the probe on all 500.

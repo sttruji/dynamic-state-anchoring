@@ -1,35 +1,50 @@
-# Dynamic State Anchoring: first implementation
+# Dynamic State Anchoring: the original design
 
-This checkout adds the initial data/tokenization and tiny-model implementation of
-the [Revision 4 Markdown handoff](docs/DSA_IMPLEMENTATION_HANDOFF.md) to LOTUS,
-preserving its existing code and README. The originally supplied PDF contains the
-same substantive specification; switching to the Markdown requires no rebuild.
-Branch: `research/dynamic-state-anchoring`. Upstream base:
-`eb77e2f7909c5006f58ff0ad7cd6629b942caa9e`.
+**Status, 12 November 2026: this file describes the original DSA design and its implementation, built in October
+2026.** That design did not work, and the project moved on to testing its premise on published latent CoT checkpoints.
+The [README](README.md) gives where the project ended. The design is specified in the
+[Revision 4 handoff](docs/DSA_IMPLEMENTATION_HANDOFF.md), and its results are in [FINDINGS.md](docs/FINDINGS.md).
 
-The PDF describes an accompanying reference package, but the supplied workspace
-contained the PDF alone. The annotator, fixtures and tests here are **new
-implementations of the written contracts**, not recovered reference files.
+The code is on `main`. The upstream LOTUS base is `eb77e2f7909c5006f58ff0ad7cd6629b942caa9e`. The handoff describes an
+accompanying reference package, but the supplied workspace contained the PDF alone. The annotator, fixtures and tests
+here are **new implementations of the written contracts**, not recovered reference files.
+
+## The design
+
+DSA adds to a shared GPT-2 backbone four latent workspace vectors, one persistent anchor vector, an anchor projection
+head and a scalar write controller. At each loop, the workspace is updated from the question, the previous anchor and the
+previous workspace. A mean-pooled summary yields a candidate anchor and a write probability, and a hard gate at 0.5
+(straight-through in training) decides whether the candidate replaces the stored anchor.
+
+- **Write supervision.** A deterministic annotator inserts an `<SA>` marker after each locally verified arithmetic
+  conclusion in a GSM8K-Aug rationale, excluding the final answer. Marked positions are mapped to loop indices, and the
+  explicit route's hidden states before each marker supply anchor targets. Gold markers are never given at inference.
+- **Loss.** Answer cross-entropy + explicit-CoT cross-entropy + 0.1 controller BCE + 0.1 normalized anchor alignment.
+- **Recurrence.** Adapted from the Fully Looped Transformer (FLT): previous-loop memory vectors supply the queries at
+  every block ([K8_FLT_PILOT.md](docs/K8_FLT_PILOT.md)).
+- **Start and controls.** Training starts from the LOTUS GPT-2 CoT checkpoint `yingfanbot/gsm-cot-gpt2`. The controls
+  are no writes (`static`), `every_loop` and `periodic` (every fourth loop), each sharing the learned arm's
+  initialization, data order and supervision.
+
+## What happened
+
+| Run | Result | Details |
+|---|---|---|
+| K=16 pilot, standard recurrence, 32 questions, 200 updates | Learned and static each 3/128 on validation; answer-gradient norms grew from about 3×10² at one loop to 2.4×10⁶; controller AUROC 0.510 | [FINDINGS §1](docs/FINDINGS.md#1-small-standard-recurrence-pilot-k16) |
+| K=8 pilot, standard against FLT recurrence | FLT cut median gradient norms 88–279-fold and fit 29–31 of the 32 training questions, but validation stayed at 2–3/128; controller AUROC 0.507 | [FINDINGS §2](docs/FINDINGS.md#2-small-k8-recurrence-ablation) |
+| FLT data-scale run, 512 questions, 1,024 updates | No writes 23/500, every loop 20, periodic 17, learned 14, with no pairwise difference at p < 0.05; the controller made 8 writes in 4,000 loop decisions | [FINDINGS §3](docs/FINDINGS.md#3-bounded-flt-data-scale-experiment) |
+| Local inference follow-up | The original checkpoint's explicit route answered 25 of 64 validation questions, the fine-tuned routes 13–17 | [FINDINGS §4](docs/FINDINGS.md#4-local-inference-follow-up) |
+| CODI-style recipe, 256 updates | Explicit route 205/500; latent answers 37/500 with no writes, 44 every loop and 45 periodic | [FINDINGS §5](docs/FINDINGS.md#5-codi-recipe-no-write-arm) |
+
+The controller never learned when to write, and no write policy beat writing nothing, so the design was parked. The
+premise was then tested directly on the published CODI and SIM-CoT checkpoints, which led to the reframing of DSA as a
+gate over latent cache entries ([README](README.md#how-the-project-got-there)).
 
 ## Run locally
 
 For native Apple GPU training and matched local checks, see the
 [MPS workflow](docs/LOCAL_MPS.md). The trainer, checkpoint smoke and answer
 evaluator automatically select MPS when CUDA is unavailable and MPS is available.
-
-The [Colab data-scale notebook](notebooks/DSA_FLT_DataScale.ipynb) provides GitHub
-checkout, dependency installation, Drive caches, matched training, evaluation
-and one final evidence ZIP. It defaults to 512 training records, 1,024 updates
-per arm and K=8 FLT-inspired recurrence with four write policies. Finished arms
-can be reused; partial arms restart. See the [protocol](docs/FLT_DATA_SCALE.md)
-or [open it in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_FLT_DataScale.ipynb).
-The [original 32-record pilot](notebooks/DSA_Colab.ipynb) remains separate.
-[CODI-style options](docs/CODI_RECIPE.md) add padded batching, LoRA, a separate
-new-module learning rate, warmup/cosine schedules and CODI's answer-position
-distillation; all default to off. The [CODI-recipe notebook](notebooks/DSA_CODI_Recipe_Colab.ipynb)
-trains and evaluates one arm with them on a Colab GPU, resuming after disconnects, and fills in the
-baseline rows of the leaderboard. The [anchor-write notebook](notebooks/DSA_CODI_Writes_Colab.ipynb)
-runs the next arm on the same recipe and skips the finished baselines.
 
 From this repository root, the prepared `.venv` can run:
 
@@ -58,7 +73,23 @@ python3.12 -m venv .venv
 installed versions. This is a CPU correctness environment. The existing LOTUS
 CUDA environment and requirements have not been merged with inspection repos.
 
-## What works
+## Colab notebooks for this design
+
+| Notebook | What it runs |
+|---|---|
+| [DSA_Colab.ipynb](notebooks/DSA_Colab.ipynb) | The 32-question pilots: K=16, then K=8 standard against FLT ([protocol](docs/K8_FLT_PILOT.md), [quickstart](docs/COLAB_QUICKSTART.md)) |
+| [DSA_Pilot_Diagnostics.ipynb](notebooks/DSA_Pilot_Diagnostics.ipynb) | The older standalone diagnostics for the saved K=16 pilot |
+| [DSA_FLT_DataScale.ipynb](notebooks/DSA_FLT_DataScale.ipynb) | The FLT data-scale run ([protocol](docs/FLT_DATA_SCALE.md)) |
+| [DSA_Format_Test_Colab.ipynb](notebooks/DSA_Format_Test_Colab.ipynb) | Retrains the learned data-scale arm with one reasoning step per line ([audit](docs/AUDIT_20261025.md), finding 1); no results from it are in the repository |
+| [DSA_CODI_Recipe_Colab.ipynb](notebooks/DSA_CODI_Recipe_Colab.ipynb) | The no-write arm on CODI's recipe, and every baseline on every evaluation set |
+| [DSA_CODI_Writes_Colab.ipynb](notebooks/DSA_CODI_Writes_Colab.ipynb) | The every-loop and periodic arms on the same recipe |
+
+The [CODI-style options](docs/CODI_RECIPE.md) add padded batching, LoRA, a separate
+new-module learning rate, warmup/cosine schedules and CODI's answer-position
+distillation; all default to off. Colab setup is described in
+[COLAB_ENVIRONMENT.md](docs/COLAB_ENVIRONMENT.md).
+
+## What the implementation does
 
 - Exact, bounded rational arithmetic through an AST whitelist; calculator
   equalities, whole-line numeric equalities and structural variable assignments.
@@ -82,7 +113,7 @@ CUDA environment and requirements have not been merged with inspection repos.
   schedule in the model input API.
 - Same-backbone explicit/answer CE, masked controller BCE, and detached,
   normalized candidate alignment for all four write policies.
-- Tiny single-device training, per-loss/gradient logs, question-only greedy
+- Single-device training, per-loss/gradient logs, question-only greedy
   generation, tokenizer/model checkpoint reload and CPU optimizer/RNG resume.
   Evaluation helpers mirror the pinned LOTUS extraction and scoring rules.
 
@@ -100,7 +131,7 @@ zero writes at threshold 0.5. This is **not evidence that anchoring improves
 reasoning, extrapolation, or benchmark performance**. Output artifacts are ignored
 by Git; small provenance and coverage reports are retained.
 
-## Corpus audit and next pilot
+## Corpus audit
 
 The pinned LOTUS corpus has been downloaded and audited. See the
 [corpus audit](docs/LOTUS_CORPUS_AUDIT.md) for coverage, ordered test membership,
@@ -114,16 +145,6 @@ Use `.venv/bin/python scripts/download_lotus_corpus.py` to verify/reuse the exac
 pinned sources; this preserves raw files and rejects checksum mismatches. Full
 annotation derivatives and group/evaluation manifests are stored under ignored
 `artifacts/` directories; concise hashed reports are under `provenance/`.
-
-The personal semantic review is complete; source-data noise is documented and
-proposed clean sensitivity exclusions remain separate from the unchanged primary
-benchmark. A small T4 pilot has supplied training and validation artifacts.
-The K=8 comparison showed substantially better gradient conditioning and
-training fitting with FLT-inspired recurrence, while validation and learned
-write timing remain unresolved. The next step is the [bounded data-scale
-experiment](docs/FLT_DATA_SCALE.md), with fixed write-policy controls and capped
-diagnostics. No comparative benchmark improvement is claimed. The FLT paper is
-included in the [research references](docs/DSA_IMPLEMENTATION_HANDOFF.md#11-references-and-provenance).
 
 See [implementation status](IMPLEMENTATION_STATUS.md),
 [upstream inspection](docs/UPSTREAM_INSPECTION.md), and

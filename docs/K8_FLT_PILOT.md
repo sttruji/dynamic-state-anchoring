@@ -1,5 +1,7 @@
 # K=8 pilot with FLT-inspired memory injection
 
+**Status, 12 November 2026.** This pilot has run; its results are in [FINDINGS.md](FINDINGS.md) section 2.
+
 Open the current [Colab notebook](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_Colab.ipynb), choose **T4 GPU**, and **Run all**. A saved notebook copy does not update automatically. The fresh run is named `gpt2-k8-flt-v1-<code commit>`, separate from the completed K=16 pilot.
 
 ## Four matched conditions

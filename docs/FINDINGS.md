@@ -2,6 +2,11 @@
 
 Compiled 14 October 2026. Status: **current implementation parked; scaling unchanged is not justified**.
 
+Update, 12 November 2026: sections 5 and 6 were added later (31 October to 5 November). This document covers the
+original design, and section 6 points to the first measurements of CODI past its trained depth. What followed, the
+reframing of DSA as a gate over latent cache entries and the held-out and scale study, is summarized in the
+[README](../README.md) and the course report draft, [`paper/main.tex`](../paper/main.tex).
+
 The experiments found no demonstrated validation advantage from learned anchor writes. FLT-inspired recurrence substantially improved gradient conditioning and fitting of a tiny training set, but the learned controller did not reliably distinguish milestone events. The larger-data experiment had poor validation accuracy, nearly stopped writing, and showed reduced explicit-route performance after fine-tuning in a local follow-up. These results support stopping compute expenditure on this version.
 
 This is a negative result for the tested implementation and budgets. It does not establish that every possible latent anchoring design is ineffective. The intended selective-write mechanism never learned its target behavior reliably, so the broader hypothesis remains unresolved. That uncertainty provides no evidence-backed reason to scale this version.
@@ -146,7 +151,7 @@ Against no writes at K=8, every-loop writes gained 23 questions and lost 16 (exp
 
 ## 6. CODI past its trained depth
 
-Added 2 November 2026. Measured on the published CODI weights without training: accuracy falls from 206 to 173 of 500 on validation as the latent loop runs from 6 to 24 steps, and re-feeding a held latent did not recover it. Details, preregistered rules and limits are in [CODI_TRAIL.md](CODI_TRAIL.md).
+Added 2 November 2026. Measured on the published CODI weights without training: accuracy falls from 206 to 173 of 500 on validation as the latent loop runs from 6 to 24 steps, and re-feeding a held latent did not recover it. Details, preregistered rules and limits are in [CODI_TRAIL.md](CODI_TRAIL.md). The published SIM-CoT GPT-2 drifts the same way (204 to 170), and appending copies of one cache entry reproduces its whole loss; that finding and the reframed DSA it led to are in [LATENT_GATE_IDEA.md](LATENT_GATE_IDEA.md).
 
 ## Evidence quality, scoring and limits
 

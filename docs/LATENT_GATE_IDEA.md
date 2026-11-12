@@ -1,8 +1,8 @@
 # Dynamic State Anchoring, reframed: anchor what the answer can see
 
-Status, 3 November 2026: Stages 0 and 1 are done; see [Stage 1 results](LATENT_GATE_STAGE1_RESULTS.md). All evidence is exploratory and comes from
-`gsm8k_valid`, which has already been used for discovery. Records are under [results/latent_gate](../results/latent_gate),
-and the literature is in [LATENT_GATE_LITERATURE.md](LATENT_GATE_LITERATURE.md).
+Status, 12 November 2026: Stage 1's H2 failed, so Stage 2 did not run ([Stage 1 results](LATENT_GATE_STAGE1_RESULTS.md)).
+The diagnosis was then tested on held-out data and at 1B ([held-out results](LATENT_GATE_HELDOUT_RESULTS.md)). Evidence
+here is exploratory, from the already explored `gsm8k_valid`. Literature: [LATENT_GATE_LITERATURE.md](LATENT_GATE_LITERATURE.md).
 
 ## The problem
 
@@ -80,7 +80,7 @@ of 500 ([plan](../results/latent_gate/stage0/PLAN.md), [report](../results/laten
 
 ## Plan
 
-- **Stage 1, prepared** ([plan](../results/latent_gate/stage1/PLAN.md), notebook
+- **Stage 1, run** ([plan](../results/latent_gate/stage1/PLAN.md), notebook
   `notebooks/DSA_Latent_Gate_Stage1_Colab.ipynb`). SIM-CoT GPT-2 is fine-tuned with equal data in eight arms:
   - 6 steps;
   - 6 steps on twice the data, as a compute control;

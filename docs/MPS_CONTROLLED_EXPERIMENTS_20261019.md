@@ -1,5 +1,10 @@
 # Next controlled MPS experiments — design dated 19 October 2026
 
+**Status, 12 November 2026: superseded.** The reviewed fixture it proposes was later built as `overfit32`
+([BENCHMARK.md](BENCHMARK.md)), but no results from the matched write-policy or warm-up comparisons are in the
+repository. The next DSA runs used CODI's training recipe instead ([CODI_RECIPE.md](CODI_RECIPE.md),
+[FINDINGS.md](FINDINGS.md) section 5).
+
 Status: **design only; no training or new answer evaluation has started**.
 The audit and written judgments are complete. The reviewed fixture and warm-up
 support described below have not been implemented. This document does not claim

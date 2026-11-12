@@ -116,4 +116,6 @@ judgments on 76 questions, including the complete local pilot. The
 [next controlled MPS experiment design](MPS_CONTROLLED_EXPERIMENTS_20261019.md)
 freezes a proposed reviewed fixture and specifies matched write-policy and
 backbone-warm-up comparisons. It is a design, not an executed experiment; its
-fixture builder and warm-up support still require implementation.
+fixture builder and warm-up support still require implementation. (Update, 12
+November 2026: the fixture was later built as `overfit32`, described in
+[BENCHMARK.md](BENCHMARK.md); no results from the comparisons are in the repository.)

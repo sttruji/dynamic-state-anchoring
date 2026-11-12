@@ -1,5 +1,7 @@
 # FLT data-scale experiment v1
 
+**Status, 12 November 2026.** This experiment has run; its results are in [FINDINGS.md](FINDINGS.md) sections 3 and 4.
+
 Open [DSA_FLT_DataScale.ipynb in Colab](https://colab.research.google.com/github/sttruji/dynamic-state-anchoring/blob/main/notebooks/DSA_FLT_DataScale.ipynb), select **T4 GPU**, and **Run all**. The first cell clones GitHub; subsequent cells install requirements, mount Drive, reuse verified corpus/model caches, prepare data, train, evaluate and download the review ZIP. The original [32-record pilot notebook](../notebooks/DSA_Colab.ipynb) remains available separately.
 
 ## Why this experiment

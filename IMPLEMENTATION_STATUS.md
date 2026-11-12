@@ -1,226 +1,118 @@
-# Implementation status — updated 13 October 2026
+# Implementation status — updated 12 November 2026
 
-First-stage data/tokenization and tiny-model implementation is working. This is
-not a trained benchmark model or evidence for the anchoring hypothesis.
+**Status:** the experiments are finished, and the course report is a first draft in [`paper/main.tex`](paper/main.tex).
+The [README](README.md) tells the story and gives the headline results. This file lists, for each stage of the main
+line, what was built, where its code and records live, how it ran, and which doc reports it. The October implementation
+log this file used to hold is in git history (last changed in `41c81d4`).
 
-The subsequently supplied `DSA_IMPLEMENTATION_HANDOFF.md` was compared in full
-with the PDF: the Revision 4 requirements are substantively identical. The
-unchanged Markdown is preserved at `docs/DSA_IMPLEMENTATION_HANDOFF.md` and is the
-handoff used going forward. Document hashes and verification results are recorded
-in `provenance/handoff_verification.json`.
+All work is merged into `main`. Unit tests are in `tests/` and run with
+`.venv/bin/python -m unittest discover -s tests`.
 
-## Completed
+## 1. The original DSA on GPT-2
 
-- LOTUS cloned on `research/dynamic-state-anchoring` from
-  `eb77e2f7909c5006f58ff0ad7cd6629b942caa9e`; four inspection sources pinned.
-  Source SHAs, relevant file hashes, licenses and actual upstream interfaces are
-  recorded in `provenance/sources.json` and `docs/UPSTREAM_INSPECTION.md`.
-- New exact-arithmetic annotation implementation, JSONL CLI, two policies,
-  immutable source records, grouped IDs, deterministic training-only loop labels,
-  malformed-record rejection and coverage reports. The PDF's referenced original
-  package was absent, so none of its reported checks were assumed to pass here.
-- Source-preserving LOTUS adapter, overlap-stopping split-manifest builder and
-  corpus preparation CLI. Primary membership is never regenerated.
-- Tiny byte tokenizer and HF fast-tokenizer support, special-token registration,
-  full marked explicit tokenization, Unicode character offsets, pre-marker hidden
-  indices, checkpoint tying/new-row gradients, tokenized artifacts/provenance CLI.
-- GPT-2/Llama hidden-only adapters; immutable question inputs, full recomputation,
-  persistent A and S=4 workspace, padding-aware positions, four matched write
-  policies and primary straight-through hard gate.
-- Shared explicit/answer losses, masked gate BCE and detached normalized candidate
-  alignment in all write-policy arms; no-event/overflow rows retain CE losses.
-- Single-device training, logs, question-only greedy generation, pinned LOTUS
-  answer scoring, save/reload and exact CPU resume. Resume rejects changed model,
-  loss settings, tokenized record content/order and scheduler presence.
+The gated anchor design of the [Revision 4 specification](docs/DSA_IMPLEMENTATION_HANDOFF.md): a learned, hard-gated
+anchor write controller with FLT recurrence, starting from the LOTUS GPT-2 CoT checkpoint, against `static`,
+`every_loop` and `periodic` controls. Outcome: the controller was at chance and stopped writing, and no write policy
+beat writing nothing.
 
-## Observed validation
+- **Code.** `dsa/`: the model (`dsa/models/anchored_loop.py`), FLT recurrence (`dsa/models/flt_memory.py`), LoRA
+  (`dsa/models/lora.py`), losses (`dsa/training/objectives.py`), `<SA>` annotation (`dsa/data/milestones.py`) and
+  tokenization (`dsa/data/tokenize.py`). Entry points: `scripts/prepare_dsa_pilot.py`, `scripts/train_dsa.py`,
+  `scripts/evaluate_dsa.py` and, for the CODI-style recipe, `scripts/run_codi_recipe.py`.
+- **Runs.** The 32-question pilots (K=16, then K=8 standard against FLT) and the 512-question FLT data-scale run were
+  Colab runs from `notebooks/DSA_Colab.ipynb` and `notebooks/DSA_FLT_DataScale.ipynb`, followed by a local inference
+  check of the data-scale checkpoints. Their implementation references are in the
+  [findings table](docs/FINDINGS.md#cost-and-reproducibility). The CODI-recipe no-write arm ran on one A100 from
+  `notebooks/DSA_CODI_Recipe_Colab.ipynb` at code `143f24a`, and the every-loop and periodic arms from
+  `notebooks/DSA_CODI_Writes_Colab.ipynb` at code `1e80405`.
+- **Records.** `provenance/findings_summary.json`; `results/leaderboard.csv` rows `dsa-data512-*` and `dsa-codi-*`;
+  per-update metrics of the no-write CODI-recipe arm in `results/training/dsa-codi-static-n32k`.
+- **Docs.** [FINDINGS.md](docs/FINDINGS.md), [CODI_RECIPE.md](docs/CODI_RECIPE.md), [DSA_README.md](DSA_README.md),
+  and the protocols [K8_FLT_PILOT.md](docs/K8_FLT_PILOT.md) and [FLT_DATA_SCALE.md](docs/FLT_DATA_SCALE.md).
+- **Earlier groundwork.** The upstream inspection, the LOTUS corpus audit and personal review, the checkpoint-label
+  audit and the local MPS checks are in [UPSTREAM_INSPECTION.md](docs/UPSTREAM_INSPECTION.md),
+  [LOTUS_CORPUS_AUDIT.md](docs/LOTUS_CORPUS_AUDIT.md), [LOTUS_PERSONAL_REVIEW.md](docs/LOTUS_PERSONAL_REVIEW.md),
+  [CHECKPOINT_LABEL_AUDIT_20261019.md](docs/CHECKPOINT_LABEL_AUDIT_20261019.md) and [LOCAL_MPS.md](docs/LOCAL_MPS.md),
+  with their hashed records under `provenance/`.
 
-Exact commands run from this repository root:
+## 2. Benchmark data and evaluation harness
 
-```bash
-.venv/bin/python -m unittest discover -s tests -v
-.venv/bin/python scripts/annotate_milestones.py \
-  --input examples/synthetic_gsm8k.jsonl \
-  --output examples/annotated_gsm8k.jsonl \
-  --report examples/annotation_report.json
-.venv/bin/python scripts/tokenize_dsa_data.py \
-  --input examples/annotated_gsm8k.jsonl \
-  --output examples/tokenized_gsm8k.jsonl \
-  --report examples/tokenization_report.json \
-  --tokenizer-dir examples/tiny_tokenizer --loops 4
-.venv/bin/python scripts/smoke_dsa.py --steps 120 --loops 4 --output artifacts/tiny-smoke
-.venv/bin/python -m compileall -q dsa scripts/annotate_milestones.py scripts/prepare_dsa_data.py scripts/smoke_dsa.py scripts/tokenize_dsa_data.py
-git diff --check
-```
+Pinned datasets and one scorer for every model, added on 25 October.
 
-Initial implementation suite: **108 tests passed**. Log: `artifacts/validation-unittest.txt`.
-Tests include causal future-token isolation, batch/unbatched padding parity,
-per-example writes, exact closed-gate persistence, surrogate gradients,
-matched-control supervision, gold-input isolation, marker tying/reload,
-resume equality/config rejection, malformed-file atomicity and split overlaps.
+- **Code.** `scripts/setup_data.py` and `dsa/bench/data.py` build every dataset from pinned sources and check each file
+  against `provenance/bench_data_lock.json`. `scripts/evaluate.py`, `dsa/bench/harness.py` and the wrappers in
+  `dsa/bench/models/` (`gpt2-vanilla`, `gpt2-sft`, `codi`, `lotus`, `dsa`) score models into the leaderboard.
+- **Records.** `results/leaderboard.csv`, rebuilt from `results/runs/`, with every output in `results/predictions/`.
+  The leaderboard has no LOTUS row; no GPT-2 LOTUS checkpoint is public (see BENCHMARK.md).
+- **Docs.** [BENCHMARK.md](docs/BENCHMARK.md); the repository audit of that day is
+  [AUDIT_20261025.md](docs/AUDIT_20261025.md).
 
-Synthetic smoke: random two-layer width-32 GPT-2, 67,841 parameters, seed 7,
-4 loops, 120 optimizer steps for each static/learned arm, identical initialization
-and data order. Loss moved 11.2953→0.3372 (static), 11.2953→0.2855 (learned).
-Both generate `10` and `14` correctly from the two training questions; checkpoint
-reload preserves outputs. The learned arm makes **zero hard writes** at 0.5.
-These are memorization/correctness observations, not comparative research results.
-Tracked run manifest: `provenance/tiny_smoke_report.json`.
+## 3. CODI past its trained depth
 
-Raw-data development annotation (official TRAIN only, separate from LOTUS):
-7,473/7,473 rows retained. Conclusive policy retains 16,718 events with 350
-no-event rows; verified-only retains 16,714 events with 352 no-event rows.
-Programmatic source/span checks passed on every row. Reports are under
-`provenance/raw_annotation_dev_*_report.json`; a seed-7 sample awaits human review.
-Official test was not used for this development audit.
+No-training measurements of the published CODI GPT-2 at more than 6 latent steps, with two preregistered tests (both
+failed), added on 2 November.
 
-## Issues found and resolved
+- **Code.** `scripts/codi_trail/`.
+- **Runs.** Local, on Apple MPS.
+- **Records.** `results/codi_trail/`: the preregistration, the dynamics plan, the harness sweep, the probe records and
+  the report outputs. The probe's latent files are not committed.
+- **Doc.** [CODI_TRAIL.md](docs/CODI_TRAIL.md).
 
-- LOTUS hardcodes recurrence KV caches; DSA therefore uses its own hidden-only
-  full-recomputation adapter rather than changing a misleading cache flag.
-- Some BPE vocabularies merge the answer prompt and target into one token. The
-  latent route now deliberately fixes the generation prompt tokens before
-  tokenizing continuation targets. The explicit route remains tokenized once.
-- Raw GSM8K contains Unicode line separators inside a JSON string. JSONL readers
-  now iterate physical LF records instead of calling `str.splitlines()`.
-- Resume previously lacked experiment-setting validation; checkpoints now include
-  model/loss settings and a tokenized record-order checksum.
-- Handoff reconciliation found that upstream's broad `data/` Git ignore rule also
-  hid the new `dsa/data/` source modules. It is now scoped to `/data/`, retaining
-  the root dataset exclusion while making all implementation sources visible.
+## 4. SIM-CoT, the copy test and Stage 0
 
-## LOTUS corpus audit
+SIM-CoT GPT-2 drifts as much as CODI with stable states, and appended copies of one cache entry reproduce its loss. Stage
+0 then tested eviction rules at fixed weights. All on `gsm8k_valid`, added on 2 November.
 
-The corpus audit is complete with data-quality findings; 129 unit tests pass.
-All 385,620 training, 500 validation and 1,319 test records are retained. Raw
-source hashes match the pinned dataset, no exact/format-normalized split overlap
-was found, and ordered test questions/answers match the official test release.
-Both annotation policies yield 613,547 retained training events, covering 83.49%
-of training rows at K=16. No parser extension or corpus filtering was performed.
+- **Code.** `scripts/latent_gate/fetch_simcot.py`, the evidence scripts in `scripts/latent_gate/evidence/` (SIM-CoT
+  probe, attention shares and the copy test), and `scripts/latent_gate/stage0_evict.py`, `stage0_labels.py`,
+  `stage0_report.py` and `stage0_labels_report.py`.
+- **Runs.** Local, on Apple MPS, with no training.
+- **Records.** `results/latent_gate/simcot_probe/`, `results/latent_gate/copy_test/` and `results/latent_gate/stage0/`.
+  The copy test and Stage 0 plans were written before their runs and carry a `PLAN.sha256`.
+- **Docs.** [LATENT_GATE_IDEA.md](docs/LATENT_GATE_IDEA.md),
+  [scripts/latent_gate/evidence/README.md](scripts/latent_gate/evidence/README.md) and the literature review
+  [LATENT_GATE_LITERATURE.md](docs/LATENT_GATE_LITERATURE.md).
 
-Findings include 60 exact repeated training rows, one ambiguous identical question
-with conflicting answers, 194 answers outside plain numeric formatting, and no
-original problem IDs to rule out paraphrased duplicates. A 32-record stratified
-TRAIN-only sample has AI-agent review. The user subsequently authorized personal
-semantic source-issue review, now complete: all 194 unusual answers, 52 duplicate
-groups and the conflicting pair were adjudicated; see `docs/LOTUS_PERSONAL_REVIEW.md`.
-The full GPT-2 tokenizer mapping pass has zero failures on all train/validation
-rows; maximum explicit lengths are 255/209 tokens, with no truncation. See
-`docs/LOTUS_CORPUS_AUDIT.md` for source evidence and tokenizer results.
+## 5. Stage 1: fine-tuning with the gate
 
-## Colab pilot workflow
+Eight arms on SIM-CoT GPT-2 and three on CODI GPT-2, one seed (7). H2 failed on both, so the stop rule fired.
 
-`notebooks/DSA_Colab.ipynb` is built for the public
-`sttruji/dynamic-state-anchoring` repository. Its first cell clones GitHub;
-later cells install isolated dependencies, mount Drive, cache pinned data/model
-downloads, run an unmodified-checkpoint smoke, train/resume matched policies and
-evaluate question-only predictions. Final full test evaluation is explicitly
-disabled during pilot development. See `docs/COLAB_QUICKSTART.md` and
-`docs/COLAB_ENVIRONMENT.md`.
+- **Code.** `scripts/latent_gate/stage1_train.py`, `stage1_eval.py`, `gate.py` and `stage1_report.py`.
+- **Runs.** `notebooks/DSA_Latent_Gate_Stage1_Colab.ipynb` on a Colab A100 at commit `161751d`.
+- **Records.** `results/latent_gate/stage1/PLAN.md` and `PLAN.sha256`; `results/latent_gate/stage1/{simcot,codi}/`, each
+  with `evals/`, `training/` and `report.txt`.
+- **Doc.** [LATENT_GATE_STAGE1_RESULTS.md](docs/LATENT_GATE_STAGE1_RESULTS.md).
+- **Known issue.** Both `gate12_hard` arms trained with a tie bug at the top-6 cut. It was fixed for the held-out study
+  (`gate12_fixed`), and the gate still failed on CODI.
 
-Persistent preparation validates source and derivative hashes. Training saves
-model, tokenizer, optimizer, scheduler, RNG and frozen experiment/runtime
-identities, retaining two complete checkpoints by default. Evaluation recovers
-interrupted prediction logs, binds checkpoint/source hashes and preserves the
-complete final-test denominator. Exact training resume rejects changed runtime
-or experimental identities.
+## 6. The held-out and scale study
 
-Initial Colab workflow validation: **175 tests pass**, including actual execution of the embedded
-CPU preflight and notebook summary. A CLI integration prepared 32 unchanged LOTUS
-training records with the offline tokenizer, trained a random tiny GPT-2 to step
-3, resumed to step 5 and evaluated eight validation questions at K=16. This
-verifies plumbing; it is not pretrained inference or an accuracy result. Detailed
-verification is recorded in `provenance/colab_validation.json`; the suite log is
-`artifacts/colab-validation-unittest.txt`.
+Four published checkpoints (CODI and SIM-CoT at GPT-2 and LLaMA-3.2-1B) on GSM8K test, GSM-Hard, MultiArith and SVAMP,
+under a plan frozen before any run, plus one amendment.
 
-Hosted Colab/Drive authorization and pretrained CUDA execution remain pending.
-No source dataset records were changed or filtered.
+- **Code.** The batched evaluator `scripts/latent_gate/batched.py` and `heldout_eval.py`; the engineering checks
+  `check_batched.py` (E1) and `check_llama.py` (E2); the LLaMA port `dsa/bench/models/codi_llama.py`; the reports
+  `heldout_report.py`, `heldout_explore.py` and `amendment_report.py`; and `partc_train.py` for Amendment 1's Part C.
+- **Runs.**
+  - Parts A and B: `notebooks/DSA_Latent_Gate_HeldOut_Scale_Colab.ipynb` on a Colab A100 at commit `837f5df`.
+  - Amendment 1 at commit `48a461d`: `notebooks/DSA_Latent_Gate_Anchor_PartC_Colab.ipynb` (B3, then Part C) and the
+    Part C-only `notebooks/DSA_Latent_Gate_PartC_Colab.ipynb`. Part C trained on a Colab G4 (RTX PRO 6000).
+  - Not run: the optional 3B SIM-CoT model.
+- **Records.** `results/latent_gate/heldout_scale/`: `PLAN.md` and `PLAN.sha256`, one folder of records per model and
+  arm, `report.txt`, `explore.txt`, `amendment_report.txt`, `partc_verdict.json` and the training logs under
+  `training/`. `heldout_report.py` and `amendment_report.py` reproduce `report.txt` and `amendment_report.txt` from
+  these records without a GPU.
+- **Doc.** [LATENT_GATE_HELDOUT_RESULTS.md](docs/LATENT_GATE_HELDOUT_RESULTS.md).
 
-The user's Python 3.13 Colab runtime subsequently failed during venv creation.
-Setup now creates a pip-less environment and uses the host pip with an explicit
-target interpreter, repairs partial environments, and preserves the installed
-CUDA stack. The preflight now accepts Python 3.13. **186 tests pass on both
-Python 3.12 and Python 3.13 locally**, and a real Python 3.13 setup installation
-completed. Original failure stderr was not supplied, so its exact cause is not
-asserted. See `provenance/colab_setup_fix.json`; hosted GPU verification remains
-pending.
+## 7. The course report
 
-## Remaining work
+- **Source.** `paper/main.tex`, with `paper/references.bib` and the ACL style files. The figure
+  `paper/figures/depth.tex` is written by `paper/figures/depth_figure.py` from the held-out records.
+- **Build.** `cd paper && latexmk -pdf main.tex`. Build outputs, including `main.pdf`, are ignored by git.
+- **State.** A first draft.
 
-1. Use the reviewed unchanged-source policy for the implementation pilot and
-   predeclare a separate clean sensitivity experiment if desired. Source-issue
-   adjudication is complete; the proposed 49-row quality exclusions and optional
-   60-row deduplication are not applied to the primary benchmark.
-2. Execute the unmodified pretrained inference smoke at the pinned
-   `yingfanbot/gsm-cot-gpt2` revision
-   `e0ef1887404adbf6c531d2cac7804694321f87bd`. Tokenizer mapping/context audits are
-   complete, but pretrained model weights have not been downloaded locally.
-3. Run the new Colab notebook from the public
-   `sttruji/dynamic-state-anchoring` repository:
-   verify hosted dependencies/GPU, overfit a small training subset and profile
-   memory/throughput. The single-device pilot launcher, Drive cache and resumable
-   training/evaluation workflow are implemented; hosted execution is pending.
-4. Implement controlled addition/function-composition data with solver states,
-   fixed train/test difficulty splits, depth curves and causal interventions.
-5. Run matched B0/B1/B2/DSA and unmodified LOTUS comparisons with validation-only
-   selection, complete ordered test denominators, three seeds and measured costs.
-   Distributed training and optimized caches remain deferred.
+## Separate exploration
 
-## Unified pilot review
-
-The original `notebooks/DSA_Colab.ipynb` now defaults to loading the saved
-`gpt2-pilot-v1-ba4e69315086` experiment after reconnecting. Its new review collects
-training generation/losses, validation, latent/gate/teacher-alignment profiles,
-per-loop and per-loss gradients, paired interventions and explicit-route controls.
-It exports one bounded, hashed ZIP with stage errors and missing evidence clearly
-identified. New small training remains available through `train_pilot` mode.
-The primary model/training implementation is unchanged, preserving historical
-checkpoint contracts. The older standalone diagnostic notebook is no longer
-the recommended entry point. Hosted execution of the expanded review is pending.
-See `docs/COLAB_QUICKSTART.md` for the protocol and export contents.
-
-## FLT data-scale notebook — 13 October 2026
-
-The uploaded K=8 four-condition T4 pilot is complete and reviewed. FLT/static
-and FLT/learned fit 29/32 and 31/32 training answers, compared with 6/32 and 4/32
-for standard recurrence, with substantially smaller gradient norms. Their
-validation scores remain 3/128 and 2/128; learned write-event discrimination is
-near chance. These observations supersede earlier pending-hosted-pilot notes
-above and do not establish a benchmark or learned anchoring advantage.
-
-`notebooks/DSA_FLT_DataScale.ipynb` is a separate next experiment: 512 selected
-training records, 1,024 updates per arm, K=8 FLT, and static/every-loop/periodic/
-learned write policies. It evaluates all 500 validation records and caps expensive
-training diagnostics at 64 records, with two gradient probes and eight paired
-intervention records. Existing losses, model parameters and primary source-data
-policy remain unchanged. The completed 32-record notebook remains separate.
-
-`scripts/diagnose_dsa_pilot.py --training-limit` verifies the full training identity
-before selecting a fixed seeded sample; reports distinguish sampled and full
-denominators. The exporter includes all six paired write-policy comparisons,
-controller AUC, source and artifact hashes, failure logs and notebook/protocol.
-The old 80% training memorization heuristic is not a blocker for data-scale runs.
-Finished compatible arms restore/reuse their verified backups; partial arms
-restart. Full checkpoint ZIPs remain separate from the final small review ZIP.
-
-**230 CPU tests passed**, including a real tiny-model four-policy prepare/screen/
-train/evaluate/diagnose/control/export workflow, completed-backup restoration,
-sampled diagnostic identity and export hashing. Log:
-`artifacts/data-scale-validation-unittest.txt`. See
-`provenance/data_scale_validation.json` and `docs/FLT_DATA_SCALE.md`. The new
-512-record pretrained T4 experiment has not been executed locally.
-
-Fu et al., *Simply Stabilizing the Loop via Fully Looped Transformer* (v1), is
-added as reference [13] in the handoff, with its official paper/code links and
-the distinction between the paper and this fixed-memory GPT-2 adaptation.
-
-## Benchmark data and evaluation harness — 25 October 2026
-
-`scripts/setup_data.py` now builds all proposal datasets from pinned sources with deterministic
-tags and hash-locked splits (GSM8K-Aug, GSM8K-Aug-NL, CommonsenseQA-CoT; dev64, overfit32,
-GSM8K validation/test; SVAMP, GSM-Hard, MultiArith). `scripts/evaluate.py` scores GPT-2
-vanilla/SFT, CODI, LOTUS and DSA checkpoints, or any `BenchModel` subclass, into
-`results/leaderboard.csv`. The reviewed overfit32 fixture can now be prepared for the existing
-trainer with `scripts/prepare_dsa_pilot.py --fixture overfit32`. See `docs/BENCHMARK.md`; the
-repository audit and its open findings (CoT format drift, missing LOTUS GPT-2 weights, untagged NL
-rationales) are in `docs/AUDIT_20261025.md`.
+A parallel brainstorm track, after Stage 1, is summarized in [BRAINSTORM_SUMMARY.md](docs/BRAINSTORM_SUMMARY.md). Its
+code is under `scripts/inner_loop/`, `scripts/step_select/`, `scripts/plan_search/`, `scripts/step_probe/` and
+`scripts/ffn_sparsity/`, and none of it is part of the course report.
